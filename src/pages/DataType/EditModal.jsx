@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Switch } from 'antd';
+import { Form, Input, InputNumber, Switch } from 'antd';
 import { ExtModal } from 'suid';
 
 const FormItem = Form.Item;
@@ -80,7 +80,7 @@ class FormModal extends PureComponent {
                   message: '长度不能为空',
                 },
               ],
-            })(<Input />)}
+            })(<InputNumber />)}
           </FormItem>
           <FormItem label="精度">
             {getFieldDecorator('precision', {
@@ -91,7 +91,7 @@ class FormModal extends PureComponent {
                   message: '精度不能为空',
                 },
               ],
-            })(<Input />)}
+            })(<InputNumber />)}
           </FormItem>
           <FormItem label="java类型">
             {getFieldDecorator('javaType', {
@@ -115,24 +115,24 @@ class FormModal extends PureComponent {
               ],
             })(<Input />)}
           </FormItem>
-          <FormItem label="postgresql类型">
+          <FormItem label="postgre类型">
             {getFieldDecorator('postgreType', {
               initialValue: editData && editData.postgreType,
               rules: [
                 {
                   required: true,
-                  message: 'postgresql类型不能为空',
+                  message: 'postgre类型不能为空',
                 },
               ],
             })(<Input />)}
           </FormItem>
-          <FormItem label="oraclesql类型">
+          <FormItem label="oracle类型">
             {getFieldDecorator('oracleType', {
               initialValue: editData && editData.oracleType,
               rules: [
                 {
                   required: true,
-                  message: 'oraclesql类型不能为空',
+                  message: 'oracle类型不能为空',
                 },
               ],
             })(<Input />)}
