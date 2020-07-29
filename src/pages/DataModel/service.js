@@ -1,32 +1,34 @@
 /*
-* @Author: zp
-* @Date:   2020-02-02 11:57:24
+ * @Author: zp
+ * @Date:   2020-02-02 11:57:24
  * @Last Modified by: zp
- * @Last Modified time: 2020-04-23 09:49:29
-*/
+ * @Last Modified time: 2020-07-30 07:00:25
+ */
 import { utils } from 'suid';
+import { constants } from '@/utils';
 
 const { request } = utils;
-const MockServerPath = 'http://rddgit.changhong.com:7300/mock/5e02d29836608e42d52b1d81/template-service';
-const contextPath = '/simple-master';
+const { MDMSCONTEXT: MockServerPath } = constants;
+
+const contextPath = '/dataModel';
+const cContextPath = '/dataModelField';
 
 /** 保存父表格数据 */
 export async function saveParent(data) {
   const url = `${MockServerPath}${contextPath}/save`;
   return request({
     url,
-    method: "POST",
+    method: 'POST',
     data,
   });
 }
 
-
 /** 保存字表行数据 */
 export async function saveChild(data) {
-  const url = `${MockServerPath}${contextPath}/save`;
+  const url = `${MockServerPath}${cContextPath}/save`;
   return request({
     url,
-    method: "POST",
+    method: 'POST',
     data,
   });
 }
@@ -36,17 +38,15 @@ export async function delParentRow(params) {
   const url = `${MockServerPath}${contextPath}/delete/${params.id}`;
   return request({
     url,
-    method: "DELETE",
+    method: 'DELETE',
   });
 }
 
 /** 删除字表格数据 */
 export async function delChildRow(params) {
-  const url = `${MockServerPath}${contextPath}/delete/${params.id}`;
+  const url = `${MockServerPath}${cContextPath}/delete/${params.id}`;
   return request({
     url,
-    method: "DELETE",
+    method: 'DELETE',
   });
 }
-
-

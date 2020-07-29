@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import { utils, ExtIcon, ExtTable, } from 'suid';
+import { utils, ExtIcon, ExtTable } from 'suid';
+import { constants } from '@/utils';
 import FormModal from './FormModal';
+
 import styles from './index.less';
+
+const { MDMSCONTEXT } = constants;
 
 const { authAction } = utils;
 
@@ -62,7 +66,7 @@ class CascadeTableMaster extends Component {
 
   del = record => {
     const { dispatch, dataModel } = this.props;
-    const { currPRowData, } = dataModel;
+    const { currPRowData } = dataModel;
     this.setState(
       {
         delRowId: record.id,
@@ -80,7 +84,7 @@ class CascadeTableMaster extends Component {
                 type: 'dataModel/updatePageState',
                 payload: {
                   currPRowData: null,
-                }
+                },
               }).then(() => {
                 this.setState({
                   delRowId: null,
@@ -98,7 +102,7 @@ class CascadeTableMaster extends Component {
     );
   };
 
-  closeFormModal =() => {
+  closeFormModal = () => {
     const { dispatch } = this.props;
     dispatch({
       type: 'dataModel/updatePageState',
@@ -145,15 +149,15 @@ class CascadeTableMaster extends Component {
   };
 
   getExtableProps = () => {
-    const { dispatch, } = this.props;
+    const { dispatch } = this.props;
     const columns = [
       {
-        title: "操作",
-        key: "operation",
+        title: '操作',
+        key: 'operation',
         width: 85,
-        align: "center",
-        dataIndex: "id",
-        className: "action",
+        align: 'center',
+        dataIndex: 'id',
+        className: 'action',
         required: true,
         render: (_, record) => {
           return (
@@ -166,15 +170,13 @@ class CascadeTableMaster extends Component {
                     onClick={e => this.edit(record, e)}
                     type="edit"
                     ignore="true"
-                    tooltip={
-                      { title: '编辑' }
-                    }
+                    tooltip={{ title: '编辑' }}
                     antd
                   />,
                 )}
                 {record.frozen ? null : (
                   <Popconfirm
-                    key='delete'
+                    key="delete"
                     placement="topLeft"
                     title="确定要删除吗？"
                     onCancel={e => e.stopPropagation()}
@@ -189,20 +191,44 @@ class CascadeTableMaster extends Component {
               </div>
             </>
           );
-        }
+        },
       },
       {
-        title: "表名",
-        dataIndex: "tableName",
+        title: '表名',
+        dataIndex: 'tableName',
         width: 120,
         required: true,
       },
       {
-        title: "名称",
-        dataIndex: "name",
+        title: '数据源代码',
+        dataIndex: 'dsCode',
+        width: 120,
+        required: true,
+      },
+      {
+        title: '模型分类代码',
+        dataIndex: 'modelTypeCode',
+        width: 120,
+        required: true,
+      },
+      {
+        title: '模型分类名称',
+        dataIndex: 'modelTypeName',
+        width: 120,
+        required: true,
+      },
+      {
+        title: '描述',
+        dataIndex: 'remark',
         width: 160,
         required: true,
-        render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>
+        render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>,
+      },
+      {
+        title: '版本',
+        dataIndex: 'version',
+        width: 160,
+        required: true,
       },
     ];
 
@@ -210,20 +236,13 @@ class CascadeTableMaster extends Component {
       left: (
         <>
           {authAction(
-            <Button
-              key="add"
-              type="primary"
-              onClick={this.add}
-              ignore='true'
-            >
+            <Button key="add" type="primary" onClick={this.add} ignore="true">
               新建
-            </Button>
+            </Button>,
           )}
-          <Button onClick={this.reloadData}>
-            刷新
-          </Button>
+          <Button onClick={this.reloadData}>刷新</Button>
         </>
-      )
+      ),
     };
     return {
       bordered: false,
@@ -241,7 +260,7 @@ class CascadeTableMaster extends Component {
       },
       store: {
         type: 'POST',
-        url: `http://rddgit.changhong.com:7300/mock/5e02d29836608e42d52b1d81/template-service/simple-master/findByPage`,
+        url: `${MDMSCONTEXT}/dataModel/findByPage`,
       },
     };
   };
@@ -249,7 +268,7 @@ class CascadeTableMaster extends Component {
   render() {
     return (
       <div className={cls(styles['container-box'])}>
-        <ExtTable onTableRef={inst => this.tableRef = inst} {...this.getExtableProps()} />
+        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
         <FormModal {...this.getFormModalProps()} />
       </div>
     );

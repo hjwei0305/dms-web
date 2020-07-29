@@ -1,34 +1,38 @@
-import React, { Component, Fragment, } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Popconfirm, } from "antd";
-import { isEqual,} from 'lodash';
-import { ExtTable, utils, ExtIcon, } from 'suid';
+import { Button, Popconfirm } from 'antd';
+import { isEqual } from 'lodash';
+import { ExtTable, utils, ExtIcon } from 'suid';
+import { constants } from '@/utils';
 import FormModal from './FormModal';
-import styles from "../../index.less";
+
+import styles from '../../index.less';
+
+const { MDMSCONTEXT } = constants;
 
 const { authAction } = utils;
 
-@connect(({ dataModel, loading, }) => ({ dataModel, loading, }))
+@connect(({ dataModel, loading }) => ({ dataModel, loading }))
 class ChildTable extends Component {
   state = {
     delRowId: null,
     selectedRowKeys: [],
-  }
+  };
 
-  reloadData = _ => {
-    const { dataModel, } = this.props;
+  reloadData = () => {
+    const { dataModel } = this.props;
     const { currPRowData } = dataModel;
-    if (currPRowData) {
-      this.tableRef && this.tableRef.remoteDataRefresh();
+    if (currPRowData && this.tableRef) {
+      this.tableRef.remoteDataRefresh();
     }
   };
 
-  handleSave = (rowData) => {
-    const { dispatch, } = this.props;
+  handleSave = rowData => {
+    const { dispatch } = this.props;
 
     dispatch({
-      type: "dataModel/save",
+      type: 'dataModel/save',
       payload: rowData,
     }).then(res => {
       if (res.success) {
@@ -38,9 +42,9 @@ class ChildTable extends Component {
         this.reloadData();
       }
     });
-  }
+  };
 
-  add = _ => {
+  add = () => {
     const { dispatch } = this.props;
 
     dispatch({
@@ -66,12 +70,12 @@ class ChildTable extends Component {
 
   del = record => {
     const { dispatch, dataModel } = this.props;
-    const { currCRowData, } = dataModel;
+    const { currCRowData } = dataModel;
     this.setState(
       {
         delRowId: record.id,
       },
-      _ => {
+      () => {
         dispatch({
           type: 'dataModel/delCRow',
           payload: {
@@ -84,7 +88,7 @@ class ChildTable extends Component {
                 type: 'dataModel/updatePageState',
                 payload: {
                   currCRowData: null,
-                }
+                },
               }).then(() => {
                 this.setState({
                   delRowId: null,
@@ -102,11 +106,10 @@ class ChildTable extends Component {
     );
   };
 
-
   save = data => {
     const { dispatch } = this.props;
     dispatch({
-      type: "dataModel/saveChild",
+      type: 'dataModel/saveChild',
       payload: data,
     }).then(res => {
       if (res.success) {
@@ -121,7 +124,7 @@ class ChildTable extends Component {
     });
   };
 
-  closeFormModal = _ => {
+  closeFormModal = () => {
     const { dispatch } = this.props;
     dispatch({
       type: 'dataModel/updatePageState',
@@ -149,17 +152,17 @@ class ChildTable extends Component {
   };
 
   getExtableProps = () => {
-    const { selectedRowKeys, } = this.state;
-    const { dataModel,  } = this.props;
-    const { currPRowData, } = dataModel;
+    const { selectedRowKeys } = this.state;
+    const { dataModel } = this.props;
+    const { currPRowData } = dataModel;
     const columns = [
       {
-        title: "操作",
-        key: "operation",
+        title: '操作',
+        key: 'operation',
         width: 85,
-        align: "center",
-        dataIndex: "id",
-        className: "action",
+        align: 'center',
+        dataIndex: 'id',
+        className: 'action',
         required: true,
         render: (_, record) => {
           return (
@@ -167,20 +170,18 @@ class ChildTable extends Component {
               <div className="action-box" onClick={e => e.stopPropagation()}>
                 {authAction(
                   <ExtIcon
-                    key={'edit'}
+                    key="edit"
                     className="edit"
                     onClick={e => this.edit(record, e)}
                     type="edit"
                     ignore="true"
-                    tooltip={
-                      { title: '编辑' }
-                    }
+                    tooltip={{ title: '编辑' }}
                     antd
                   />,
                 )}
                 {record.frozen ? null : (
                   <Popconfirm
-                    key='delete'
+                    key="delete"
                     placement="topLeft"
                     title="确定要删除吗？"
                     onCancel={e => e.stopPropagation()}
@@ -195,17 +196,17 @@ class ChildTable extends Component {
               </div>
             </>
           );
-        }
+        },
       },
       {
-        title: "代码",
-        dataIndex: "code",
+        title: '代码',
+        dataIndex: 'code',
         width: 120,
         required: true,
       },
       {
-        title: "名称",
-        dataIndex: "name",
+        title: '名称',
+        dataIndex: 'name',
         width: 180,
         required: true,
       },
@@ -214,20 +215,13 @@ class ChildTable extends Component {
       left: (
         <Fragment>
           {authAction(
-            <Button
-              key={'add'}
-              type="primary"
-              onClick={this.add}
-              ignore='true'
-            >
+            <Button key="add" type="primary" onClick={this.add} ignore="true">
               新建
-            </Button>
+            </Button>,
           )}
-          <Button onClick={this.reloadData}>
-            刷新
-          </Button>
+          <Button onClick={this.reloadData}>刷新</Button>
         </Fragment>
-      )
+      ),
     };
     return {
       bordered: false,
@@ -236,10 +230,10 @@ class ChildTable extends Component {
       },
       selectedRowKeys,
       searchProperties: ['code', 'name'],
-      onSelectRow: (selectedKeys) => {
+      onSelectRow: selectedKeys => {
         let tempKeys = selectedKeys;
         if (isEqual(selectedKeys, selectedRowKeys)) {
-          tempKeys = []
+          tempKeys = [];
         }
         this.setState({
           selectedRowKeys: tempKeys,
@@ -251,29 +245,28 @@ class ChildTable extends Component {
       allowCancelSelect: true,
       store: {
         type: 'POST',
-        url: `http://rddgit.changhong.com:7300/mock/5e02d29836608e42d52b1d81/template-service/simple-master/findByPage`,
+        url: `${MDMSCONTEXT}/dataModelField/findByPage`,
       },
     };
   };
 
   getFormModalProps = () => {
-    const { loading, dataModel, } = this.props;
-    const { currPRowData, currCRowData, cVisible, } = dataModel;
-    console.log(currPRowData)
+    const { loading, dataModel } = this.props;
+    const { currPRowData, currCRowData, cVisible } = dataModel;
     return {
       onSave: this.save,
       pRowData: currPRowData,
       rowData: currCRowData,
       visible: cVisible,
       onCancel: this.closeFormModal,
-      saving: loading.effects["dataModel/saveChild"]
+      saving: loading.effects['dataModel/saveChild'],
     };
   };
 
   render() {
     return (
-      <div className={cls(styles["container-box"])} >
-        <ExtTable onTableRef={inst => this.tableRef = inst} {...this.getExtableProps()} />
+      <div className={cls(styles['container-box'])}>
+        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
         <FormModal {...this.getFormModalProps()} />
       </div>
     );

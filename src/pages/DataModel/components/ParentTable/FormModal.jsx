@@ -1,13 +1,14 @@
-import React, { PureComponent } from "react";
-import { Form, Input, } from "antd";
-import { ExtModal, ScrollBar, } from 'suid';
+import React, { PureComponent } from 'react';
+import { Form, Input } from 'antd';
+import { ExtModal, ScrollBar, ComboGrid, ComboTree } from 'suid';
+import { constants } from '@/utils';
 
+const { MDMSCONTEXT } = constants;
 const FormItem = Form.Item;
 
 @Form.create()
 class FormModal extends PureComponent {
-
-  onFormSubmit = _ => {
+  onFormSubmit = () => {
     const { form, osSave } = this.props;
     form.validateFields((err, formData) => {
       if (err) {
@@ -19,20 +20,84 @@ class FormModal extends PureComponent {
     });
   };
 
+  getMtComboTreeProps = () => {
+    const { form } = this.props;
+
+    return {
+      form,
+      name: 'modelTypeName',
+      store: {
+        type: 'GET',
+        autoLoad: false,
+        url: `${MDMSCONTEXT}/dataModelType/getAllRootNode`,
+      },
+      columns: [
+        {
+          title: '代码',
+          width: 80,
+          dataIndex: 'code',
+        },
+        {
+          title: '名称',
+          width: 200,
+          dataIndex: 'name',
+        },
+      ],
+      rowKey: 'id',
+      reader: {
+        name: 'name',
+        field: ['code'],
+      },
+      field: ['modelTypeCode'],
+      remotePaging: true,
+    };
+  };
+
+  getDsComboGridProps = () => {
+    const { form } = this.props;
+
+    return {
+      form,
+      name: 'dsCode',
+      store: {
+        type: 'POST',
+        autoLoad: false,
+        url: `${MDMSCONTEXT}/dataSource/findByPage`,
+      },
+      columns: [
+        {
+          title: '代码',
+          width: 80,
+          dataIndex: 'code',
+        },
+        {
+          title: '描述',
+          width: 200,
+          dataIndex: 'remark',
+        },
+      ],
+      rowKey: 'id',
+      reader: {
+        name: 'code',
+      },
+      remotePaging: true,
+    };
+  };
+
   render() {
-    const { form, saving, visible, onCancel, rowData, } = this.props;
+    const { form, saving, visible, onCancel, rowData } = this.props;
     const { getFieldDecorator } = form;
 
     const formItemLayout = {
       labelCol: {
-        span: 6
+        span: 6,
       },
       wrapperCol: {
         span: 18,
-      }
+      },
     };
     const title = rowData ? '编辑' : '新建';
-    const { id, code, name, } = rowData || {};
+    const { id, modelTypeCode, modelTypeName, tableName, remark, dsCode } = rowData || {};
 
     return (
       <ExtModal
@@ -42,35 +107,67 @@ class FormModal extends PureComponent {
         onCancel={onCancel}
         confirmLoading={saving}
         title={title}
-        onOk={() => {this.onFormSubmit()}}
+        onOk={() => {
+          this.onFormSubmit();
+        }}
         width={550}
         okText="保存"
       >
         <div>
           <ScrollBar>
-            <Form style={{ padding: '0 10px',}} {...formItemLayout} layout="horizontal">
+            <Form style={{ padding: '0 10px' }} {...formItemLayout} layout="horizontal">
               <FormItem style={{ display: 'none' }}>
-                {getFieldDecorator("id", {
+                {getFieldDecorator('id', {
                   initialValue: id,
                 })(<Input />)}
               </FormItem>
-              <FormItem label="代码">
-                {getFieldDecorator("code", {
-                  initialValue: code,
-                  rules: [{
-                    required: true,
-                    message: "代码不能为空",
-                  }]
-                })(<Input disabled={!!rowData} />)}
-              </FormItem>
-              <FormItem label="名称">
-                {getFieldDecorator("name", {
-                  initialValue: name,
-                  rules: [{
-                    required: true,
-                    message: "名称不能为空"
-                  }]
+              <FormItem
+                label="模型分类代码"
+                style={{
+                  display: 'none',
+                }}
+              >
+                {getFieldDecorator('modelTypeCode', {
+                  initialValue: modelTypeCode,
                 })(<Input />)}
+              </FormItem>
+              <FormItem label="模型分类">
+                {getFieldDecorator('modelTypeName', {
+                  initialValue: modelTypeName,
+                  rules: [
+                    {
+                      required: true,
+                      message: '模型分类不能为空',
+                    },
+                  ],
+                })(<ComboTree {...this.getMtComboTreeProps()} />)}
+              </FormItem>
+              <FormItem label="数据源">
+                {getFieldDecorator('dsCode', {
+                  initialValue: dsCode,
+                  rules: [
+                    {
+                      required: true,
+                      message: '数据源不能为空',
+                    },
+                  ],
+                })(<ComboGrid {...this.getDsComboGridProps()} />)}
+              </FormItem>
+              <FormItem label="表名">
+                {getFieldDecorator('tableName', {
+                  initialValue: tableName,
+                  rules: [
+                    {
+                      required: true,
+                      message: '表名不能为空',
+                    },
+                  ],
+                })(<Input />)}
+              </FormItem>
+              <FormItem label="备注">
+                {getFieldDecorator('remark', {
+                  initialValue: remark,
+                })(<Input.TextArea />)}
               </FormItem>
             </Form>
           </ScrollBar>
