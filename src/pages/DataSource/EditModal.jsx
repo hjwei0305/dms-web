@@ -81,7 +81,7 @@ class FormModal extends PureComponent {
                   message: '数据库类型不能为空',
                 },
               ],
-            })(<TextArea />)}
+            })(<Input />)}
           </FormItem>
           <FormItem label="url地址">
             {getFieldDecorator('url', {
