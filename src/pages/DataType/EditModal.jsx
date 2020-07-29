@@ -51,7 +51,7 @@ class FormModal extends PureComponent {
         confirmLoading={saving}
         maskClosable={false}
         title={title}
-        width="45%"
+        width={600}
         onOk={this.handleSave}
       >
         <Form {...formItemLayout} layout="horizontal">
