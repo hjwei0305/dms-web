@@ -106,8 +106,8 @@ class FormModal extends PureComponent {
             })(<Input />)}
           </FormItem>
           <FormItem label="密码">
-            {getFieldDecorator('passowrd', {
-              initialValue: editData && editData.passowrd,
+            {getFieldDecorator('password', {
+              initialValue: editData && editData.password,
               rules: [
                 {
                   required: true,
