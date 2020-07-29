@@ -1,8 +1,8 @@
 /*
  * @Author: Eason
  * @Date: 2020-02-21 18:03:16
- * @Last Modified by: Eason
- * @Last Modified time: 2020-05-30 23:57:41
+ * @Last Modified by: zp
+ * @Last Modified time: 2020-07-29 09:19:58
  */
 import { base } from '../../public/app.config.json';
 
@@ -36,6 +36,8 @@ const LOCAL_PATH = process.env.NODE_ENV !== 'production' ? '..' : `../${APP_BASE
 
 const SERVER_PATH = getServerPath();
 
+const MDMSCONTEXT = `${SERVER_PATH}/mdms/`;
+
 const LOGIN_STATUS = {
   SUCCESS: 'success',
   MULTI_TENANT: 'multiTenant',
@@ -58,4 +60,5 @@ export default {
   SERVER_PATH,
   APP_MODULE_BTN_KEY,
   LOGIN_STATUS,
+  MDMSCONTEXT,
 };

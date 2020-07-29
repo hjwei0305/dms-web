@@ -10,9 +10,10 @@ import EditModal from './EditModal';
 import styles from './index.less';
 
 const { MDMSCONTEXT } = constants;
+
 @withRouter
-@connect(({ dataSource, loading }) => ({ dataSource, loading }))
-class DataSource extends Component {
+@connect(({ dataType, loading }) => ({ dataType, loading }))
+class DataType extends Component {
   state = {
     delId: null,
   };
@@ -30,7 +31,7 @@ class DataSource extends Component {
       case 'add':
       case 'edit':
         dispatch({
-          type: 'dataSource/updateState',
+          type: 'dataType/updateState',
           payload: {
             modalVisible: true,
             editData: row,
@@ -44,7 +45,7 @@ class DataSource extends Component {
           },
           () => {
             dispatch({
-              type: 'dataSource/del',
+              type: 'dataType/del',
               payload: {
                 id: row.id,
               },
@@ -70,12 +71,12 @@ class DataSource extends Component {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'dataSource/save',
+      type: 'dataType/save',
       payload: data,
     }).then(res => {
       if (res.success) {
         dispatch({
-          type: 'dataSource/updateState',
+          type: 'dataType/updateState',
           payload: {
             modalVisible: false,
           },
@@ -88,7 +89,7 @@ class DataSource extends Component {
   handleClose = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'dataSource/updateState',
+      type: 'dataType/updateState',
       payload: {
         modalVisible: false,
         editData: null,
@@ -99,7 +100,7 @@ class DataSource extends Component {
   renderDelBtn = row => {
     const { loading } = this.props;
     const { delId } = this.state;
-    if (loading.effects['dataSource/del'] && delId === row.id) {
+    if (loading.effects['dataType/del'] && delId === row.id) {
       return <ExtIcon className="del-loading" tooltip={{ title: '删除' }} type="loading" antd />;
     }
     return <ExtIcon className="del" tooltip={{ title: '删除' }} type="delete" antd />;
@@ -144,26 +145,44 @@ class DataSource extends Component {
         required: true,
       },
       {
-        title: '描述说明',
-        dataIndex: 'remark',
+        title: '名称',
+        dataIndex: 'name',
         width: 220,
         required: true,
       },
       {
-        title: '数据库类型',
-        dataIndex: 'dbType',
+        title: '长度',
+        dataIndex: 'dataLength',
+        width: 80,
+        required: true,
+      },
+      {
+        title: '精度',
+        dataIndex: 'precision',
+        width: 80,
+        required: true,
+      },
+      {
+        title: 'javaType',
+        dataIndex: 'java类型',
         width: 120,
         required: true,
       },
       {
-        title: 'url地址',
-        dataIndex: 'url',
-        width: 220,
+        title: 'mysqlType',
+        dataIndex: 'mysql类型',
+        width: 120,
         required: true,
       },
       {
-        title: '用户名',
-        dataIndex: 'username',
+        title: 'postgreType',
+        dataIndex: 'postgreType类型',
+        width: 120,
+        required: true,
+      },
+      {
+        title: 'oracleType',
+        dataIndex: 'oracleType类型',
         width: 120,
         required: true,
       },
@@ -199,27 +218,27 @@ class DataSource extends Component {
       remotePaging: true,
       store: {
         type: 'POST',
-        url: `${MDMSCONTEXT}/dataSource/findByPage`,
+        url: `${MDMSCONTEXT}/dataType/findByPage`,
       },
     };
   };
 
   getEditModalProps = () => {
-    const { loading, dataSource } = this.props;
-    const { modalVisible, editData } = dataSource;
+    const { loading, dataType } = this.props;
+    const { modalVisible, editData } = dataType;
 
     return {
       onSave: this.handleSave,
       editData,
       visible: modalVisible,
       onClose: this.handleClose,
-      saving: loading.effects['dataSource/save'],
+      saving: loading.effects['dataType/save'],
     };
   };
 
   render() {
-    const { dataSource } = this.props;
-    const { modalVisible } = dataSource;
+    const { dataType } = this.props;
+    const { modalVisible } = dataType;
 
     return (
       <PageWrapper className={cls(styles['container-box'])}>
@@ -230,4 +249,4 @@ class DataSource extends Component {
   }
 }
 
-export default DataSource;
+export default DataType;

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Form, Input, Switch } from 'antd';
 import { ExtModal } from 'suid';
 
-const { TextArea } = Input;
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
@@ -61,60 +60,93 @@ class FormModal extends PureComponent {
               ],
             })(<Input disabled={!!editData} />)}
           </FormItem>
-          <FormItem label="描述">
-            {getFieldDecorator('remark', {
-              initialValue: editData && editData.remark,
+          <FormItem label="名称">
+            {getFieldDecorator('name', {
+              initialValue: editData && editData.name,
               rules: [
                 {
                   required: true,
-                  message: '描述不能为空',
-                },
-              ],
-            })(<TextArea />)}
-          </FormItem>
-          <FormItem label="数据库类型">
-            {getFieldDecorator('dbType', {
-              initialValue: editData && editData.dbType,
-              rules: [
-                {
-                  required: true,
-                  message: '数据库类型不能为空',
-                },
-              ],
-            })(<TextArea />)}
-          </FormItem>
-          <FormItem label="url地址">
-            {getFieldDecorator('url', {
-              initialValue: editData && editData.url,
-              rules: [
-                {
-                  required: true,
-                  message: 'url地址不能为空',
+                  message: '名称不能为空',
                 },
               ],
             })(<Input />)}
           </FormItem>
-          <FormItem label="用户名">
-            {getFieldDecorator('username', {
-              initialValue: editData && editData.username,
+          <FormItem label="长度">
+            {getFieldDecorator('dataLength', {
+              initialValue: editData && editData.dataLength,
               rules: [
                 {
                   required: true,
-                  message: '用户名不能为空',
+                  message: '长度不能为空',
                 },
               ],
             })(<Input />)}
           </FormItem>
-          <FormItem label="密码">
-            {getFieldDecorator('passowrd', {
-              initialValue: editData && editData.passowrd,
+          <FormItem label="精度">
+            {getFieldDecorator('precison', {
+              initialValue: editData && editData.precison,
               rules: [
                 {
                   required: true,
-                  message: '密码不能为空',
+                  message: '精度不能为空',
                 },
               ],
-            })(<Input.Password />)}
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="java类型">
+            {getFieldDecorator('javaType', {
+              initialValue: editData && editData.javaType,
+              rules: [
+                {
+                  required: true,
+                  message: 'java类型不能为空',
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="mysql类型">
+            {getFieldDecorator('mysqlType', {
+              initialValue: editData && editData.mysqlType,
+              rules: [
+                {
+                  required: true,
+                  message: 'mysql类型不能为空',
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="postgresql类型">
+            {getFieldDecorator('postgreType', {
+              initialValue: editData && editData.postgreType,
+              rules: [
+                {
+                  required: true,
+                  message: 'postgresql类型不能为空',
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="oraclesql类型">
+            {getFieldDecorator('oracleType', {
+              initialValue: editData && editData.oracleType,
+              rules: [
+                {
+                  required: true,
+                  message: 'oraclesql类型不能为空',
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="mssql类型">
+            {getFieldDecorator('mssqlType', {
+              initialValue: editData && editData.mssqlType,
+              rules: [
+                {
+                  required: true,
+                  message: 'mssql类型不能为空',
+                },
+              ],
+            })(<Input />)}
           </FormItem>
           <FormItem label="冻结">
             {getFieldDecorator('frozen', {

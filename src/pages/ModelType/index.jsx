@@ -1,96 +1,106 @@
-import React, { Component, Fragment, } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'umi';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Tag } from 'antd';
 import { ExtTable, ExtIcon } from 'suid';
+import { constants } from '@/utils';
 import PageWrapper from '@/components/PageWrapper';
-import EditModal from "./EditModal";
-import styles from "./index.less";
+import EditModal from './EditModal';
+import styles from './index.less';
 
+const { MDMSCONTEXT } = constants;
 @withRouter
-@connect(({ modelType, loading, }) => ({ modelType, loading, }))
+@connect(({ modelType, loading }) => ({ modelType, loading }))
 class ModelType extends Component {
   state = {
     delId: null,
-  }
+  };
 
-  reloadData = _ => {
-    this.tableRef && this.tableRef.remoteDataRefresh();
+  reloadData = () => {
+    if (this.tableRef) {
+      this.tableRef.remoteDataRefresh();
+    }
   };
 
   handleEvent = (type, row) => {
     const { dispatch } = this.props;
 
-    switch(type) {
+    switch (type) {
       case 'add':
       case 'edit':
         dispatch({
-          type: "modelType/updateState",
+          type: 'modelType/updateState',
           payload: {
             modalVisible: true,
             editData: row,
-          }
+          },
         });
         break;
       case 'del':
-        this.setState({
-          delId: row.id
-        }, _ => {
-          dispatch({
-            type: "modelType/del",
-            payload: {
-              id: row.id
-            },
-          }).then(res => {
-            if (res.success) {
-              this.setState({
-                delId: null
-              }, () => this.reloadData());
-            }
-          });
-        });
+        this.setState(
+          {
+            delId: row.id,
+          },
+          () => {
+            dispatch({
+              type: 'modelType/del',
+              payload: {
+                id: row.id,
+              },
+            }).then(res => {
+              if (res.success) {
+                this.setState(
+                  {
+                    delId: null,
+                  },
+                  () => this.reloadData(),
+                );
+              }
+            });
+          },
+        );
         break;
       default:
         break;
     }
-  }
+  };
 
   handleSave = data => {
     const { dispatch } = this.props;
 
     dispatch({
-      type: "modelType/save",
+      type: 'modelType/save',
       payload: data,
     }).then(res => {
       if (res.success) {
         dispatch({
-          type: "modelType/updateState",
+          type: 'modelType/updateState',
           payload: {
-            modalVisible: false
-          }
+            modalVisible: false,
+          },
         });
         this.reloadData();
       }
     });
   };
 
-  handleClose = _ => {
+  handleClose = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: "modelType/updateState",
+      type: 'modelType/updateState',
       payload: {
         modalVisible: false,
-        editData: null
-      }
+        editData: null,
+      },
     });
   };
 
-  renderDelBtn = (row) => {
+  renderDelBtn = row => {
     const { loading } = this.props;
     const { delId } = this.state;
-    if (loading.effects["modelType/del"] && delId === row.id) {
-      return <ExtIcon className="del-loading" tooltip={{ title: '删除' }} type="loading" antd />
+    if (loading.effects['modelType/del'] && delId === row.id) {
+      return <ExtIcon className="del-loading" tooltip={{ title: '删除' }} type="loading" antd />;
     }
     return <ExtIcon className="del" tooltip={{ title: '删除' }} type="delete" antd />;
   };
@@ -98,50 +108,59 @@ class ModelType extends Component {
   getExtableProps = () => {
     const columns = [
       {
-        title: "操作",
-        key: "operation",
+        title: '操作',
+        key: 'operation',
         width: 100,
-        align: "center",
-        dataIndex: "id",
-        className: "action",
+        align: 'center',
+        dataIndex: 'id',
+        className: 'action',
         required: true,
         render: (_, record) => (
-          <span className={cls("action-box")}>
+          <span className={cls('action-box')}>
             <ExtIcon
               key="edit"
               className="edit"
-              onClick={_ => this.handleEvent('edit', record)}
+              onClick={() => this.handleEvent('edit', record)}
               type="edit"
               ignore="true"
-              tooltip={
-                { title: '编辑' }
-              }
+              tooltip={{ title: '编辑' }}
               antd
             />
             <Popconfirm
               key="del"
               placement="topLeft"
               title="确定要删除吗？"
-              onConfirm={_ => this.handleEvent('del', record)}
+              onConfirm={() => this.handleEvent('del', record)}
             >
-              {
-                this.renderDelBtn(record)
-              }
+              {this.renderDelBtn(record)}
             </Popconfirm>
           </span>
-        )
+        ),
       },
       {
-        title: "代码",
-        dataIndex: "code",
+        title: '代码',
+        dataIndex: 'code',
         width: 120,
         required: true,
       },
       {
-        title: "名称",
-        dataIndex: "name",
+        title: '名称',
+        dataIndex: 'name',
         width: 220,
         required: true,
+      },
+      {
+        title: '描述',
+        dataIndex: 'remark',
+        width: 220,
+        required: true,
+      },
+      {
+        title: '冻结',
+        dataIndex: 'frozen',
+        width: 80,
+        required: true,
+        render: frozen => <Tag color={frozen ? 'red' : 'green'}>{frozen ? '已冻结' : '可用'}</Tag>,
       },
     ];
     const toolBarProps = {
@@ -150,16 +169,16 @@ class ModelType extends Component {
           <Button
             key="add"
             type="primary"
-            onClick={() => { this.handleEvent('add', null); }}
-            ignore='true'
+            onClick={() => {
+              this.handleEvent('add', null);
+            }}
+            ignore="true"
           >
             新建
           </Button>
-          <Button onClick={this.reloadData}>
-            刷新
-          </Button>
+          <Button onClick={this.reloadData}>刷新</Button>
         </Fragment>
-      )
+      ),
     };
     return {
       columns,
@@ -168,13 +187,13 @@ class ModelType extends Component {
       remotePaging: true,
       store: {
         type: 'POST',
-        url: 'http://rddgit.changhong.com:7300/mock/5e02d29836608e42d52b1d81/template-service/simple-master/findByPage'
+        url: `${MDMSCONTEXT}/dataModelType/findByPage`,
       },
     };
   };
 
   getEditModalProps = () => {
-    const { loading, modelType, } = this.props;
+    const { loading, modelType } = this.props;
     const { modalVisible, editData } = modelType;
 
     return {
@@ -182,22 +201,18 @@ class ModelType extends Component {
       editData,
       visible: modalVisible,
       onClose: this.handleClose,
-      saving: loading.effects["modelType/save"]
+      saving: loading.effects['modelType/save'],
     };
   };
 
   render() {
-    const { modelType, } = this.props;
-    const { modalVisible, } = modelType;
+    const { modelType } = this.props;
+    const { modalVisible } = modelType;
 
     return (
-      <PageWrapper className={cls(styles["container-box"])} >
-        <ExtTable onTableRef={ inst => this.tableRef=inst } {...this.getExtableProps()} />
-        {
-          modalVisible
-            ? <EditModal {...this.getEditModalProps()} />
-            : null
-        }
+      <PageWrapper className={cls(styles['container-box'])}>
+        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
+        {modalVisible ? <EditModal {...this.getEditModalProps()} /> : null}
       </PageWrapper>
     );
   }

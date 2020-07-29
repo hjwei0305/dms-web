@@ -14,9 +14,10 @@ export default [
     routes: [
       { path: '/', redirect: '/dashboard' },
       { path: '/dashboard', component: './Dashboard' },
-      { title: '元素管理', path: '/metaData', component: './MetaData' },
+      { title: '标签库管理', path: '/labelLibrary', component: './LabelLibrary' },
+      { title: '元素库管理', path: '/elementLibrary', component: './ElementLibrary' },
+      { title: '数据类型管理', path: '/DataType', component: './DataType' },
       { title: '数据源管理', path: '/dataSource', component: './DataSource' },
-      { title: '字段类型管理', path: '/fieldType', component: './FieldType' },
       { title: '模型分类管理', path: '/modelType', component: './ModelType' },
       { title: '数据模型管理', path: '/dataModel', component: './DataModel' },
       { title: '数据模型UI管理', path: '/dataModelUiConfig', component: './DataModelUiConfig' },

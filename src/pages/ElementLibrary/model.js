@@ -12,7 +12,7 @@ const { dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
 
 export default modelExtend(model, {
-  namespace: 'metaData',
+  namespace: 'elementLibrary',
 
   state: {
     editData: null,

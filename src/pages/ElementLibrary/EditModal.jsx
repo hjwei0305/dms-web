@@ -71,6 +71,17 @@ class FormModal extends PureComponent {
               ],
             })(<Input />)}
           </FormItem>
+          <FormItem label="数据类型">
+            {getFieldDecorator('dataType', {
+              initialValue: editData && editData.dataType,
+              rules: [
+                {
+                  required: true,
+                  message: '数据类型不能为空',
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
           <FormItem label="备注">
             {getFieldDecorator('remark', {
               initialValue: editData && editData.remark,

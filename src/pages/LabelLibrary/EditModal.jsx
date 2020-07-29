@@ -45,20 +45,22 @@ class FormModal extends PureComponent {
         onOk={this.handleSave}
       >
         <Form {...formItemLayout} layout="horizontal">
-          <FormItem label="代码">
+          <FormItem
+            label="代码"
+            style={{
+              display: 'none',
+            }}
+          >
             {getFieldDecorator('code', {
               initialValue: editData && editData.code,
-              rules: [
-                {
-                  required: true,
-                  message: '代码不能为空',
-                },
-                {
-                  max: 10,
-                  message: '代码不能超过5个字符',
-                },
-              ],
-            })(<Input disabled={!!editData} />)}
+              // rules: [{
+              //   required: true,
+              //   message: "代码不能为空"
+              // }, {
+              //   max: 10,
+              //   message: "代码不能超过5个字符",
+              // }]
+            })(<Input disabled />)}
           </FormItem>
           <FormItem label="名称">
             {getFieldDecorator('name', {

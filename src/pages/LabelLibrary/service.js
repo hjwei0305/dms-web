@@ -2,7 +2,7 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:24
  * @Last Modified by: zp
- * @Last Modified time: 2020-07-29 10:41:58
+ * @Last Modified time: 2020-07-29 09:22:17
  */
 import { utils } from 'suid';
 import { constants } from '@/utils';
@@ -10,7 +10,7 @@ import { constants } from '@/utils';
 const { request } = utils;
 const { MDMSCONTEXT: MockServerPath } = constants;
 
-const contextPath = '/dataModelType';
+const contextPath = '/labelLibrary';
 
 /** 保存 */
 export async function save(data) {
