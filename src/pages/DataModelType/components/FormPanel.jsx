@@ -65,7 +65,14 @@ class FormModal extends PureComponent {
     if (isCreate) {
       tempSelectedNode = { parentName: tempSelectedNode.name };
     }
-    const { code = '', parentName = '', name = '', rank = '', frozen = false } = tempSelectedNode;
+    const {
+      code = '',
+      parentName = '',
+      name = '',
+      rank = '',
+      frozen = false,
+      remark = '',
+    } = tempSelectedNode;
 
     return (
       <ScrollBar>
@@ -96,6 +103,17 @@ class FormModal extends PureComponent {
                 {
                   required: true,
                   message: '名称不能为空',
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="备注">
+            {getFieldDecorator('remark', {
+              initialValue: remark,
+              rules: [
+                {
+                  required: true,
+                  message: '备注不能为空',
                 },
               ],
             })(<Input />)}
