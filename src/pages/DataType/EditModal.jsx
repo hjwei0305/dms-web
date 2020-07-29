@@ -83,8 +83,8 @@ class FormModal extends PureComponent {
             })(<Input />)}
           </FormItem>
           <FormItem label="精度">
-            {getFieldDecorator('precison', {
-              initialValue: editData && editData.precison,
+            {getFieldDecorator('precision', {
+              initialValue: editData && editData.precision,
               rules: [
                 {
                   required: true,
@@ -144,6 +144,17 @@ class FormModal extends PureComponent {
                 {
                   required: true,
                   message: 'mssql类型不能为空',
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="备注">
+            {getFieldDecorator('remark', {
+              initialValue: editData && editData.remark,
+              rules: [
+                {
+                  required: true,
+                  message: '备注不能为空',
                 },
               ],
             })(<Input />)}
