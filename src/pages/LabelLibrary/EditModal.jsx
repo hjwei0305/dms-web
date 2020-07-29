@@ -76,13 +76,7 @@ class FormModal extends PureComponent {
           <FormItem label="备注">
             {getFieldDecorator('remark', {
               initialValue: editData && editData.remark,
-              rules: [
-                {
-                  required: true,
-                  message: '备注不能为空',
-                },
-              ],
-            })(<Input />)}
+            })(<Input.TextArea />)}
           </FormItem>
           <FormItem label="冻结">
             {getFieldDecorator('frozen', {

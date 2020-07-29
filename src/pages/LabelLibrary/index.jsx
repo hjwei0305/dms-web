@@ -186,6 +186,7 @@ class LabelLibrary extends Component {
       bordered: false,
       toolBar: toolBarProps,
       remotePaging: true,
+      searchProperties: ['name', 'remark'],
       store: {
         type: 'POST',
         url: `${MDMSCONTEXT}/labelLibrary/findByPage`,

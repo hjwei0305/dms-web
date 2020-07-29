@@ -147,7 +147,7 @@ class ElementLibrary extends Component {
       {
         title: '名称',
         dataIndex: 'name',
-        width: 220,
+        width: 120,
         required: true,
       },
       {

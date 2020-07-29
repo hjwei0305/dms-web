@@ -68,6 +68,7 @@ class FormModal extends PureComponent {
     const {
       code = '',
       parentName = '',
+      parentId = '',
       name = '',
       rank = '',
       frozen = false,
@@ -96,6 +97,11 @@ class FormModal extends PureComponent {
               })(<Input disabled />)}
             </FormItem>
           )}
+          <FormItem style={{ display: 'none' }} label="父亲节点id">
+            {getFieldDecorator('parentId', {
+              initialValue: parentId,
+            })(<Input disabled />)}
+          </FormItem>
           <FormItem label="名称">
             {getFieldDecorator('name', {
               initialValue: name,

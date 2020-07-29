@@ -1,18 +1,27 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Switch } from 'antd';
+import { Form, Input, Switch, Row, Col } from 'antd';
 import { ExtModal } from 'suid';
+import md5 from 'md5';
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
-    span: 6,
+    span: 5,
   },
   wrapperCol: {
-    span: 18,
+    span: 19,
   },
 };
 
+const colFormItemLayout = {
+  labelCol: {
+    span: 10,
+  },
+  wrapperCol: {
+    span: 14,
+  },
+};
 @Form.create()
 class FormModal extends PureComponent {
   handleSave = () => {
@@ -22,7 +31,7 @@ class FormModal extends PureComponent {
         return;
       }
       const params = {};
-      Object.assign(params, editData, formData);
+      Object.assign(params, editData, formData, { password: md5(formData.password) });
       if (onSave) {
         onSave(params);
       }
@@ -64,12 +73,6 @@ class FormModal extends PureComponent {
           <FormItem label="描述">
             {getFieldDecorator('remark', {
               initialValue: editData && editData.remark,
-              rules: [
-                {
-                  required: true,
-                  message: '描述不能为空',
-                },
-              ],
             })(<TextArea />)}
           </FormItem>
           <FormItem label="数据库类型">
@@ -94,28 +97,34 @@ class FormModal extends PureComponent {
               ],
             })(<Input />)}
           </FormItem>
-          <FormItem label="用户名">
-            {getFieldDecorator('username', {
-              initialValue: editData && editData.username,
-              rules: [
-                {
-                  required: true,
-                  message: '用户名不能为空',
-                },
-              ],
-            })(<Input />)}
-          </FormItem>
-          <FormItem label="密码">
-            {getFieldDecorator('password', {
-              initialValue: editData && editData.password,
-              rules: [
-                {
-                  required: true,
-                  message: '密码不能为空',
-                },
-              ],
-            })(<Input.Password />)}
-          </FormItem>
+          <Row>
+            <Col span={12}>
+              <FormItem {...colFormItemLayout} label="用户名">
+                {getFieldDecorator('username', {
+                  initialValue: editData && editData.username,
+                  rules: [
+                    {
+                      required: true,
+                      message: '用户名不能为空',
+                    },
+                  ],
+                })(<Input />)}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem {...colFormItemLayout} label="密码">
+                {getFieldDecorator('password', {
+                  initialValue: editData && editData.password,
+                  rules: [
+                    {
+                      required: true,
+                      message: '密码不能为空',
+                    },
+                  ],
+                })(<Input.Password />)}
+              </FormItem>
+            </Col>
+          </Row>
           <FormItem label="冻结">
             {getFieldDecorator('frozen', {
               valuePropName: 'checked',
