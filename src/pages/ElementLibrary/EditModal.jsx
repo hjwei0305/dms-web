@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Form, Input, Switch } from 'antd';
-import { ExtModal } from 'suid';
+import { ExtModal, ComboGrid } from 'suid';
+import { constants } from '@/utils';
 
+const { MDMSCONTEXT } = constants;
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
@@ -28,6 +30,38 @@ class FormModal extends PureComponent {
     });
   };
 
+  getComboGridProps = () => {
+    const { form } = this.props;
+    return {
+      form,
+      name: 'dataType',
+      store: {
+        type: 'POST',
+        autoLoad: false,
+        url: `${MDMSCONTEXT}/dataType/findByPage`,
+      },
+      columns: [
+        {
+          title: '代码',
+          width: 80,
+          dataIndex: 'code',
+        },
+        {
+          title: '名称',
+          width: 200,
+          dataIndex: 'name',
+        },
+      ],
+      rowKey: 'id',
+      reader: {
+        name: 'name',
+        field: ['precision', 'dataLength'],
+      },
+      field: ['precision', 'dataLength'],
+      remotePaging: true,
+    };
+  };
+
   render() {
     const { form, editData, onClose, saving, visible } = this.props;
     const { getFieldDecorator } = form;
@@ -45,6 +79,26 @@ class FormModal extends PureComponent {
         onOk={this.handleSave}
       >
         <Form {...formItemLayout} layout="horizontal">
+          <FormItem
+            label="精度"
+            style={{
+              display: 'none',
+            }}
+          >
+            {getFieldDecorator('precision', {
+              initialValue: editData && editData.precision,
+            })(<Input />)}
+          </FormItem>
+          <FormItem
+            label="长度"
+            style={{
+              display: 'none',
+            }}
+          >
+            {getFieldDecorator('dataLength', {
+              initialValue: editData && editData.dataLength,
+            })(<Input />)}
+          </FormItem>
           <FormItem label="代码">
             {getFieldDecorator('code', {
               initialValue: editData && editData.code,
@@ -80,7 +134,7 @@ class FormModal extends PureComponent {
                   message: '数据类型不能为空',
                 },
               ],
-            })(<Input />)}
+            })(<ComboGrid {...this.getComboGridProps()} />)}
           </FormItem>
           <FormItem label="备注">
             {getFieldDecorator('remark', {
