@@ -65,14 +65,7 @@ class FormModal extends PureComponent {
     if (isCreate) {
       tempSelectedNode = { parentName: tempSelectedNode.name };
     }
-    const {
-      code = '',
-      parentName = '',
-      name = '',
-      shortName = '',
-      rank = '',
-      frozen = false,
-    } = tempSelectedNode;
+    const { code = '', parentName = '', name = '', rank = '', frozen = false } = tempSelectedNode;
 
     return (
       <ScrollBar>
@@ -90,7 +83,7 @@ class FormModal extends PureComponent {
               })(<Input disabled />)}
             </FormItem>
           ) : (
-            <FormItem label="父亲节点">
+            <FormItem style={{ display: parentName ? null : 'none' }} label="父亲节点">
               {getFieldDecorator('parentName', {
                 initialValue: parentName,
               })(<Input disabled />)}
@@ -105,11 +98,6 @@ class FormModal extends PureComponent {
                   message: '名称不能为空',
                 },
               ],
-            })(<Input />)}
-          </FormItem>
-          <FormItem label="简称">
-            {getFieldDecorator('shortName', {
-              initialValue: shortName,
             })(<Input />)}
           </FormItem>
           <FormItem label="排序">

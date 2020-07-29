@@ -19,7 +19,7 @@ class DataModelType extends Component {
     return (
       <PageWrapper loading={loading.global} className={cls(styles['container-box'])}>
         <CascadeLayout
-          title={['树形数据', selectedTreeNode && selectedTreeNode.name]}
+          title={['数据模型分类', selectedTreeNode && selectedTreeNode.name]}
           layout={[10, 14]}
         >
           <TreePanel slot="left" slotClassName={cls('left-slot-wrapper')} />

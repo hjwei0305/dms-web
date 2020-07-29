@@ -197,6 +197,8 @@ class DataSource extends Component {
       bordered: false,
       toolBar: toolBarProps,
       remotePaging: true,
+      searchProperties: ['code', 'remark'],
+      searchPlaceHolder: '请输入代码和描述进行搜索',
       store: {
         type: 'POST',
         url: `${MDMSCONTEXT}/dataSource/findByPage`,

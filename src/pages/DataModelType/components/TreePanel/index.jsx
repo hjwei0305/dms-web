@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Popconfirm, Button, message } from 'antd';
+import { Popconfirm, Button, message, Dropdown, Icon, Menu } from 'antd';
 import TreeView from '@/components/TreeView';
 import FormModal from './FormModal';
 
@@ -26,10 +26,10 @@ class TreePanel extends Component {
     }
   };
 
-  handleCreate = () => {
+  handleCreate = ({ key: type }) => {
     const { dataModelType, dispatch } = this.props;
 
-    if (dataModelType.selectedTreeNode) {
+    if (dataModelType.selectedTreeNode || type === 'p') {
       dispatch({
         type: 'dataModelType/updateState',
         payload: {
@@ -86,9 +86,24 @@ class TreePanel extends Component {
   getToolBarProps = () => ({
     left: (
       <Fragment>
-        <Button style={{ marginRight: 8 }} type="primary" onClick={this.handleCreate}>
-          创建节点
+        <Dropdown
+          overlay={
+            <Menu onClick={this.handleCreate}>
+              <Menu.Item key="p">创建根节点</Menu.Item>
+              <Menu.Item key="c">创建子节点</Menu.Item>
+            </Menu>
+          }
+        >
+          <Button style={{ marginRight: 8 }} type="primary">
+            创建 <Icon type="down" />
+          </Button>
+        </Dropdown>
+        {/* <Button style={{ marginRight: 8 }} type="primary" onClick={() => this.handleCreate('p')}>
+          创建根节点
         </Button>
+        <Button style={{ marginRight: 8 }} type="primary" onClick={() => this.handleCreate('c')}>
+          创建节点
+        </Button> */}
         <Popconfirm
           key="delete"
           placement="topLeft"
