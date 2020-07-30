@@ -9,13 +9,13 @@ const FormItem = Form.Item;
 @Form.create()
 class FormModal extends PureComponent {
   onFormSubmit = () => {
-    const { form, osSave } = this.props;
+    const { form, onSave } = this.props;
     form.validateFields((err, formData) => {
       if (err) {
         return;
       }
-      if (osSave) {
-        osSave(formData);
+      if (onSave) {
+        onSave(formData);
       }
     });
   };

@@ -134,7 +134,7 @@ class CascadeTableMaster extends Component {
     const { pVisible, currPRowData, isAddP } = dataModel;
 
     return {
-      save: this.save,
+      onSave: this.save,
       rowData: isAddP ? null : currPRowData,
       visible: pVisible,
       onCancel: this.closeFormModal,
