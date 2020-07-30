@@ -32,7 +32,9 @@ class FormModal extends PureComponent {
         return;
       }
       const params = {};
-      Object.assign(params, editData, formData, { password: window.btoa(formData.password) });
+      Object.assign(params, editData, formData, {
+        password: formData.password ? window.btoa(formData.password) : undefined,
+      });
       if (onSave) {
         onSave(params);
       }
