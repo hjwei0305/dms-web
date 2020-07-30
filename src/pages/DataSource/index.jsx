@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'umi';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Popconfirm, Tag } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import { ExtTable, ExtIcon } from 'suid';
 import { constants } from '@/utils';
 import PageWrapper from '@/components/PageWrapper';
@@ -138,7 +138,7 @@ class DataSource extends Component {
         ),
       },
       {
-        title: '代码',
+        title: '数据库名',
         dataIndex: 'code',
         width: 120,
         required: true,
@@ -158,7 +158,19 @@ class DataSource extends Component {
       {
         title: 'url地址',
         dataIndex: 'url',
-        width: 220,
+        width: 300,
+        required: true,
+      },
+      {
+        title: '域名',
+        dataIndex: 'host',
+        width: 120,
+        required: true,
+      },
+      {
+        title: '端口',
+        dataIndex: 'port',
+        width: 80,
         required: true,
       },
       {
@@ -166,13 +178,6 @@ class DataSource extends Component {
         dataIndex: 'username',
         width: 120,
         required: true,
-      },
-      {
-        title: '冻结',
-        dataIndex: 'frozen',
-        width: 80,
-        required: true,
-        render: frozen => <Tag color={frozen ? 'red' : 'green'}>{frozen ? '已冻结' : '可用'}</Tag>,
       },
     ];
     const toolBarProps = {

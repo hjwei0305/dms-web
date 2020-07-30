@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Switch, Row, Col } from 'antd';
-import { ExtModal } from 'suid';
-import md5 from 'md5';
+import { Form, Input, Row, Col } from 'antd';
+import { ExtModal, ComboList } from 'suid';
+import { constants } from '@/utils';
 
+const { MDMSCONTEXT } = constants;
 const { TextArea } = Input;
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -31,11 +32,56 @@ class FormModal extends PureComponent {
         return;
       }
       const params = {};
-      Object.assign(params, editData, formData, { password: md5(formData.password) });
+      Object.assign(params, editData, formData, { password: window.btoa(formData.password) });
       if (onSave) {
         onSave(params);
       }
     });
+  };
+
+  getProcessedUrl = data => {
+    const { form } = this.props;
+    const formData = form.getFieldsValue();
+    Object.assign(formData, { database: formData.code }, data);
+    if (this.dbTypeTemplate) {
+      const url = this.dbTypeTemplate.replace(/\{([A-Za-z]+)\}/g, (q, $1) => {
+        if (formData[$1]) {
+          return formData[$1];
+        }
+        return q;
+      });
+      form.setFieldsValue({
+        url,
+      });
+    }
+  };
+
+  getDbTypeComboListProps = () => {
+    const { form } = this.props;
+
+    return {
+      form,
+      name: 'dbType',
+      store: {
+        autoLoad: false,
+        url: `${MDMSCONTEXT}/dataSource/getDBTypes`,
+      },
+      rowKey: 'name',
+      reader: {
+        name: 'name',
+      },
+      afterSelect: item => {
+        const { temp: tempUrl, port: tempPort, name } = item;
+        this.dbTypeTemplate = tempUrl;
+        if (this.dbType !== name) {
+          this.getProcessedUrl({ port: tempPort });
+          form.setFieldsValue({
+            port: tempPort,
+          });
+        }
+        this.dbType = name;
+      },
+    };
   };
 
   render() {
@@ -55,26 +101,6 @@ class FormModal extends PureComponent {
         onOk={this.handleSave}
       >
         <Form {...formItemLayout} layout="horizontal">
-          <FormItem label="代码">
-            {getFieldDecorator('code', {
-              initialValue: editData && editData.code,
-              rules: [
-                {
-                  required: true,
-                  message: '代码不能为空',
-                },
-                {
-                  max: 10,
-                  message: '代码不能超过5个字符',
-                },
-              ],
-            })(<Input disabled={!!editData} />)}
-          </FormItem>
-          <FormItem label="描述">
-            {getFieldDecorator('remark', {
-              initialValue: editData && editData.remark,
-            })(<TextArea />)}
-          </FormItem>
           <FormItem label="数据库类型">
             {getFieldDecorator('dbType', {
               initialValue: editData && editData.dbType,
@@ -84,19 +110,78 @@ class FormModal extends PureComponent {
                   message: '数据库类型不能为空',
                 },
               ],
-            })(<Input />)}
+            })(<ComboList {...this.getDbTypeComboListProps()} />)}
           </FormItem>
-          <FormItem label="url地址">
-            {getFieldDecorator('url', {
-              initialValue: editData && editData.url,
+          <FormItem label="数据库名">
+            {getFieldDecorator('code', {
+              initialValue: editData && editData.code,
               rules: [
                 {
                   required: true,
-                  message: 'url地址不能为空',
+                  message: '数据库名不能为空',
+                },
+                {
+                  pattern: /[a-zA-Z]+/,
+                  message: '数据库名只能是英文名称',
                 },
               ],
-            })(<Input />)}
+            })(
+              <Input
+                onChange={e => {
+                  this.getProcessedUrl({ database: e.target.value });
+                }}
+              />,
+            )}
           </FormItem>
+          <FormItem label="描述">
+            {getFieldDecorator('remark', {
+              initialValue: editData && editData.remark,
+            })(<TextArea />)}
+          </FormItem>
+          <Row>
+            <Col span={12}>
+              <FormItem {...colFormItemLayout} label="域名">
+                {getFieldDecorator('host', {
+                  initialValue: editData && editData.host,
+                  rules: [
+                    {
+                      required: true,
+                      message: '域名不能为空',
+                    },
+                    {
+                      pattern: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/,
+                      message: '域名格式不对，正确格式如127.0.0.1',
+                    },
+                  ],
+                })(
+                  <Input
+                    onChange={e => {
+                      this.getProcessedUrl({ host: e.target.value });
+                    }}
+                  />,
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem {...colFormItemLayout} label="端口">
+                {getFieldDecorator('port', {
+                  initialValue: editData && editData.port,
+                  rules: [
+                    {
+                      required: true,
+                      message: '端口不能为空',
+                    },
+                  ],
+                })(
+                  <Input
+                    onChange={e => {
+                      this.getProcessedUrl({ port: e.target.value });
+                    }}
+                  />,
+                )}
+              </FormItem>
+            </Col>
+          </Row>
           <Row>
             <Col span={12}>
               <FormItem {...colFormItemLayout} label="用户名">
@@ -115,21 +200,20 @@ class FormModal extends PureComponent {
               <FormItem {...colFormItemLayout} label="密码">
                 {getFieldDecorator('password', {
                   initialValue: editData && editData.password,
-                  rules: [
-                    {
-                      required: true,
-                      message: '密码不能为空',
-                    },
-                  ],
                 })(<Input.Password />)}
               </FormItem>
             </Col>
           </Row>
-          <FormItem label="冻结">
-            {getFieldDecorator('frozen', {
-              valuePropName: 'checked',
-              initialValue: editData && editData.frozen,
-            })(<Switch />)}
+          <FormItem label="url地址">
+            {getFieldDecorator('url', {
+              initialValue: editData && editData.url,
+              rules: [
+                {
+                  required: true,
+                  message: 'url地址不能为空',
+                },
+              ],
+            })(<Input disabled />)}
           </FormItem>
         </Form>
       </ExtModal>
