@@ -4,7 +4,7 @@ import FormPanel from '../FormPanel';
 
 class FormModal extends PureComponent {
   render() {
-    const { visible, onCancel } = this.props;
+    const { visible, onCancel, createType } = this.props;
     const title = '新建';
 
     return (
@@ -19,7 +19,7 @@ class FormModal extends PureComponent {
           this.formRef.onFormSubmit();
         }}
       >
-        <FormPanel onRef={inst => (this.formRef = inst)} isCreate />
+        <FormPanel onRef={inst => (this.formRef = inst)} isCreate createType={createType} />
       </ExtModal>
     );
   }

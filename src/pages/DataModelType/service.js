@@ -2,7 +2,7 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:24
  * @Last Modified by: zp
- * @Last Modified time: 2020-07-29 21:26:53
+ * @Last Modified time: 2020-07-30 16:52:35
  */
 import { utils } from 'suid';
 import { constants } from '@/utils';
@@ -14,7 +14,7 @@ const contextPath = 'dataModelType';
 
 /** 获取树 */
 export async function getTree() {
-  const url = `${MockServerPath}${contextPath}/getAllRootNode`;
+  const url = `${MockServerPath}${contextPath}/getModelTypeTree`;
   return request({
     url,
     method: 'GET',

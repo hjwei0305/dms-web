@@ -6,6 +6,10 @@ import FormModal from './FormModal';
 
 @connect(({ dataModelType }) => ({ dataModelType }))
 class TreePanel extends Component {
+  state = {
+    createType: '',
+  };
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -28,8 +32,20 @@ class TreePanel extends Component {
 
   handleCreate = ({ key: type }) => {
     const { dataModelType, dispatch } = this.props;
+    this.setState({
+      createType: type,
+    });
+    if (type === 'p') {
+      dispatch({
+        type: 'dataModelType/updateState',
+        payload: {
+          showCreateModal: true,
+        },
+      });
+      return;
+    }
 
-    if (dataModelType.selectedTreeNode || type === 'p') {
+    if (dataModelType.selectedTreeNode) {
       dispatch({
         type: 'dataModelType/updateState',
         payload: {
@@ -118,6 +134,7 @@ class TreePanel extends Component {
 
   render() {
     const { dataModelType } = this.props;
+    const { createType } = this.state;
     const { showCreateModal, treeData } = dataModelType;
 
     return (
@@ -128,7 +145,11 @@ class TreePanel extends Component {
           onSelect={this.handleSelect}
         />
         {showCreateModal ? (
-          <FormModal visible={showCreateModal} onCancel={this.handleCancel} />
+          <FormModal
+            createType={createType}
+            visible={showCreateModal}
+            onCancel={this.handleCancel}
+          />
         ) : null}
       </div>
     );

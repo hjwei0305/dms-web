@@ -51,7 +51,7 @@ class FormModal extends PureComponent {
   };
 
   render() {
-    const { form, dataModelType, isCreate } = this.props;
+    const { form, dataModelType, isCreate, createType } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol: {
@@ -63,7 +63,10 @@ class FormModal extends PureComponent {
     };
     let tempSelectedNode = dataModelType.selectedTreeNode || {};
     if (isCreate) {
-      tempSelectedNode = { parentName: tempSelectedNode.name };
+      tempSelectedNode = { parentName: tempSelectedNode.name, parentId: tempSelectedNode.id };
+    }
+    if (createType === 'p') {
+      tempSelectedNode.parentId = '';
     }
     const {
       code = '',
@@ -78,29 +81,35 @@ class FormModal extends PureComponent {
     return (
       <ScrollBar>
         <Form {...formItemLayout} layout="horizontal">
-          {!isCreate ? (
-            <FormItem label="代码">
-              {getFieldDecorator('code', {
-                initialValue: code,
-                rules: [
-                  {
-                    required: true,
-                    message: '代码不能为空',
-                  },
-                ],
-              })(<Input disabled />)}
-            </FormItem>
-          ) : (
-            <FormItem style={{ display: parentName ? null : 'none' }} label="父亲节点">
-              {getFieldDecorator('parentName', {
-                initialValue: parentName,
-              })(<Input disabled />)}
-            </FormItem>
+          {!isCreate ? null : (
+            <React.Fragment>
+              {createType !== 'p' ? (
+                <FormItem style={{ display: parentName ? null : 'none' }} label="父亲节点">
+                  {getFieldDecorator('parentName', {
+                    initialValue: parentName,
+                  })(<Input disabled />)}
+                </FormItem>
+              ) : null}
+              {createType !== 'p' ? (
+                <FormItem style={{ display: 'none' }} label="父亲节点id">
+                  {getFieldDecorator('parentId', {
+                    initialValue: parentId,
+                  })(<Input disabled />)}
+                </FormItem>
+              ) : null}
+            </React.Fragment>
           )}
-          <FormItem style={{ display: 'none' }} label="父亲节点id">
-            {getFieldDecorator('parentId', {
-              initialValue: parentId,
-            })(<Input disabled />)}
+
+          <FormItem label="代码">
+            {getFieldDecorator('code', {
+              initialValue: code,
+              rules: [
+                {
+                  required: true,
+                  message: '代码不能为空',
+                },
+              ],
+            })(<Input />)}
           </FormItem>
           <FormItem label="名称">
             {getFieldDecorator('name', {
@@ -116,13 +125,7 @@ class FormModal extends PureComponent {
           <FormItem label="备注">
             {getFieldDecorator('remark', {
               initialValue: remark,
-              rules: [
-                {
-                  required: true,
-                  message: '备注不能为空',
-                },
-              ],
-            })(<Input />)}
+            })(<Input.TextArea />)}
           </FormItem>
           <FormItem label="排序">
             {getFieldDecorator('rank', {
