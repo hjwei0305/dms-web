@@ -58,7 +58,7 @@ class FormModal extends PureComponent {
 
     return {
       form,
-      name: 'dsCode',
+      name: 'dsName',
       store: {
         type: 'POST',
         autoLoad: false,
@@ -78,8 +78,10 @@ class FormModal extends PureComponent {
       ],
       rowKey: 'id',
       reader: {
-        name: 'code',
+        name: 'remark',
+        field: ['id'],
       },
+      field: ['dsId'],
       remotePaging: true,
     };
   };
@@ -97,7 +99,7 @@ class FormModal extends PureComponent {
       },
     };
     const title = rowData ? '编辑' : '新建';
-    const { id, modelTypeCode, modelTypeName, tableName, remark, dsCode } = rowData || {};
+    const { id, modelTypeCode, modelTypeName, tableName, remark, dsId, dsName } = rowData || {};
 
     return (
       <ExtModal
@@ -142,9 +144,19 @@ class FormModal extends PureComponent {
                   ],
                 })(<ComboTree {...this.getMtComboTreeProps()} />)}
               </FormItem>
+              <FormItem
+                label="数据源Id"
+                style={{
+                  display: 'none',
+                }}
+              >
+                {getFieldDecorator('dsId', {
+                  initialValue: dsId,
+                })(<Input />)}
+              </FormItem>
               <FormItem label="数据源">
-                {getFieldDecorator('dsCode', {
-                  initialValue: dsCode,
+                {getFieldDecorator('dsName', {
+                  initialValue: dsName,
                   rules: [
                     {
                       required: true,

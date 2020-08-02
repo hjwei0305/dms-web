@@ -19,7 +19,7 @@ export default [
       { title: '数据类型管理', path: '/DataType', component: './DataType' },
       { title: '数据源管理', path: '/dataSource', component: './DataSource' },
       { title: '数据模型分类管理', path: '/dataModelType', component: './DataModelType' },
-      { title: '数据模型管理', path: '/dataModel', component: './DataModel' },
+      { title: '数据模型管理', path: '/dataModel', component: './DataModelManager' },
       { title: '数据模型UI管理', path: '/dataModelUiConfig', component: './DataModelUiConfig' },
     ],
   },

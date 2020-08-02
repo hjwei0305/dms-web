@@ -8,6 +8,7 @@
     "start": "cross-env MOCK=none umi dev",
     "start:mock": "cross-env MOCK=yes umi dev",
     "initpage": "sei-tools initPage",
+    "update:pt": "sei-tools pt",
     "build": "umi build",
     "test": "umi test",
     "lint": "npm run lint:script && npm run lint:style",

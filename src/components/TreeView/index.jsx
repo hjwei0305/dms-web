@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Input, Tree, Empty, Row, Col } from 'antd';
+import { Input, Tree, Empty, Row, Col, Popconfirm } from 'antd';
 import { ScrollBar, ExtIcon } from 'suid';
 import { cloneDeep, isEqual } from 'lodash';
 import cls from 'classnames';
+
+import styles from './index.less';
 
 const { TreeNode } = Tree;
 
@@ -140,11 +142,64 @@ class TreeView extends Component {
   getTreeNodes = data =>
     data.map(item => {
       const { children, name, id } = item;
-      const { selectable } = this.props;
-
+      const { selectable, iconOpts = [] } = this.props;
+      const extTitle = (
+        <div className={cls('node-content-wrapper')}>
+          <div className={cls('title')}>{name}</div>
+          <div className={cls('icon-items')}>
+            <span className={cls('action-box')}>
+              {iconOpts.map((it, index) => {
+                const { icon, title, onClick, isDel } = it;
+                if (isDel) {
+                  return (
+                    <Popconfirm
+                      key={index}
+                      placement="topLeft"
+                      title="确定要删除吗，删除后不可恢复？"
+                      onConfirm={e => {
+                        e.stopPropagation();
+                        if (onClick) {
+                          onClick(item);
+                        }
+                      }}
+                      onCancel={e => e.stopPropagation()}
+                    >
+                      <ExtIcon
+                        tooltip={{ title }}
+                        className={cls({
+                          del: isDel,
+                        })}
+                        type={icon}
+                        onClick={e => {
+                          e.stopPropagation();
+                        }}
+                        antd
+                      />
+                    </Popconfirm>
+                  );
+                }
+                return (
+                  <ExtIcon
+                    key={index}
+                    tooltip={{ title }}
+                    type={icon}
+                    onClick={e => {
+                      e.stopPropagation();
+                      if (onClick) {
+                        onClick(item);
+                      }
+                    }}
+                    antd
+                  />
+                );
+              })}
+            </span>
+          </div>
+        </div>
+      );
       if (children && children.length > 0) {
         return (
-          <TreeNode title={name} key={id} dataRef={item} selectable={selectable}>
+          <TreeNode title={extTitle} key={id} dataRef={item} selectable={selectable}>
             {this.getTreeNodes(children)}
           </TreeNode>
         );
@@ -153,7 +208,7 @@ class TreeView extends Component {
       return (
         <TreeNode
           switcherIcon={<ExtIcon type="dian" />}
-          title={name}
+          title={extTitle}
           key={id}
           dataRef={item}
           isLeaf
@@ -223,7 +278,7 @@ class TreeView extends Component {
     const toolBarHeight = type === 'vertical' ? 76 : 38;
 
     return (
-      <div style={{ height }}>
+      <div className={cls(styles['tree-veiw'])} style={{ height }}>
         {this.getToolTar()}
         <div style={{ height: `calc(100% - ${toolBarHeight}px)` }}>
           <ScrollBar>
