@@ -311,7 +311,7 @@ class ConfigModelFields extends Component {
         <span className={cls('back-icon')} onClick={goBack}>
           <ExtIcon type="left" onClick={goBack} antd />
         </span>
-        {`更新模型【${dataModel.tableName}】的字段`}
+        {`配置模型【${dataModel.tableName}】的字段`}
       </>
     );
   };
