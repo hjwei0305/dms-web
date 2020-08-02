@@ -15,8 +15,9 @@
         .ant-card-body {
           height: calc(100% - 57px);
           padding: 8px;
+
           /** 表格高度100% */
-          .suid-panel{
+          .suid-panel {
             height: 100% !important;
             .panel-body {
               height: 100% !important;
@@ -26,17 +27,27 @@
         }
       }
     }
+    .ayout-col-left {
+      transition: all ease 5000ms;
+    }
     .layout-col-right {
       .triangle {
         position: absolute;
-        top: 8px;
-        left: -7px;
-        width: 21px;
-        height: 21px;
-        background-color: #ffffff;
-        transform: rotate(45deg) translateX(50%);
-        box-shadow: 0 2px 8px 0 #aaaaaa;
+        top: 50%;
+        left: -10px;
+        z-index: 1000;
+        // width: 21px;
+        line-height: 21px;
+        background-color: #fff;
+        box-shadow: 0 2px 8px 0 #aaa;
+        transform: translateY(-50%);
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      .shrinked_icon {
+        left: 8px;
       }
     }
-  };
+  }
 }
