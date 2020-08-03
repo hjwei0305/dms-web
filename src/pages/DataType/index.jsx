@@ -125,6 +125,9 @@ class DataType extends Component {
                 }}
                 type="stop"
                 antd
+                style={{
+                  cursor: 'not-allowed',
+                }}
               />
             );
           }
