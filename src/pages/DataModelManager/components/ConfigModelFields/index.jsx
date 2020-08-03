@@ -234,12 +234,6 @@ class ConfigModelFields extends Component {
         required: true,
       },
       {
-        title: '外键',
-        dataIndex: 'foreignKey',
-        width: 120,
-        required: true,
-      },
-      {
         title: '主键',
         dataIndex: 'primaryKey',
         width: 80,
