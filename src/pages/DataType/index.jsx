@@ -124,7 +124,6 @@ class DataType extends Component {
                   title: '系统内置类型，禁止操作',
                 }}
                 type="stop"
-                style={{ color: 'red' }}
                 antd
               />
             );

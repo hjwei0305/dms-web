@@ -151,8 +151,14 @@ class ElementLibrary extends Component {
         required: true,
       },
       {
-        title: '数据类型',
+        title: '数据类型代码',
         dataIndex: 'dataType',
+        width: 120,
+        required: true,
+      },
+      {
+        title: '数据类型名称',
+        dataIndex: 'dataTypeDesc',
         width: 120,
         required: true,
       },

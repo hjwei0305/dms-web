@@ -34,7 +34,7 @@ class FormModal extends PureComponent {
     const { form } = this.props;
     return {
       form,
-      name: 'dataType',
+      name: 'dataTypeDesc',
       store: {
         type: 'POST',
         autoLoad: false,
@@ -51,13 +51,23 @@ class FormModal extends PureComponent {
           width: 200,
           dataIndex: 'name',
         },
+        {
+          title: '长度',
+          width: 80,
+          dataIndex: 'dataLength',
+        },
+        {
+          title: '精度',
+          width: 80,
+          dataIndex: 'precision',
+        },
       ],
       rowKey: 'id',
       reader: {
         name: 'name',
-        field: ['precision', 'dataLength'],
+        field: ['code', 'precision', 'dataLength'],
       },
-      field: ['precision', 'dataLength'],
+      field: ['dataType', 'precision', 'dataLength'],
       remotePaging: true,
     };
   };
@@ -107,10 +117,6 @@ class FormModal extends PureComponent {
                   required: true,
                   message: '代码不能为空',
                 },
-                {
-                  max: 10,
-                  message: '代码不能超过5个字符',
-                },
               ],
             })(<Input disabled={!!editData} />)}
           </FormItem>
@@ -125,9 +131,14 @@ class FormModal extends PureComponent {
               ],
             })(<Input />)}
           </FormItem>
-          <FormItem label="数据类型">
+          <FormItem label="数据类型代码" style={{ display: 'none' }}>
             {getFieldDecorator('dataType', {
               initialValue: editData && editData.dataType,
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="数据类型">
+            {getFieldDecorator('dataTypeDesc', {
+              initialValue: editData && editData.dataTypeDesc,
               rules: [
                 {
                   required: true,
