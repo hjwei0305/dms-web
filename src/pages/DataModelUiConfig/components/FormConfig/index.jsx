@@ -30,7 +30,6 @@ class FormUiConfig extends Component {
   handleFormItemChange = formItems => {
     const { formUiConfig = {} } = this.state;
     Object.assign(formUiConfig, { formItems });
-    console.log('FormUiConfig -> formUiConfig', formUiConfig);
     this.setState({
       formUiConfig,
     });
