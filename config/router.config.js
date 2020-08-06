@@ -20,6 +20,7 @@ export default [
       { title: '数据源管理', path: '/dataSource', component: './DataSource' },
       { title: '数据模型管理', path: '/dataModel', component: './DataModelManager' },
       { title: '数据模型UI管理', path: '/dataModelUiConfig', component: './DataModelUiConfig' },
+      { title: '主数据维护', path: '/masterDataMaintain', component: './MasterDataMaintain' },
     ],
   },
 ];

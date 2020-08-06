@@ -2,7 +2,7 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:38
  * @Last Modified by: zp
- * @Last Modified time: 2020-08-06 11:27:08
+ * @Last Modified time: 2020-08-05 16:58:59
  */
 import { message } from 'antd';
 import { utils } from 'suid';
@@ -14,7 +14,7 @@ const { modelExtend, model } = dvaModel;
 // semanteme
 
 export default modelExtend(model, {
-  namespace: 'dataModelUiConfig',
+  namespace: 'masterDataMaintain',
 
   state: {
     currPRowData: null,
@@ -22,8 +22,6 @@ export default modelExtend(model, {
     isAddP: false,
     pVisible: false,
     cVisible: false,
-    vTableUiConfig: false,
-    vFormUiConfig: false,
     modelUiConfig: null,
   },
   effects: {

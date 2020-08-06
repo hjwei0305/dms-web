@@ -2,15 +2,14 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:24
  * @Last Modified by: zp
- * @Last Modified time: 2020-08-06 11:26:49
+ * @Last Modified time: 2020-08-05 16:27:05
  */
 import { utils } from 'suid';
-import { constants } from '@/utils';
 
 const { request } = utils;
-const { MDMSCONTEXT: MockServerPath } = constants;
-
-const contextPath = '/dataModel';
+const MockServerPath =
+  'http://rddgit.changhong.com:7300/mock/5e02d29836608e42d52b1d81/template-service';
+const contextPath = '/simple-master';
 
 /** 保存父表格数据 */
 export async function saveParent(data) {
@@ -47,15 +46,6 @@ export async function delChildRow(params) {
   return request({
     url,
     method: 'DELETE',
-  });
-}
-
-/** 获取模型字段 */
-export async function getDataModelFields({ modelId }) {
-  const url = `${MockServerPath}${contextPath}/getDataModelFields?modelId=${modelId}`;
-  return request({
-    url,
-    method: 'GET',
   });
 }
 

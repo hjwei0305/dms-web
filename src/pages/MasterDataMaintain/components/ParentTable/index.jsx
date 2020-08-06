@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
+// import { Tooltip } from 'antd';
 import { ExtTable, ComboTree } from 'suid';
 import { constants } from '@/utils';
-
 import FormModal from './FormModal';
 import styles from './index.less';
 
+// const { authAction } = utils;
 const { MDMSCONTEXT } = constants;
 
-@connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
+@connect(({ masterDataMaintain, loading }) => ({ masterDataMaintain, loading }))
 class CascadeTableMaster extends Component {
   state = {
     selectedNode: null,
@@ -19,7 +20,7 @@ class CascadeTableMaster extends Component {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'dataModelUiConfig/updatePageState',
+      type: 'masterDataMaintain/updatePageState',
       payload: {
         pVisible: true,
         isAddP: true,
@@ -30,7 +31,7 @@ class CascadeTableMaster extends Component {
   edit = (rowData, e) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'dataModelUiConfig/updatePageState',
+      type: 'masterDataMaintain/updatePageState',
       payload: {
         pVisible: true,
         isAddP: false,
@@ -43,14 +44,14 @@ class CascadeTableMaster extends Component {
   save = data => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'dataModelUiConfig/saveParent',
+      type: 'masterDataMaintain/saveParent',
       payload: {
         ...data,
       },
     }).then(res => {
       if (res.success) {
         dispatch({
-          type: 'dataModelUiConfig/updatePageState',
+          type: 'masterDataMaintain/updatePageState',
           payload: {
             pVisible: false,
           },
@@ -63,7 +64,7 @@ class CascadeTableMaster extends Component {
   closeFormModal = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'dataModelUiConfig/updatePageState',
+      type: 'masterDataMaintain/updatePageState',
       payload: {
         pVisible: false,
       },
@@ -71,15 +72,15 @@ class CascadeTableMaster extends Component {
   };
 
   getFormModalProps = () => {
-    const { loading, dataModelUiConfig } = this.props;
-    const { pVisible, currPRowData, isAddP } = dataModelUiConfig;
+    const { loading, masterDataMaintain } = this.props;
+    const { pVisible, currPRowData, isAddP } = masterDataMaintain;
 
     return {
       save: this.save,
       rowData: isAddP ? null : currPRowData,
       visible: pVisible,
       onCancel: this.closeFormModal,
-      saving: loading.effects['dataModelUiConfig/saveParent'],
+      saving: loading.effects['masterDataMaintain/saveParent'],
     };
   };
 
@@ -131,18 +132,21 @@ class CascadeTableMaster extends Component {
         dataIndex: 'remark',
         width: 160,
         required: true,
+        // render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>
       },
       {
         title: '数据源',
         dataIndex: 'dsName',
         width: 160,
         required: true,
+        // render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>
       },
       {
         title: '模型分类',
         dataIndex: 'modelTypeName',
         width: 160,
         required: true,
+        // render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>
       },
     ];
 
@@ -163,20 +167,21 @@ class CascadeTableMaster extends Component {
     }
 
     return {
-      store,
+      bordered: false,
       searchProperties: ['tableName', 'remark'],
       searchPlaceHolder: '输入表名或描述关键字',
       columns,
+      store,
       toolBar: toolBarProps,
       onSelectRow: (_, selectedRows) => {
         dispatch({
-          type: 'dataModelUiConfig/updatePageState',
+          type: 'masterDataMaintain/updatePageState',
           payload: {
             currPRowData: selectedRows[0],
           },
         }).then(() => {
           dispatch({
-            type: 'dataModelUiConfig/getByDataModalId',
+            type: 'masterDataMaintain/getByDataModalId',
             payload: {
               modelId: selectedRows[0].id,
             },

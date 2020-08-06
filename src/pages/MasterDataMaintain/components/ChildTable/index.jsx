@@ -2,23 +2,21 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm } from 'antd';
-import { isEqual } from 'lodash';
 import { ExtTable, utils, ExtIcon } from 'suid';
 import FormModal from './FormModal';
 import styles from '../../index.less';
 
 const { authAction } = utils;
 
-@connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
+@connect(({ masterDataMaintain, loading }) => ({ masterDataMaintain, loading }))
 class ChildTable extends Component {
   state = {
     delRowId: null,
-    selectedRowKeys: [],
   };
 
   reloadData = () => {
-    const { dataModelUiConfig } = this.props;
-    const { currPRowData } = dataModelUiConfig;
+    const { masterDataMaintain } = this.props;
+    const { currPRowData } = masterDataMaintain;
     if (currPRowData && this.tableRef) {
       this.tableRef.remoteDataRefresh();
     }
@@ -28,13 +26,10 @@ class ChildTable extends Component {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'dataModelUiConfig/save',
+      type: 'masterDataMaintain/save',
       payload: rowData,
     }).then(res => {
       if (res.success) {
-        this.setState({
-          selectedRowKeys: [],
-        });
         this.reloadData();
       }
     });
@@ -44,7 +39,7 @@ class ChildTable extends Component {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'dataModelUiConfig/updatePageState',
+      type: 'masterDataMaintain/updatePageState',
       payload: {
         cVisible: true,
         currCRowData: null,
@@ -55,7 +50,7 @@ class ChildTable extends Component {
   edit = (rowData, e) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'dataModelUiConfig/updatePageState',
+      type: 'masterDataMaintain/updatePageState',
       payload: {
         cVisible: true,
         currCRowData: rowData,
@@ -65,15 +60,15 @@ class ChildTable extends Component {
   };
 
   del = record => {
-    const { dispatch, dataModelUiConfig } = this.props;
-    const { currCRowData } = dataModelUiConfig;
+    const { dispatch, masterDataMaintain } = this.props;
+    const { currCRowData } = masterDataMaintain;
     this.setState(
       {
         delRowId: record.id,
       },
       () => {
         dispatch({
-          type: 'dataModelUiConfig/delCRow',
+          type: 'masterDataMaintain/delCRow',
           payload: {
             id: record.id,
           },
@@ -81,7 +76,7 @@ class ChildTable extends Component {
           if (res.success) {
             if (currCRowData && currCRowData.id === record.id) {
               dispatch({
-                type: 'dataModelUiConfig/updatePageState',
+                type: 'masterDataMaintain/updatePageState',
                 payload: {
                   currCRowData: null,
                 },
@@ -105,12 +100,12 @@ class ChildTable extends Component {
   save = data => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'dataModelUiConfig/saveChild',
+      type: 'masterDataMaintain/saveChild',
       payload: data,
     }).then(res => {
       if (res.success) {
         dispatch({
-          type: 'dataModelUiConfig/updatePageState',
+          type: 'masterDataMaintain/updatePageState',
           payload: {
             cVisible: false,
           },
@@ -123,7 +118,7 @@ class ChildTable extends Component {
   closeFormModal = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'dataModelUiConfig/updatePageState',
+      type: 'masterDataMaintain/updatePageState',
       payload: {
         cVisible: false,
       },
@@ -133,7 +128,7 @@ class ChildTable extends Component {
   renderDelBtn = row => {
     const { loading } = this.props;
     const { delRowId } = this.state;
-    if (loading.effects['dataModelUiConfig/delCRow'] && delRowId === row.id) {
+    if (loading.effects['masterDataMaintain/delCRow'] && delRowId === row.id) {
       return <ExtIcon className="del-loading" type="loading" antd />;
     }
     return (
@@ -148,14 +143,19 @@ class ChildTable extends Component {
   };
 
   getExtableProps = () => {
-    const { selectedRowKeys } = this.state;
-    const { dataModelUiConfig } = this.props;
-    const { currPRowData } = dataModelUiConfig;
+    const { masterDataMaintain } = this.props;
+    const { modelUiConfig } = masterDataMaintain;
+    const tableProps = modelUiConfig.tableData
+      ? JSON.parse(modelUiConfig.tableData)
+      : {
+          columns: [],
+        };
+
     const columns = [
       {
         title: '操作',
         key: 'operation',
-        width: 85,
+        width: 90,
         align: 'center',
         dataIndex: 'id',
         className: 'action',
@@ -194,18 +194,6 @@ class ChildTable extends Component {
           );
         },
       },
-      {
-        title: '代码',
-        dataIndex: 'code',
-        width: 120,
-        required: true,
-      },
-      {
-        title: '名称',
-        dataIndex: 'name',
-        width: 180,
-        required: true,
-      },
     ];
     const toolBarProps = {
       left: (
@@ -219,44 +207,22 @@ class ChildTable extends Component {
         </Fragment>
       ),
     };
-    return {
-      bordered: false,
-      cascadeParams: {
-        parentId: currPRowData && currPRowData.id,
-      },
-      selectedRowKeys,
-      searchProperties: ['code', 'name'],
-      onSelectRow: selectedKeys => {
-        let tempKeys = selectedKeys;
-        if (isEqual(selectedKeys, selectedRowKeys)) {
-          tempKeys = [];
-        }
-        this.setState({
-          selectedRowKeys: tempKeys,
-        });
-      },
-      columns,
-      remotePaging: true,
-      toolBar: toolBarProps,
-      allowCancelSelect: true,
-      store: {
-        type: 'POST',
-        url: `http://rddgit.changhong.com:7300/mock/5e02d29836608e42d52b1d81/template-service/simple-master/findByPage`,
-      },
-    };
+    tableProps.columns = columns.concat(tableProps.columns);
+    tableProps.toolBar = toolBarProps;
+    return tableProps;
   };
 
   getFormModalProps = () => {
-    const { loading, dataModelUiConfig } = this.props;
-    const { currPRowData, currCRowData, cVisible } = dataModelUiConfig;
-
+    const { loading, masterDataMaintain } = this.props;
+    const { currPRowData, currCRowData, cVisible, modelUiConfig } = masterDataMaintain;
     return {
       onSave: this.save,
       pRowData: currPRowData,
       rowData: currCRowData,
       visible: cVisible,
+      formUiConfig: JSON.parse(modelUiConfig.formData),
       onCancel: this.closeFormModal,
-      saving: loading.effects['dataModelUiConfig/saveChild'],
+      saving: loading.effects['masterDataMaintain/saveChild'],
     };
   };
 

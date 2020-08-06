@@ -7,19 +7,19 @@ const FormItem = Form.Item;
 @Form.create()
 class FormModal extends PureComponent {
   onFormSubmit = () => {
-    const { form, onSave } = this.props;
+    const { form, osSave } = this.props;
     form.validateFields((err, formData) => {
       if (err) {
         return;
       }
-      if (onSave) {
-        onSave(formData);
+      if (osSave) {
+        osSave(formData);
       }
     });
   };
 
   render() {
-    const { form, saving, visible, onCancel, rowData, pRowData } = this.props;
+    const { form, saving, visible, onCancel, rowData } = this.props;
     const { getFieldDecorator } = form;
 
     const formItemLayout = {
@@ -32,7 +32,6 @@ class FormModal extends PureComponent {
     };
     const title = rowData ? '编辑' : '新建';
     const { id, code, name } = rowData || {};
-    const { id: parentId } = pRowData || {};
 
     return (
       <ExtModal
@@ -54,11 +53,6 @@ class FormModal extends PureComponent {
               <FormItem style={{ display: 'none' }}>
                 {getFieldDecorator('id', {
                   initialValue: id,
-                })(<Input />)}
-              </FormItem>
-              <FormItem style={{ display: 'none' }}>
-                {getFieldDecorator('parentId', {
-                  initialValue: parentId,
                 })(<Input />)}
               </FormItem>
               <FormItem label="代码">

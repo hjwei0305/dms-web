@@ -26,11 +26,13 @@
     "antd": "^3.19.5",
     "classnames": "^2.2.6",
     "dva": "^2.6.0-beta.6",
+    "form-render": "^0.6.1",
     "lodash": "^4.17.15",
     "md5": "^2.2.1",
     "prop-types": "^15.7.2",
     "qs": "^6.9.3",
     "react": "^16.8.6",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.8.6",
     "suid": "^1.2.27",
     "umi-plugin-react": "^1.8.4"
@@ -75,7 +77,7 @@
       "git add"
     ],
     "**/*.{js,jsx,ts,tsx}": [
-       "eslint --fix"
+      "eslint --fix"
     ]
   },
   "optionalDependencies": {
