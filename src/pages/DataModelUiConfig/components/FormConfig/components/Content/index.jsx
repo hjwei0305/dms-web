@@ -1,34 +1,9 @@
 import React, { Component } from 'react';
-import { get, omit } from 'lodash';
-import FormRender from 'form-render/lib/antd.js';
-import ExtInput from './ExtInput';
-import ExtComboGrid from './ExtComboGrid';
-
-// 通过uiSchema可以增强 Form Render 展示的丰富性，比如说日历视图
-const uiSchema = {
-  dateDemo: {
-    'ui:widget': 'date',
-  },
-  // radioDemo: {
-  //   "ui:width": "50%"
-  // }
-};
+import ExtFormRender from '@/components/ExtFormRender';
 
 class Content extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      formData: props.formData || {},
-    };
-  }
-
   onChange = formData => {
-    const keys = Object.keys(formData).filter(key => /(__ds)$/.test(key));
-    const tempFormData = {};
-    keys.forEach(key => {
-      Object.assign(tempFormData, { ...formData[key] });
-    });
-    this.setState({ formData: { ...omit(formData, keys), ...tempFormData } });
+    console.log('Content -> formData', formData);
   };
 
   onValidate = valid => {
@@ -36,39 +11,15 @@ class Content extends Component {
   };
 
   render() {
-    const { formData } = this.state;
-    const { uiConfig } = this.props;
-    const tempProperties = get(uiConfig, 'formItems', []);
-    const properties = {};
-    const required = [];
-    tempProperties.forEach(item => {
-      const [key, value] = item;
-      if (value.required) {
-        required.push(key);
-      }
-      Object.assign(properties, { [key]: value });
-    });
+    const { uiConfig, formData } = this.props;
 
     return (
-      <div
-        style={{
-          height: '100%',
-        }}
-      >
-        <FormRender
-          {...uiConfig}
-          propsSchema={{
-            properties,
-            required,
-            type: 'object',
-          }}
-          uiSchema={uiSchema}
-          formData={formData}
-          onChange={this.onChange}
-          onValidate={this.onValidate}
-          widgets={{ ExtInput, ExtComboGrid }}
-        />
-      </div>
+      <ExtFormRender
+        onChange={this.onChange}
+        onValidate={this.onValidate}
+        uiConfig={uiConfig}
+        formData={formData || {}}
+      />
     );
   }
 }

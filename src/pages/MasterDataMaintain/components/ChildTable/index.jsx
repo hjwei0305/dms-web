@@ -207,6 +207,14 @@ class ChildTable extends Component {
         </Fragment>
       ),
     };
+    // tableProps.columns.forEach(it => {
+    //   const { formatter } = it;
+    //   if (formatter) {
+    //     Object.assign(it, {
+    //       render: formatters[formatter]
+    //     })
+    //   }
+    // });
     tableProps.columns = columns.concat(tableProps.columns);
     tableProps.toolBar = toolBarProps;
     return tableProps;

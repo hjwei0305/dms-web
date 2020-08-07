@@ -4,7 +4,9 @@ import { Input } from 'antd';
 
 import styles from './index.less';
 
-class ExtInput extends Component {
+const { TextArea } = Input;
+
+class ExtTextArea extends Component {
   handleChange = e => {
     const { name, onChange } = this.props;
     if (onChange) {
@@ -13,14 +15,14 @@ class ExtInput extends Component {
   };
 
   render() {
-    // const { name, schema} = this.props;
+    const { value } = this.props;
 
     return (
-      <div className={cls(styles['ext-input'])}>
-        <Input onChange={this.handleChange} />
+      <div className={cls(styles['ext-cmp-width'])}>
+        <TextArea rows={3} defaultValue={value} onChange={this.handleChange} />
       </div>
     );
   }
 }
 
-export default ExtInput;
+export default ExtTextArea;

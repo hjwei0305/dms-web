@@ -42,6 +42,7 @@ class EditModal extends React.Component {
             initialValue: editData && editData.formatter,
           })(
             <Select>
+              <Select.Option value="text">文本</Select.Option>
               <Select.Option value="date">日期</Select.Option>
             </Select>,
           )}
@@ -55,14 +56,13 @@ class EditModal extends React.Component {
           {getFieldDecorator('canSearch', {
             valuePropName: 'checked',
             initialValue: editData && editData.canSearch,
-          })(
-            <Switch
-              onClick={(_, e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            />,
-          )}
+          })(<Switch />)}
+        </FormItem>
+        <FormItem label="排序字段">
+          {getFieldDecorator('sort', {
+            valuePropName: 'checked',
+            initialValue: editData && editData.sort,
+          })(<Switch />)}
         </FormItem>
         {/* <FormItem label="支持复制" {...colFormItemLayout}>
           {getFieldDecorator('isCopy', {
