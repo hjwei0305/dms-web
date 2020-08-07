@@ -42,8 +42,8 @@ class DataModelUiConfig extends Component {
             )}
           </CascadeLayout>
         </PageWrapper>
-        {vTableUiConfig ? <TableUiConfig /> : null}
-        {vFormUiConfig ? <FormConfig /> : null}
+        {vTableUiConfig ? <TableUiConfig modelUiConfig={modelUiConfig} /> : null}
+        {vFormUiConfig ? <FormConfig modelUiConfig={modelUiConfig} /> : null}
       </>
     );
   }

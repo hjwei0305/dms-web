@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
+// import { message, } from 'antd';
+import { get } from 'lodash';
 import Header from './components/Header';
 import Content from './components/Content';
 import LeftSiderbar from './components/LeftSiderbar';
@@ -10,18 +12,27 @@ import styles from './index.less';
 
 @connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
 class TableUiConfig extends Component {
-  state = {
-    tableUiConfig: {
-      store: {
-        type: 'POST',
-        url: '',
-      },
-      showSearchTooltip: true,
-      allowCustomColumns: true,
-      remotePaging: true,
-      columns: [],
-    },
-  };
+  constructor(props) {
+    super(props);
+    const { dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
+    const tableDataJson = get(modelUiConfig, 'tableData');
+    const tableUiConfig = tableDataJson
+      ? JSON.parse(tableDataJson)
+      : {
+          store: {
+            type: 'POST',
+            url: '',
+          },
+          showSearchTooltip: true,
+          allowCustomColumns: true,
+          remotePaging: true,
+          columns: [],
+        };
+    this.state = {
+      tableUiConfig,
+    };
+  }
 
   handleBack = () => {
     const { dispatch } = this.props;
@@ -68,12 +79,20 @@ class TableUiConfig extends Component {
   };
 
   handleEditTable = props => {
+    const { dispatch, dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
     const { tableUiConfig = {} } = this.state;
+    // message.success('test');
 
     Object.assign(tableUiConfig, props);
-    console.log('TableUiConfig -> tableUiConfig', JSON.stringify(tableUiConfig));
     this.setState({
       tableUiConfig,
+    });
+    dispatch({
+      type: 'dataModelUiConfig/updatePageState',
+      payload: {
+        modelUiConfig: { ...modelUiConfig, tableData: JSON.stringify(tableUiConfig) },
+      },
     });
   };
 

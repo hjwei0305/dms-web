@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
+import { get } from 'lodash';
 import ExtFormRender from '@/components/ExtFormRender';
 import Header from './components/Header';
 // import Content from './components/Content';
@@ -11,11 +12,20 @@ import styles from './index.less';
 
 @connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
 class FormUiConfig extends Component {
-  state = {
-    formUiConfig: {
-      showDescIcon: true,
-    },
-  };
+  constructor(props) {
+    super(props);
+    const { dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
+    const formDataJson = get(modelUiConfig, 'formData');
+    const formUiConfig = formDataJson
+      ? JSON.parse(formDataJson)
+      : {
+          showDescIcon: true,
+        };
+    this.state = {
+      formUiConfig,
+    };
+  }
 
   handleBack = () => {
     const { dispatch } = this.props;
@@ -62,12 +72,18 @@ class FormUiConfig extends Component {
   };
 
   handleEditTable = props => {
+    const { dispatch, dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
     const { formUiConfig = {} } = this.state;
-
-    console.log('FormUiConfig -> formUiConfig', JSON.stringify(formUiConfig));
     Object.assign(formUiConfig, props);
     this.setState({
       formUiConfig,
+    });
+    dispatch({
+      type: 'dataModelUiConfig/updatePageState',
+      payload: {
+        modelUiConfig: { ...modelUiConfig, formData: JSON.stringify(formUiConfig) },
+      },
     });
   };
 

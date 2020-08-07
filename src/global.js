@@ -2,6 +2,12 @@ import React from 'react';
 import { Button, message, notification } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 
+message.config({
+  top: 100,
+  duration: 0,
+  maxCount: 1,
+});
+
 // if pwa is true
 if (process.env.NODE_ENV === 'production') {
   // Notify user if offline now
