@@ -52,11 +52,22 @@
             user-select: none;
             .list-item-extra {
               display: inline-block;
+              .icon-wrapper {
+                display: inline-block;
+                padding: 2px 6px;
+                text-align: center;
+                &:hover {
+                  background-color: #efeaea;
+                  cursor: pointer;
+                  > i {
+                    color: #1890ff;
+                  }
+                  > .del {
+                    color: red;
+                  }
+                }
+              }
             }
-          }
-          i {
-            margin-right: 4px;
-            cursor: pointer;
           }
         }
       }

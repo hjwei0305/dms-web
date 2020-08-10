@@ -3,6 +3,7 @@ import cls from 'classnames';
 import { connect } from 'dva';
 import { get } from 'lodash';
 import ExtFormRender from '@/components/ExtFormRender';
+import PageWrapper from '@/components/PageWrapper';
 import Header from './components/Header';
 // import Content from './components/Content';
 import LeftSiderbar from './components/LeftSiderbar';
@@ -79,8 +80,9 @@ class FormUiConfig extends Component {
     this.setState({
       formUiConfig,
     });
+    console.log(JSON.stringify(formUiConfig));
     dispatch({
-      type: 'dataModelUiConfig/updatePageState',
+      type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
         modelUiConfig: { ...modelUiConfig, formData: JSON.stringify(formUiConfig) },
       },
@@ -88,32 +90,34 @@ class FormUiConfig extends Component {
   };
 
   render() {
-    const { dataModelUiConfig } = this.props;
+    const { dataModelUiConfig, loading } = this.props;
     const { currPRowData } = dataModelUiConfig;
 
     const { formUiConfig } = this.state;
 
     return (
-      <div className={cls(styles['visual-page-config'])}>
-        <div className={cls('config-header')}>
-          <Header onBack={this.handleBack} dataModel={currPRowData} />
+      <PageWrapper loading={loading.global}>
+        <div className={cls(styles['visual-page-config'])}>
+          <div className={cls('config-header')}>
+            <Header onBack={this.handleBack} dataModel={currPRowData} />
+          </div>
+          <div className={cls('config-left-siderbar')}>
+            <RightSiderbar editData={formUiConfig} onEditTable={this.handleEditTable} />
+          </div>
+          <div className={cls('config-content')}>
+            <LeftSiderbar
+              onFormItemChange={this.handleFormItemChange}
+              dataModel={currPRowData}
+              uiConfig={formUiConfig}
+              onDelFormItem={this.handleDelFormItem}
+              onEditFormItem={this.handleEditFormItem}
+            />
+          </div>
+          <div className={cls('config-right-siderbar')}>
+            <ExtFormRender uiConfig={formUiConfig} />
+          </div>
         </div>
-        <div className={cls('config-left-siderbar')}>
-          <RightSiderbar editData={formUiConfig} onEditTable={this.handleEditTable} />
-        </div>
-        <div className={cls('config-content')}>
-          <LeftSiderbar
-            onFormItemChange={this.handleFormItemChange}
-            dataModel={currPRowData}
-            uiConfig={formUiConfig}
-            onDelFormItem={this.handleDelFormItem}
-            onEditFormItem={this.handleEditFormItem}
-          />
-        </div>
-        <div className={cls('config-right-siderbar')}>
-          <ExtFormRender uiConfig={formUiConfig} />
-        </div>
-      </div>
+      </PageWrapper>
     );
   }
 }

@@ -2,11 +2,18 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:38
  * @Last Modified by: zp
- * @Last Modified time: 2020-08-06 11:27:08
+ * @Last Modified time: 2020-08-10 09:20:15
  */
 import { message } from 'antd';
 import { utils } from 'suid';
-import { delParentRow, saveParent, saveChild, delChildRow, getByDataModalId } from './service';
+import {
+  delParentRow,
+  saveParent,
+  saveChild,
+  delChildRow,
+  getByDataModalId,
+  saveModelUiConfig,
+} from './service';
 
 const { dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
@@ -93,6 +100,23 @@ export default modelExtend(model, {
           type: 'updateState',
           payload: {
             modelUiConfig,
+          },
+        });
+      } else {
+        message.error(msg);
+      }
+
+      return result;
+    },
+    *saveModelUiConfig({ payload }, { call, put }) {
+      const result = yield call(saveModelUiConfig, payload.modelUiConfig);
+      const { message: msg, success } = result || {};
+      if (success) {
+        message.success(msg);
+        yield put({
+          type: 'updateState',
+          payload: {
+            modelUiConfig: payload.modelUiConfig,
           },
         });
       } else {

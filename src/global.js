@@ -3,8 +3,8 @@ import { Button, message, notification } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 
 message.config({
-  top: 100,
-  duration: 0,
+  // top: 100,
+  // duration: 0,
   maxCount: 1,
 });
 

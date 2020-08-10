@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { get, omit } from 'lodash';
 import FormRender from 'form-render/lib/antd.js';
-import ExtInput from './components/ExtInput';
-import ExtComboGrid from './components/ExtComboGrid';
+import ExtComps from './components';
 
 // 通过uiSchema可以增强 Form Render 展示的丰富性，比如说日历视图
 const uiSchema = {
@@ -75,7 +74,7 @@ class ExtFormRender extends Component {
           formData={formData}
           onChange={this.onChange}
           onValidate={this.onValidate}
-          widgets={{ ExtInput, ExtComboGrid }}
+          widgets={{ ...ExtComps }}
         />
       </div>
     );

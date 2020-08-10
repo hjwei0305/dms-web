@@ -39,7 +39,18 @@ class RightSiderbar extends React.Component {
   };
 
   getCardExtra = () => {
-    return <ExtIcon type="save" tooltip={{ title: '保存' }} onClick={this.handleSave} antd />;
+    return (
+      <span className={cls('icon-wrapper')}>
+        <ExtIcon
+          type="save"
+          style={{ fontSize: '20px' }}
+          tooltip={{ title: '保存' }}
+          onClick={this.handleSave}
+          antd
+        />
+      </span>
+    );
+    // <ExtIcon type="save" tooltip={{ title: '保存' }} onClick={this.handleSave} antd />;
   };
 
   render() {

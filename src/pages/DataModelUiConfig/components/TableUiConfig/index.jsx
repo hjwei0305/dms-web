@@ -3,6 +3,7 @@ import cls from 'classnames';
 import { connect } from 'dva';
 // import { message, } from 'antd';
 import { get } from 'lodash';
+import PageWrapper from '@/components/PageWrapper';
 import Header from './components/Header';
 import Content from './components/Content';
 import LeftSiderbar from './components/LeftSiderbar';
@@ -82,14 +83,13 @@ class TableUiConfig extends Component {
     const { dispatch, dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
     const { tableUiConfig = {} } = this.state;
-    // message.success('test');
 
     Object.assign(tableUiConfig, props);
     this.setState({
       tableUiConfig,
     });
     dispatch({
-      type: 'dataModelUiConfig/updatePageState',
+      type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
         modelUiConfig: { ...modelUiConfig, tableData: JSON.stringify(tableUiConfig) },
       },
@@ -97,31 +97,33 @@ class TableUiConfig extends Component {
   };
 
   render() {
-    const { dataModelUiConfig } = this.props;
+    const { dataModelUiConfig, loading } = this.props;
     const { currPRowData } = dataModelUiConfig;
     const { tableUiConfig } = this.state;
 
     return (
-      <div className={cls(styles['visual-page-config'])}>
-        <div className={cls('config-header')}>
-          <Header onBack={this.handleBack} dataModel={currPRowData} />
+      <PageWrapper loading={loading.global}>
+        <div className={cls(styles['visual-page-config'])}>
+          <div className={cls('config-header')}>
+            <Header onBack={this.handleBack} dataModel={currPRowData} />
+          </div>
+          <div className={cls('config-left-siderbar')}>
+            <RightSiderbar editData={tableUiConfig} onEditTable={this.handleEditTable} />
+          </div>
+          <div className={cls('config-content')}>
+            <LeftSiderbar
+              onColChange={this.handleColChange}
+              dataModel={currPRowData}
+              tableUiConfig={tableUiConfig}
+              onDelCol={this.handleDelCol}
+              onEditCol={this.handleEditCol}
+            />
+          </div>
+          <div className={cls('config-right-siderbar')}>
+            <Content tableUiConfig={tableUiConfig} />
+          </div>
         </div>
-        <div className={cls('config-left-siderbar')}>
-          <RightSiderbar editData={tableUiConfig} onEditTable={this.handleEditTable} />
-        </div>
-        <div className={cls('config-content')}>
-          <LeftSiderbar
-            onColChange={this.handleColChange}
-            dataModel={currPRowData}
-            tableUiConfig={tableUiConfig}
-            onDelCol={this.handleDelCol}
-            onEditCol={this.handleEditCol}
-          />
-        </div>
-        <div className={cls('config-right-siderbar')}>
-          <Content tableUiConfig={tableUiConfig} />
-        </div>
-      </div>
+      </PageWrapper>
     );
   }
 }

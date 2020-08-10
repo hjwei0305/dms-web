@@ -40,7 +40,11 @@ class EditModal extends React.Component {
           })(
             <Select>
               <Select.Option value="ExtInput">输入框</Select.Option>
-              {/* <Select.Option value="ExtComboGrid">下拉表格</Select.Option> */}
+              <Select.Option value="ExtTextArea">文本框</Select.Option>
+              <Select.Option value="ExtSwitch">布尔框</Select.Option>
+              <Select.Option value="ExtDate">日期</Select.Option>
+              {/* <Select.Option value="ExtRangeDate">日期区间</Select.Option> */}
+              <Select.Option value="ExtComboGrid">下拉表格</Select.Option>
             </Select>,
           )}
         </FormItem>

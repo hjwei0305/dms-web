@@ -180,18 +180,23 @@ class LeftSiderbar extends Component {
                             >
                               {title}
                               <span className={cls('list-item-extra')}>
-                                <ExtIcon
-                                  type="edit"
-                                  tooltip={{ title: '编辑' }}
-                                  onClick={() => this.handleToggoleEditModal(item)}
-                                  antd
-                                />
-                                <ExtIcon
-                                  type="delete"
-                                  tooltip={{ title: '删除' }}
-                                  onClick={() => this.handleDelCol(item)}
-                                  antd
-                                />
+                                <span className={cls('icon-wrapper')}>
+                                  <ExtIcon
+                                    type="edit"
+                                    tooltip={{ title: '编辑' }}
+                                    onClick={() => this.handleToggoleEditModal(item)}
+                                    antd
+                                  />
+                                </span>
+                                <span className={cls('icon-wrapper')}>
+                                  <ExtIcon
+                                    type="delete"
+                                    className="del"
+                                    tooltip={{ title: '删除' }}
+                                    onClick={() => this.handleDelCol(item)}
+                                    antd
+                                  />
+                                </span>
                               </span>
                             </li>
                           )}
