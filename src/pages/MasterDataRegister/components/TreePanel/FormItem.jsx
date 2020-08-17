@@ -85,7 +85,7 @@ class FormItems extends PureComponent {
                   message: '代码不能为空',
                 },
               ],
-            })(<Input />)}
+            })(<Input disabled={!!editData} />)}
           </FormItem>
           <FormItem label="名称">
             {getFieldDecorator('name', {
