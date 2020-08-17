@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Card, Switch, Select } from 'antd';
+import { Form, Card, Switch } from 'antd';
 import { ExtIcon } from 'suid';
 import { get } from 'lodash';
 import cls from 'classnames';
@@ -65,7 +65,7 @@ class RightSiderbar extends React.Component {
         title="表格属性"
       >
         <Form {...formItemLayout}>
-          <FormItem label="请求类型" {...colFormItemLayout}>
+          {/* <FormItem label="请求类型" {...colFormItemLayout}>
             {getFieldDecorator('store.type', {
               initialValue: get(editData, 'store.type'),
               rules: [
@@ -91,7 +91,7 @@ class RightSiderbar extends React.Component {
                 },
               ],
             })(<Input />)}
-          </FormItem>
+          </FormItem> */}
           <FormItem label="边框" {...colFormItemLayout}>
             {getFieldDecorator('bordered', {
               valuePropName: 'checked',
@@ -109,13 +109,13 @@ class RightSiderbar extends React.Component {
               />,
             )}
           </FormItem>
-          <FormItem label="自定义列" style={{ display: 'none' }} {...colFormItemLayout}>
+          <FormItem label="自定义列" {...colFormItemLayout}>
             {getFieldDecorator('allowCustomColumns', {
               valuePropName: 'checked',
               initialValue: get(editData, 'allowCustomColumns'),
             })(<Switch />)}
           </FormItem>
-          <FormItem style={{ display: 'none' }} {...colFormItemLayout}>
+          <FormItem label="查询问题提示" {...colFormItemLayout}>
             {getFieldDecorator('showSearchTooltip', {
               valuePropName: 'checked',
               initialValue: get(editData, 'showSearchTooltip'),
