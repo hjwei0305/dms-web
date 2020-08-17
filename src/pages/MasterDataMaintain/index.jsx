@@ -19,7 +19,7 @@ class MasterDataMaintain extends Component {
     return (
       <PageWrapper loading={loading.global} className={cls(styles['container-box'])}>
         <CascadeLayout
-          title={['数据模型', `${currPRowData ? `${currPRowData.tableName}的数据` : ''}`]}
+          title={['主数据', `${currPRowData ? `${currPRowData.name}的数据` : ''}`]}
           layout={[10, 14]}
         >
           <ParentTable slot="left" />

@@ -92,7 +92,7 @@ class CascadeTableMaster extends Component {
 
   getComboTreeProps = () => {
     return {
-      placeholder: '选择模型分类',
+      placeholder: '选择主数据分类',
       style: {
         width: 200,
       },
@@ -122,31 +122,22 @@ class CascadeTableMaster extends Component {
 
     const columns = [
       {
-        title: '表名',
-        dataIndex: 'tableName',
+        title: '代码',
+        dataIndex: 'code',
         width: 120,
         required: true,
       },
       {
-        title: '描述',
-        dataIndex: 'remark',
+        title: '名称',
+        dataIndex: 'name',
         width: 160,
         required: true,
-        // render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>
-      },
-      {
-        title: '数据源',
-        dataIndex: 'dsName',
-        width: 160,
-        required: true,
-        // render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>
       },
       {
         title: '模型分类',
-        dataIndex: 'modelTypeName',
+        dataIndex: 'typeName',
         width: 160,
         required: true,
-        // render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>
       },
     ];
 
@@ -162,14 +153,14 @@ class CascadeTableMaster extends Component {
     if (selectedNode) {
       store = {
         type: 'Get',
-        url: `${MDMSCONTEXT}/dataModel/getDataModelByTypeCode?typeCode=${selectedNode.code}`,
+        url: `${MDMSCONTEXT}/masterDataUiConfig/getConfigByTypeCode?typeCode=${selectedNode.code}`,
       };
     }
 
     return {
       bordered: false,
-      searchProperties: ['tableName', 'remark'],
-      searchPlaceHolder: '输入表名或描述关键字',
+      searchProperties: ['code', 'name'],
+      searchPlaceHolder: '输入代码或名称关键字',
       columns,
       store,
       toolBar: toolBarProps,
@@ -178,14 +169,8 @@ class CascadeTableMaster extends Component {
           type: 'masterDataMaintain/updatePageState',
           payload: {
             currPRowData: selectedRows[0],
+            modelUiConfig: selectedRows[0],
           },
-        }).then(() => {
-          dispatch({
-            type: 'masterDataMaintain/getByDataModalId',
-            payload: {
-              modelId: selectedRows[0].id,
-            },
-          });
         });
       },
     };

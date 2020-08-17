@@ -91,7 +91,7 @@ class CascadeTableMaster extends Component {
 
   getComboTreeProps = () => {
     return {
-      placeholder: '选择模型分类',
+      placeholder: '选择主数据分类',
       style: {
         width: 200,
       },

@@ -122,12 +122,14 @@ class LeftSiderbar extends Component {
           <div className={cls('title')}>
             {showUnAssign ? (
               <>
-                <ExtIcon
-                  type="left"
-                  tooltip={{ title: '返回' }}
-                  onClick={this.toggoleShowUnAssign}
-                  antd
-                />
+                <span className={cls('back-icon')}>
+                  <ExtIcon
+                    type="left"
+                    tooltip={{ title: '返回' }}
+                    onClick={this.toggoleShowUnAssign}
+                    antd
+                  />
+                </span>
                 可配置列
               </>
             ) : (

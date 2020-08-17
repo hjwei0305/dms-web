@@ -20,7 +20,7 @@ class Header extends React.Component {
         <span className={cls('back-icon')}>
           <ExtIcon type="left" onClick={this.handleBack} antd />
         </span>
-        {`主数据${dataModel.name}】对应的UI列表配置`}
+        {`主数据【${dataModel.name}】对应的UI列表配置`}
       </div>
     );
   }
