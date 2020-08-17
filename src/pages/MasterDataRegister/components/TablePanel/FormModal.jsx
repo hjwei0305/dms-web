@@ -94,7 +94,7 @@ class FormModal extends PureComponent {
               initialValue: parentData && parentData.name,
             })(<Input disabled={!!parentData} />)}
           </FormItem>
-          <FormItem label="注册数据源">
+          <FormItem label="注册数据源" style={{ display: editData ? 'none' : '' }}>
             {getFieldDecorator('register', {
               initialValue: '',
             })(<ComboGrid {...this.getDsComboGridProps()} />)}
