@@ -20,7 +20,7 @@ class LeftSiderbar extends Component {
       const { success, data } = result;
       if (success) {
         this.setState({
-          fieldLists: data,
+          fieldLists: data || [],
         });
       }
     });
@@ -30,7 +30,7 @@ class LeftSiderbar extends Component {
     const { dataModel } = this.props;
 
     return getPropertiesByCode({
-      code: dataModel.code || 'dataModel',
+      code: dataModel.code,
     });
   };
 
