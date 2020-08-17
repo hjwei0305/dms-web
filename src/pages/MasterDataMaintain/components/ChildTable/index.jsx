@@ -63,7 +63,7 @@ class ChildTable extends Component {
 
   del = record => {
     const { dispatch, masterDataMaintain } = this.props;
-    const { currCRowData } = masterDataMaintain;
+    const { currCRowData, currPRowData } = masterDataMaintain;
     this.setState(
       {
         delRowId: record.id,
@@ -72,6 +72,7 @@ class ChildTable extends Component {
         dispatch({
           type: 'masterDataMaintain/delCRow',
           payload: {
+            contextPath: currPRowData.code,
             id: record.id,
           },
         }).then(res => {
@@ -100,10 +101,15 @@ class ChildTable extends Component {
   };
 
   save = data => {
-    const { dispatch } = this.props;
+    const { dispatch, masterDataMaintain } = this.props;
+    const { currPRowData } = masterDataMaintain;
+
     dispatch({
       type: 'masterDataMaintain/saveChild',
-      payload: data,
+      payload: {
+        contextPath: currPRowData.code,
+        data,
+      },
     }).then(res => {
       if (res.success) {
         dispatch({
