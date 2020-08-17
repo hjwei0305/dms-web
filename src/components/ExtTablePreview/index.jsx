@@ -1,11 +1,11 @@
 import React from 'react';
 import { ExtTable } from 'suid';
-import { omit, get, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import formatters from './formatter';
 
 class Content extends React.Component {
   getExtTableProps = () => {
-    const { tableUiConfig = { columns: [] } } = this.props;
+    const { tableUiConfig = { columns: [] }, store } = this.props;
     const { columns } = tableUiConfig;
     const tempPlaceHolder = [];
     const searchProperties = [];
@@ -36,11 +36,9 @@ class Content extends React.Component {
         : null,
     });
 
-    if (get(tableUiConfig, 'store.type') && get(tableUiConfig, 'store.url')) {
-      return tableUiConfig;
-    }
+    tableUiConfig.store = store;
 
-    return omit(tableUiConfig, 'store');
+    return tableUiConfig;
   };
 
   render() {

@@ -4,12 +4,15 @@ import { connect } from 'dva';
 // import { message, } from 'antd';
 import { get } from 'lodash';
 import PageWrapper from '@/components/PageWrapper';
+import { constants } from '@/utils';
 import Header from './components/Header';
 import Content from './components/Content';
 import LeftSiderbar from './components/LeftSiderbar';
 import RightSiderbar from './components/RightSiderbar';
 
 import styles from './index.less';
+
+const { MDMSCONTEXT } = constants;
 
 @connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
 class TableUiConfig extends Component {
@@ -120,7 +123,13 @@ class TableUiConfig extends Component {
             />
           </div>
           <div className={cls('config-right-siderbar')}>
-            <Content tableUiConfig={tableUiConfig} />
+            <Content
+              tableUiConfig={tableUiConfig}
+              store={{
+                type: 'POST',
+                url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
+              }}
+            />
           </div>
         </div>
       </PageWrapper>

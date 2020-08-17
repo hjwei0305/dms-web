@@ -113,13 +113,35 @@ class RightSiderbar extends React.Component {
             {getFieldDecorator('allowCustomColumns', {
               valuePropName: 'checked',
               initialValue: get(editData, 'allowCustomColumns'),
-            })(<Switch />)}
+            })(
+              <Switch
+                onChange={allowCustomColumns => {
+                  const { onEditTable } = this.props;
+                  if (onEditTable) {
+                    onEditTable({
+                      allowCustomColumns,
+                    });
+                  }
+                }}
+              />,
+            )}
           </FormItem>
-          <FormItem label="查询问题提示" {...colFormItemLayout}>
+          <FormItem label="查询文本提示" {...colFormItemLayout}>
             {getFieldDecorator('showSearchTooltip', {
               valuePropName: 'checked',
               initialValue: get(editData, 'showSearchTooltip'),
-            })(<Switch />)}
+            })(
+              <Switch
+                onChange={showSearchTooltip => {
+                  const { onEditTable } = this.props;
+                  if (onEditTable) {
+                    onEditTable({
+                      showSearchTooltip,
+                    });
+                  }
+                }}
+              />,
+            )}
           </FormItem>
           <FormItem style={{ display: 'none' }} {...colFormItemLayout}>
             {getFieldDecorator('remotePaging', {

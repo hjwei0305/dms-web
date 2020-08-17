@@ -3,10 +3,12 @@ import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm } from 'antd';
 import { ExtTable, utils, ExtIcon } from 'suid';
+import { constants } from '@/utils';
 import FormModal from './FormModal';
 import styles from '../../index.less';
 
 const { authAction } = utils;
+const { MDMSCONTEXT } = constants;
 
 @connect(({ masterDataMaintain, loading }) => ({ masterDataMaintain, loading }))
 class ChildTable extends Component {
@@ -144,7 +146,7 @@ class ChildTable extends Component {
 
   getExtableProps = () => {
     const { masterDataMaintain } = this.props;
-    const { modelUiConfig } = masterDataMaintain;
+    const { modelUiConfig, currPRowData } = masterDataMaintain;
     const tableProps = modelUiConfig.tableData
       ? JSON.parse(modelUiConfig.tableData)
       : {
@@ -217,6 +219,10 @@ class ChildTable extends Component {
     // });
     tableProps.columns = columns.concat(tableProps.columns);
     tableProps.toolBar = toolBarProps;
+    tableProps.store = {
+      type: 'POST',
+      url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
+    };
     return tableProps;
   };
 

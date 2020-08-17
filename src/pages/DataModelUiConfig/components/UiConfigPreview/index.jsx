@@ -3,12 +3,14 @@ import cls from 'classnames';
 import { connect } from 'dva';
 import { Tabs, Button } from 'antd';
 import { get } from 'lodash';
+import { constants } from '@/utils';
 import ExtFormRender from '@/components/ExtFormRender';
 import ExtTablePreview from '@/components/ExtTablePreview';
 
 import styles from './index.less';
 
 const { TabPane } = Tabs;
+const { MDMSCONTEXT } = constants;
 
 @connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
 class UiConfigPreview extends Component {
@@ -79,7 +81,13 @@ class UiConfigPreview extends Component {
         >
           <TabPane tab="列表配置预览" key="tableUi">
             {tableUiConfig ? (
-              <ExtTablePreview tableUiConfig={tableUiConfig} />
+              <ExtTablePreview
+                tableUiConfig={tableUiConfig}
+                store={{
+                  type: 'POST',
+                  url: `${MDMSCONTEXT}/${modelUiConfig.code}/findByPage`,
+                }}
+              />
             ) : (
               <span className={cls('ele-center')}>
                 暂无列表配置{' '}
