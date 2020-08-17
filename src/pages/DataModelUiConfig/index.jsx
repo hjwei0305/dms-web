@@ -29,8 +29,8 @@ class DataModelUiConfig extends Component {
         >
           <CascadeLayout
             title={[
-              '数据模型',
-              `${currPRowData ? `模型【${currPRowData.tableName}】的UI配置预览` : ''}`,
+              '主数据',
+              `${currPRowData ? `主数据【${currPRowData.name}】的UI配置预览` : ''}`,
             ]}
             layout={[10, 14]}
           >

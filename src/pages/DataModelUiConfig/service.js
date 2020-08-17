@@ -2,7 +2,7 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:24
  * @Last Modified by: zp
- * @Last Modified time: 2020-08-10 09:24:07
+ * @Last Modified time: 2020-08-16 11:35:20
  */
 import { utils } from 'suid';
 import { constants } from '@/utils';
@@ -10,7 +10,7 @@ import { constants } from '@/utils';
 const { request } = utils;
 const { MDMSCONTEXT: MockServerPath } = constants;
 
-const contextPath = '/dataModel';
+const contextPath = '/masterDataUiConfig';
 
 /** 保存父表格数据 */
 export async function saveParent(data) {
@@ -50,18 +50,18 @@ export async function delChildRow(params) {
   });
 }
 
-/** 获取模型字段 */
-export async function getDataModelFields({ modelId }) {
-  const url = `${MockServerPath}${contextPath}/getDataModelFields?modelId=${modelId}`;
+/** 获取主数据字段 */
+export async function getPropertiesByCode({ code }) {
+  const url = `${MockServerPath}${contextPath}/getPropertiesByCode?code=${code}`;
   return request({
     url,
     method: 'GET',
   });
 }
 
-/** 根据模型id获取ui配置 */
-export async function getByDataModalId({ modelId }) {
-  const url = `http://rddgit.changhong.com:7300/mock/5f1e7e322fb72cd97c23e239/dataManager/modalUiConfig/getByDataModalId?modelId=${modelId}`;
+/** 根据模型code获取ui配置 */
+export async function getConfigByCode({ code }) {
+  const url = `${MockServerPath}${contextPath}/getConfigByCode?code=${code}`;
   return request({
     url,
     method: 'GET',
@@ -70,8 +70,7 @@ export async function getByDataModalId({ modelId }) {
 
 /** 保存模型ui配置 */
 export async function saveModelUiConfig(data) {
-  // const url = `${MockServerPath}${contextPath}/save`;
-  const url = `http://rddgit.changhong.com:7300/mock/5f1e7e322fb72cd97c23e239/dataManager/modalUiConfig/saveModelUiConfig`;
+  const url = `${MockServerPath}${contextPath}/save`;
   return request({
     url,
     method: 'POST',

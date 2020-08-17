@@ -3,7 +3,7 @@ import cls from 'classnames';
 import { cloneDeep } from 'lodash';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { getDataModelFields } from '@/pages/DataModelUiConfig/service';
+import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
 import EditModal from './EditModal';
 
 import styles from './index.less';
@@ -16,7 +16,7 @@ class LeftSiderbar extends Component {
   };
 
   componentDidMount() {
-    this.getDataModelFields().then(result => {
+    this.getPropertiesByCode().then(result => {
       const { success, data } = result;
       if (success) {
         this.setState({
@@ -26,11 +26,11 @@ class LeftSiderbar extends Component {
     });
   }
 
-  getDataModelFields = () => {
+  getPropertiesByCode = () => {
     const { dataModel } = this.props;
 
-    return getDataModelFields({
-      modelId: dataModel.id,
+    return getPropertiesByCode({
+      code: dataModel.code || 'dataModel',
     });
   };
 
@@ -42,13 +42,13 @@ class LeftSiderbar extends Component {
   };
 
   handleAddCol = item => {
-    const { fieldName, remark } = item;
+    const { code, name } = item;
     const { onColChange, tableUiConfig } = this.props;
     const { columns } = tableUiConfig || {};
     const tempColumns = columns ? cloneDeep(columns) : [];
     tempColumns.push({
-      dataIndex: fieldName,
-      title: remark,
+      dataIndex: code,
+      title: name,
       required: true,
       width: 120,
     });
@@ -214,13 +214,13 @@ class LeftSiderbar extends Component {
               >
                 <ul className={cls('list-items')}>
                   {fieldLists
-                    .filter(it => !columns.some(itc => itc.dataIndex === it.fieldName))
+                    .filter(it => !columns.some(itc => itc.dataIndex === it.code))
                     .map(item => {
-                      const { id, remark } = item;
+                      const { code, name } = item;
                       // fieldName
                       return (
-                        <li key={id} className={cls('list-item')}>
-                          {remark}
+                        <li key={code} className={cls('list-item')}>
+                          {name}
                           <span className={cls('list-item-extra')}>
                             <ExtIcon
                               type="plus"

@@ -3,7 +3,7 @@ import cls from 'classnames';
 import { cloneDeep, get } from 'lodash';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { getDataModelFields } from '@/pages/DataModelUiConfig/service';
+import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
 import EditModal from './EditModal';
 
 import styles from './index.less';
@@ -16,7 +16,7 @@ class LeftSiderbar extends Component {
   };
 
   componentDidMount() {
-    this.getDataModelFields().then(result => {
+    this.getPropertiesByCode().then(result => {
       const { success, data } = result;
       if (success) {
         this.setState({
@@ -26,11 +26,11 @@ class LeftSiderbar extends Component {
     });
   }
 
-  getDataModelFields = () => {
+  getPropertiesByCode = () => {
     const { dataModel } = this.props;
 
-    return getDataModelFields({
-      modelId: dataModel.id,
+    return getPropertiesByCode({
+      code: dataModel.code || 'dataModel',
     });
   };
 
@@ -42,14 +42,14 @@ class LeftSiderbar extends Component {
   };
 
   handleAddFormItem = item => {
-    const { fieldName, remark } = item;
+    const { code, name } = item;
     const { onFormItemChange, uiConfig } = this.props;
     const { formItems } = uiConfig || {};
     const tempFormItems = formItems ? cloneDeep(formItems) : [];
     tempFormItems.push([
-      fieldName,
+      code,
       {
-        title: remark,
+        title: name,
         // type: 'string'
         'ui:widget': 'ExtInput',
       },
@@ -124,12 +124,14 @@ class LeftSiderbar extends Component {
           <div className={cls('title')}>
             {showUnAssign ? (
               <>
-                <ExtIcon
-                  type="left"
-                  tooltip={{ title: '返回' }}
-                  onClick={this.toggoleShowUnAssign}
-                  antd
-                />
+                <span className={cls('back-icon')}>
+                  <ExtIcon
+                    type="left"
+                    tooltip={{ title: '返回' }}
+                    onClick={this.toggoleShowUnAssign}
+                    antd
+                  />
+                </span>
                 可配表单元素
               </>
             ) : (
@@ -216,13 +218,13 @@ class LeftSiderbar extends Component {
               >
                 <ul className={cls('list-items')}>
                   {fieldLists
-                    .filter(it => !formItems.some(itc => itc[0] === it.fieldName))
+                    .filter(it => !formItems.some(itc => itc[0] === it.code))
                     .map(item => {
-                      const { id, remark } = item;
+                      const { code, name } = item;
                       // fieldName
                       return (
-                        <li key={id} className={cls('list-item')}>
-                          {remark}
+                        <li key={code} className={cls('list-item')}>
+                          {name}
                           <span className={cls('list-item-extra')}>
                             <ExtIcon
                               type="plus"

@@ -68,8 +68,7 @@ class UiConfigPreview extends Component {
       >
         <Tabs
           tabBarExtraContent={
-            (formUiConfig && activeKey === 'tableUi') ||
-            (tableUiConfig && activeKey === 'formUi') ? (
+            activeKey === 'tableUi' || activeKey === 'formUi' ? (
               <Button type="link" onClick={this.handleEdit}>
                 去编辑
               </Button>

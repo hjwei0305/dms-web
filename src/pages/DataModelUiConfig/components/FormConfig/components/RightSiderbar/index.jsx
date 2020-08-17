@@ -20,12 +20,15 @@ const formItemLayout = {
 @Form.create()
 class RightSiderbar extends React.Component {
   handleSave = () => {
-    const { form, editData } = this.props;
+    const { form, editData, onSave } = this.props;
     form.validateFields((err, formData) => {
       if (err) {
         return;
       }
-      this.updateUiConfig({ ...editData, ...formData });
+      if (onSave) {
+        onSave({ ...editData, ...formData });
+      }
+      // this.updateUiConfig({ ...editData, ...formData });
     });
   };
 

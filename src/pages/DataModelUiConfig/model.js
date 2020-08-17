@@ -2,7 +2,7 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:38
  * @Last Modified by: zp
- * @Last Modified time: 2020-08-10 09:20:15
+ * @Last Modified time: 2020-08-17 13:35:19
  */
 import { message } from 'antd';
 import { utils } from 'suid';
@@ -11,7 +11,7 @@ import {
   saveParent,
   saveChild,
   delChildRow,
-  getByDataModalId,
+  getConfigByCode,
   saveModelUiConfig,
 } from './service';
 
@@ -90,9 +90,10 @@ export default modelExtend(model, {
 
       return result;
     },
-    *getByDataModalId({ payload }, { call, put }) {
-      const result = yield call(getByDataModalId, payload);
-      const { message: msg, success, data: modelUiConfig } = result || {};
+    *getConfigByCode({ payload }, { call, put, select }) {
+      const currPRowData = yield select(state => state.dataModelUiConfig.currPRowData);
+      const result = yield call(getConfigByCode, payload);
+      const { success, data: modelUiConfig } = result || {};
 
       message.destroy();
       if (success) {
@@ -103,7 +104,13 @@ export default modelExtend(model, {
           },
         });
       } else {
-        message.error(msg);
+        yield put({
+          type: 'updateState',
+          payload: {
+            modelUiConfig: currPRowData,
+          },
+        });
+        // message.error(msg);
       }
 
       return result;

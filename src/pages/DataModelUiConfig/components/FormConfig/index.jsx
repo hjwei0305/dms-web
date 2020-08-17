@@ -73,14 +73,18 @@ class FormUiConfig extends Component {
   };
 
   handleEditTable = props => {
-    const { dispatch, dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
     const { formUiConfig = {} } = this.state;
     Object.assign(formUiConfig, props);
     this.setState({
       formUiConfig,
     });
-    console.log(JSON.stringify(formUiConfig));
+  };
+
+  handleSave = () => {
+    const { dispatch, dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
+    const { formUiConfig } = this.state;
+
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
@@ -102,7 +106,11 @@ class FormUiConfig extends Component {
             <Header onBack={this.handleBack} dataModel={currPRowData} />
           </div>
           <div className={cls('config-left-siderbar')}>
-            <RightSiderbar editData={formUiConfig} onEditTable={this.handleEditTable} />
+            <RightSiderbar
+              editData={formUiConfig}
+              onEditTable={this.handleEditTable}
+              onSave={this.handleSave}
+            />
           </div>
           <div className={cls('config-content')}>
             <LeftSiderbar

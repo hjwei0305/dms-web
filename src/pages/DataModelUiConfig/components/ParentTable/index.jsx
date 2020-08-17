@@ -121,26 +121,20 @@ class CascadeTableMaster extends Component {
 
     const columns = [
       {
-        title: '表名',
-        dataIndex: 'tableName',
+        title: '代码',
+        dataIndex: 'code',
         width: 120,
         required: true,
       },
       {
-        title: '描述',
-        dataIndex: 'remark',
-        width: 160,
-        required: true,
-      },
-      {
-        title: '数据源',
-        dataIndex: 'dsName',
+        title: '名称',
+        dataIndex: 'name',
         width: 160,
         required: true,
       },
       {
         title: '模型分类',
-        dataIndex: 'modelTypeName',
+        dataIndex: 'typeName',
         width: 160,
         required: true,
       },
@@ -158,14 +152,14 @@ class CascadeTableMaster extends Component {
     if (selectedNode) {
       store = {
         type: 'Get',
-        url: `${MDMSCONTEXT}/dataModel/getDataModelByTypeCode?typeCode=${selectedNode.code}`,
+        url: `${MDMSCONTEXT}/masterDataUiConfig/getConfigByTypeCode?typeCode=${selectedNode.code}`,
       };
     }
 
     return {
       store,
-      searchProperties: ['tableName', 'remark'],
-      searchPlaceHolder: '输入表名或描述关键字',
+      searchProperties: ['code', 'name'],
+      searchPlaceHolder: '输入代码或名称关键字',
       columns,
       toolBar: toolBarProps,
       onSelectRow: (_, selectedRows) => {
@@ -176,9 +170,9 @@ class CascadeTableMaster extends Component {
           },
         }).then(() => {
           dispatch({
-            type: 'dataModelUiConfig/getByDataModalId',
+            type: 'dataModelUiConfig/getConfigByCode',
             payload: {
-              modelId: selectedRows[0].id,
+              code: selectedRows[0].code,
             },
           });
         });
