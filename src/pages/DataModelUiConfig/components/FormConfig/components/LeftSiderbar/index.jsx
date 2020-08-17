@@ -221,7 +221,6 @@ class LeftSiderbar extends Component {
                     .filter(it => !formItems.some(itc => itc[0] === it.code))
                     .map(item => {
                       const { code, name } = item;
-                      // fieldName
                       return (
                         <li key={code} className={cls('list-item')}>
                           {name}
