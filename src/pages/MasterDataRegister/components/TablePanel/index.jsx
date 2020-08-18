@@ -145,6 +145,12 @@ class TablePanel extends Component {
         required: true,
       },
       {
+        title: '数据结构',
+        dataIndex: 'dataStructureEnumRemark',
+        width: 80,
+        required: true,
+      },
+      {
         title: '主数据分类代码',
         dataIndex: 'typeCode',
         width: 120,

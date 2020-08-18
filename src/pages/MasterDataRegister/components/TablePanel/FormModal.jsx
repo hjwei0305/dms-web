@@ -48,8 +48,13 @@ class FormModal extends PureComponent {
         },
         {
           title: '名称',
-          width: 200,
+          width: 160,
           dataIndex: 'name',
+        },
+        {
+          title: '数据结构',
+          width: 80,
+          dataIndex: 'dataStructureEnumRemark',
         },
         {
           title: '描述',
@@ -60,9 +65,9 @@ class FormModal extends PureComponent {
       rowKey: 'code',
       reader: {
         name: 'name',
-        field: ['code', 'name', 'remark', 'fullName'],
+        field: ['code', 'name', 'remark', 'dataStructure', 'dataStructureEnumRemark'],
       },
-      field: ['code', 'name', 'remark', 'fullName'],
+      field: ['code', 'name', 'remark', 'dataStructure', 'dataStructureEnumRemark'],
     };
   };
 
@@ -99,9 +104,14 @@ class FormModal extends PureComponent {
               initialValue: '',
             })(<ComboGrid {...this.getDsComboGridProps()} />)}
           </FormItem>
-          <FormItem label="全名" style={{ display: 'none' }}>
-            {getFieldDecorator('fullName', {
-              initialValue: editData ? editData.fullName : '',
+          <FormItem label="数据结构代码" style={{ display: 'none' }}>
+            {getFieldDecorator('dataStructure', {
+              initialValue: editData ? editData.dataStructure : '',
+            })(<Input disabled />)}
+          </FormItem>
+          <FormItem label="数据结构">
+            {getFieldDecorator('dataStructureEnumRemark', {
+              initialValue: editData ? editData.dataStructureEnumRemark : '',
             })(<Input disabled />)}
           </FormItem>
           <FormItem label="主数据代码">
