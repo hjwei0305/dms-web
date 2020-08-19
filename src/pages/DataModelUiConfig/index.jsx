@@ -9,6 +9,7 @@ import ParentTable from './components/ParentTable';
 import UiConfigPreview from './components/UiConfigPreview';
 import TableUiConfig from './components/TableUiConfig';
 import FormConfig from './components/FormConfig';
+import TreeUiConfig from './components/TreeUiConfig';
 import styles from './index.less';
 
 @withRouter
@@ -42,7 +43,12 @@ class DataModelUiConfig extends Component {
             )}
           </CascadeLayout>
         </PageWrapper>
-        {vTableUiConfig ? <TableUiConfig modelUiConfig={modelUiConfig} /> : null}
+        {vTableUiConfig && currPRowData.dataStructure === 'LIST' ? (
+          <TableUiConfig modelUiConfig={modelUiConfig} />
+        ) : null}
+        {vTableUiConfig && currPRowData.dataStructure === 'TREE' ? (
+          <TreeUiConfig modelUiConfig={modelUiConfig} />
+        ) : null}
         {vFormUiConfig ? <FormConfig modelUiConfig={modelUiConfig} /> : null}
       </>
     );

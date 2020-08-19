@@ -2,7 +2,7 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:38
  * @Last Modified by: zp
- * @Last Modified time: 2020-08-17 13:35:19
+ * @Last Modified time: 2020-08-18 10:04:37
  */
 import { message } from 'antd';
 import { utils } from 'suid';
@@ -31,6 +31,7 @@ export default modelExtend(model, {
     cVisible: false,
     vTableUiConfig: false,
     vFormUiConfig: false,
+    vTreeUiConfig: false,
     modelUiConfig: null,
   },
   effects: {

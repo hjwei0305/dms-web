@@ -6,6 +6,7 @@ import { get } from 'lodash';
 import { constants } from '@/utils';
 import ExtFormRender from '@/components/ExtFormRender';
 import ExtTablePreview from '@/components/ExtTablePreview';
+import ExtTreePreview from '@/components/ExtTreePreview';
 
 import styles from './index.less';
 
@@ -61,6 +62,7 @@ class UiConfigPreview extends Component {
     const { modelUiConfig } = dataModelUiConfig;
     const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', ''));
     const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', ''));
+    const dataStructure = get(modelUiConfig, 'dataStructure', 'LIST');
 
     return (
       <div
@@ -79,8 +81,8 @@ class UiConfigPreview extends Component {
           activeKey={activeKey}
           onChange={this.handleTabChange}
         >
-          <TabPane tab="列表配置预览" key="tableUi">
-            {tableUiConfig ? (
+          <TabPane tab={dataStructure === 'TREE' ? '树形配置预览' : '列表配置预览'} key="tableUi">
+            {tableUiConfig && dataStructure === 'LIST' ? (
               <ExtTablePreview
                 tableUiConfig={tableUiConfig}
                 store={{
@@ -88,14 +90,22 @@ class UiConfigPreview extends Component {
                   url: `${MDMSCONTEXT}/${modelUiConfig.code}/findByPage`,
                 }}
               />
-            ) : (
+            ) : null}
+            {tableUiConfig && dataStructure === 'TREE' ? (
+              <ExtTreePreview
+                treeUiConfig={tableUiConfig}
+                dataModelCode={modelUiConfig.code}
+                formUiConfig={formUiConfig}
+              />
+            ) : null}
+            {!tableUiConfig ? (
               <span className={cls('ele-center')}>
                 暂无列表配置{' '}
                 <Button size="large" type="link" onClick={this.handleConfigListUI}>
                   去配置
                 </Button>
               </span>
-            )}
+            ) : null}
           </TabPane>
           <TabPane tab="表单配置预览" key="formUi">
             {formUiConfig ? (

@@ -33,6 +33,7 @@ class LoginForm extends PureComponent {
         const user = { ...formData };
         user.password = md5(user.password);
         user.reqId = this.loginReqId;
+        user.locale = 'zh_CN';
         dispatch({
           type: 'global/login',
           payload: {
