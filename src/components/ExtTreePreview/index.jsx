@@ -1,11 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { Button, message, Descriptions } from 'antd';
+import cls from 'classnames';
 import { utils } from 'suid';
 import { isPlainObject, isArray } from 'lodash';
 import TreeView from '@/components/TreeView';
 import ColumnLayout from '@/components/Layout/ColumnLayout';
 import { constants } from '@/utils';
 import FormModal from './FormModal';
+
+import styles from './index.less';
 
 const { request } = utils;
 const { MDMSCONTEXT } = constants;
@@ -135,12 +138,14 @@ class ExtTreePreview extends Component {
       data: values,
     })
       .then(result => {
-        const { success, message: msg } = result;
+        const { success, message: msg, data } = result;
+        const { selectedNode } = this.state;
         if (success) {
           this.findByTree();
           message.success(msg);
           this.setState({
             showCreateModal: false,
+            selectedNode: selectedNode && selectedNode.id === data.id ? data : selectedNode,
           });
         } else {
           message.error(msg);
@@ -196,8 +201,8 @@ class ExtTreePreview extends Component {
     const { detailFields = [], allowCreateRoot } = treeUiConfig || {};
 
     return (
-      <div style={{ height: '100%' }}>
-        <ColumnLayout title={[null, null]}>
+      <div className={cls(styles['ext-tree-preview'])}>
+        <ColumnLayout className={cls('culumn-layout')} title={[null, null]} gutter={4}>
           <TreeView
             slot="left"
             toolBar={allowCreateRoot ? this.getToolBarProps() : null}
@@ -222,7 +227,7 @@ class ExtTreePreview extends Component {
               },
             ]}
           />
-          <div slot="right" style={{ padding: '0 20px' }}>
+          <div slot="right" className={cls('detail-wrapper')}>
             {selectedNode ? (
               <Descriptions column={1} title={`结点${selectedNode.name}详情`}>
                 {detailFields.map(item => {
@@ -237,7 +242,7 @@ class ExtTreePreview extends Component {
                 })}
               </Descriptions>
             ) : (
-              '选择结点查看更详细的信息'
+              <div className={cls('hor-ver-center')}>请选择结点查看更详细的信息</div>
             )}
           </div>
         </ColumnLayout>

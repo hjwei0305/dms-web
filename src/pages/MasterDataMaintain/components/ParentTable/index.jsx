@@ -134,6 +134,12 @@ class CascadeTableMaster extends Component {
         required: true,
       },
       {
+        title: '数据结构',
+        dataIndex: 'dataStructureEnumRemark',
+        width: 80,
+        required: true,
+      },
+      {
         title: '模型分类',
         dataIndex: 'typeName',
         width: 160,

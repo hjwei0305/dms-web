@@ -48,7 +48,7 @@ class MasterDataMaintain extends Component {
       <PageWrapper loading={loading.global} className={cls(styles['container-box'])}>
         <CascadeLayout
           title={['主数据', `${currPRowData ? `${currPRowData.name}的数据` : ''}`]}
-          layout={[10, 14]}
+          layout={[8, 16]}
         >
           <ParentTable slot="left" />
           {this.getRightCmp() || (
