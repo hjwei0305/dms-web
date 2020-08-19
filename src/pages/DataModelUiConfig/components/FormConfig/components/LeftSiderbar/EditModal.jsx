@@ -40,6 +40,7 @@ class EditModal extends React.Component {
           })(
             <Select>
               <Select.Option value="ExtInput">输入框</Select.Option>
+              <Select.Option value="ExtInputNumber">数字框</Select.Option>
               <Select.Option value="ExtTextArea">文本框</Select.Option>
               <Select.Option value="ExtSwitch">布尔框</Select.Option>
               <Select.Option value="ExtDate">日期</Select.Option>

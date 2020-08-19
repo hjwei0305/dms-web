@@ -2,8 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm } from 'antd';
-import { ExtTable, utils, ExtIcon } from 'suid';
+import { utils, ExtIcon } from 'suid';
 import { constants } from '@/utils';
+import ExtTablePreview from '@/components/ExtTablePreview';
 import FormModal from './FormModal';
 import styles from '../../index.less';
 
@@ -20,7 +21,8 @@ class ChildTable extends Component {
     const { masterDataMaintain } = this.props;
     const { currPRowData } = masterDataMaintain;
     if (currPRowData && this.tableRef) {
-      this.tableRef.remoteDataRefresh();
+      // this.tableRef.remoteDataRefresh();
+      this.tableRef.reloadData();
     }
   };
 
@@ -215,14 +217,6 @@ class ChildTable extends Component {
         </Fragment>
       ),
     };
-    // tableProps.columns.forEach(it => {
-    //   const { formatter } = it;
-    //   if (formatter) {
-    //     Object.assign(it, {
-    //       render: formatters[formatter]
-    //     })
-    //   }
-    // });
     tableProps.columns = columns.concat(tableProps.columns);
     tableProps.toolBar = toolBarProps;
     tableProps.store = {
@@ -249,7 +243,11 @@ class ChildTable extends Component {
   render() {
     return (
       <div className={cls(styles['container-box'])}>
-        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
+        <ExtTablePreview
+          onRef={inst => (this.tableRef = inst)}
+          tableProps={this.getExtableProps()}
+        />
+        {/* <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} /> */}
         <FormModal {...this.getFormModalProps()} />
       </div>
     );

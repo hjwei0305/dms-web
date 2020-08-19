@@ -42,8 +42,9 @@ class EditModal extends React.Component {
             initialValue: editData && editData.formatter,
           })(
             <Select>
-              <Select.Option value="text">文本</Select.Option>
-              <Select.Option value="date">日期</Select.Option>
+              <Select.Option value="formatText">文本</Select.Option>
+              <Select.Option value="formatDate">日期</Select.Option>
+              <Select.Option value="formatBool">布尔</Select.Option>
             </Select>,
           )}
         </FormItem>

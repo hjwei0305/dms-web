@@ -94,7 +94,7 @@ class CascadeTableMaster extends Component {
     return {
       placeholder: '选择主数据分类',
       style: {
-        width: 200,
+        width: '100%',
       },
       store: {
         url: `${MDMSCONTEXT}/dataModelType/getModelTypeTree`,
@@ -148,6 +148,10 @@ class CascadeTableMaster extends Component {
     ];
 
     const toolBarProps = {
+      layout: {
+        leftSpan: 8,
+        rightSpan: 16,
+      },
       left: (
         <>
           <ComboTree afterSelect={this.handleAfterSelect} {...this.getComboTreeProps()} />
