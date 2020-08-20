@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { get, omit } from 'lodash';
+import { get, omit, cloneDeep } from 'lodash';
 import FormRender from 'form-render/lib/antd.js';
 import ExtComps from './components';
 
@@ -45,8 +45,8 @@ class ExtFormRender extends Component {
 
   render() {
     const { formData } = this.state;
-    const { uiConfig } = this.props;
-    const tempProperties = get(uiConfig, 'formItems', []);
+    const { uiConfig, editable } = this.props;
+    const tempProperties = cloneDeep(get(uiConfig, 'formItems', []));
     const properties = {};
     const required = [];
     tempProperties.forEach(item => {
@@ -54,6 +54,11 @@ class ExtFormRender extends Component {
       if (value.required) {
         required.push(key);
       }
+      let tempOptions = get(value, 'ui:options.createForm', {});
+      if (editable) {
+        tempOptions = get(value, 'ui:options.editForm', {});
+      }
+      Object.assign(value, { 'ui:options': tempOptions });
       Object.assign(properties, { [key]: value });
     });
 

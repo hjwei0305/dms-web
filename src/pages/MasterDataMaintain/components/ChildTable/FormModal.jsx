@@ -40,6 +40,7 @@ class FormModal extends PureComponent {
         <div>
           <ScrollBar>
             <ExtFormRender
+              editable={!!rowData}
               onValidate={this.handleValidate}
               onChange={this.handleFormValueChange}
               uiConfig={formUiConfig}

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Switch, Select, Input } from 'antd';
+import { Form, Switch, Select, Input, Divider } from 'antd';
 import { ExtModal } from 'suid';
 import { get } from 'lodash';
+import ColumnLayout from '@/components/Layout/ColumnLayout';
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -107,6 +108,25 @@ class EditModal extends React.Component {
             initialValue: get(editData[1], 'description'),
           })(<Input />)}
         </FormItem>
+        <Divider>新增和编辑时可不同的属性配置</Divider>
+        <ColumnLayout layout={[12, 12]} title={['新建时属性', '编辑时属性']} gutter={4}>
+          <div slot="left">
+            <FormItem label="是否只读">
+              {getFieldDecorator('ui:options.createForm.disabled', {
+                valuePropName: 'checked',
+                initialValue: get(editData[1], 'ui:options.createForm.disabled'),
+              })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
+            </FormItem>
+          </div>
+          <div slot="right">
+            <FormItem label="是否只读">
+              {getFieldDecorator('ui:options.editForm.disabled', {
+                valuePropName: 'checked',
+                initialValue: get(editData[1], 'ui:options.editForm.disabled'),
+              })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
+            </FormItem>
+          </div>
+        </ColumnLayout>
         {/* <FormItem label="支持复制" {...colFormItemLayout}>
           {getFieldDecorator('isCopy', {
             valuePropName: 'checked',
