@@ -27,13 +27,13 @@ const colFormItemLayout = {
 @Form.create()
 class RightSiderbar extends React.Component {
   handleSave = () => {
-    const { form, onEditTable, editData } = this.props;
+    const { form, onSave, editData } = this.props;
     form.validateFields((err, formData) => {
       if (err) {
         return;
       }
-      if (onEditTable) {
-        onEditTable({ ...editData, ...formData });
+      if (onSave) {
+        onSave({ ...editData, ...formData });
       }
     });
   };

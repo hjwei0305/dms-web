@@ -83,14 +83,19 @@ class TableUiConfig extends Component {
   };
 
   handleEditTable = props => {
-    const { dispatch, dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
     const { tableUiConfig = {} } = this.state;
 
     Object.assign(tableUiConfig, props);
     this.setState({
       tableUiConfig,
     });
+  };
+
+  handleSave = () => {
+    const { dispatch, dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
+    const { tableUiConfig = {} } = this.state;
+
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
@@ -111,7 +116,11 @@ class TableUiConfig extends Component {
             <Header onBack={this.handleBack} dataModel={currPRowData} />
           </div>
           <div className={cls('config-left-siderbar')}>
-            <RightSiderbar editData={tableUiConfig} onEditTable={this.handleEditTable} />
+            <RightSiderbar
+              editData={tableUiConfig}
+              onEditTable={this.handleEditTable}
+              onSave={this.handleSave}
+            />
           </div>
           <div className={cls('config-content')}>
             <LeftSiderbar

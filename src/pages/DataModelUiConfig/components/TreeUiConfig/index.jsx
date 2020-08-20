@@ -74,14 +74,19 @@ class TreeUiConfig extends Component {
   };
 
   handleEditTable = props => {
-    const { dispatch, dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
     const { treeUiConfig = {} } = this.state;
 
     Object.assign(treeUiConfig, props);
     this.setState({
       treeUiConfig,
     });
+  };
+
+  handleSave = () => {
+    const { dispatch, dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
+    const { treeUiConfig = {} } = this.state;
+
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
@@ -102,7 +107,11 @@ class TreeUiConfig extends Component {
             <Header onBack={this.handleBack} dataModel={currPRowData} />
           </div>
           <div className={cls('config-left-siderbar')}>
-            <RightSiderbar editData={treeUiConfig} onEditTable={this.handleEditTable} />
+            <RightSiderbar
+              editData={treeUiConfig}
+              onEditTable={this.handleEditTable}
+              onSave={this.handleSave}
+            />
           </div>
           <div className={cls('config-content')}>
             <LeftSiderbar
