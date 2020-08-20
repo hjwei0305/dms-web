@@ -165,13 +165,14 @@ class LeftSiderbar extends Component {
                           key={code}
                           // isDragDisabled={isDragDisabled}
                         >
-                          {(dragprovided, snapshot) => (
+                          {dragprovided => (
                             <li
                               className={cls('list-item')}
                               {...dragprovided.draggableProps}
                               {...dragprovided.dragHandleProps}
                               ref={dragprovided.innerRef}
-                              isdragging={snapshot.isDragging}
+                              // isdragging={snapshot.isDragging}
+                              title={name}
                               // isDragging={snapshot.isDragging}
                             >
                               {name}

@@ -180,6 +180,7 @@ class LeftSiderbar extends Component {
                               {...dragprovided.dragHandleProps}
                               ref={dragprovided.innerRef}
                               isdragging={snapshot.isDragging}
+                              title={title}
                               // isDragging={snapshot.isDragging}
                             >
                               {title}
