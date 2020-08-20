@@ -93,7 +93,7 @@ class CascadeTableMaster extends Component {
     return {
       placeholder: '选择主数据分类',
       style: {
-        width: '100%',
+        width: 150,
       },
       store: {
         url: `${MDMSCONTEXT}/dataModelType/getModelTypeTree`,
@@ -148,8 +148,8 @@ class CascadeTableMaster extends Component {
 
     const toolBarProps = {
       layout: {
-        leftSpan: 8,
-        rightSpan: 16,
+        leftSpan: 10,
+        rightSpan: 14,
       },
       left: (
         <>
