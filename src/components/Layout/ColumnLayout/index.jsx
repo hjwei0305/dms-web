@@ -21,7 +21,11 @@ export default class ColumnLayout extends PureComponent {
         if (['left', 'right'].includes(slot)) {
           if (slot === 'left') {
             return (
-              <Col key={slot} className={cls('layout-col', slotClassName)} span={leftSpan}>
+              <Col
+                key={slot}
+                className={cls('layout-col', 'layout-left-col', slotClassName)}
+                span={leftSpan}
+              >
                 <Card
                   className={cls({
                     'no-card-title': !leftTitle,
@@ -36,7 +40,11 @@ export default class ColumnLayout extends PureComponent {
           }
           if (slot === 'right') {
             return (
-              <Col key={slot} className={cls('layout-col', slotClassName)} span={rightSpan}>
+              <Col
+                key={slot}
+                className={cls('layout-col', 'layout-right-col', slotClassName)}
+                span={rightSpan}
+              >
                 <Card className={cls('no-card-title')} title={rightTitle} bordered={bordered}>
                   {child}
                 </Card>
