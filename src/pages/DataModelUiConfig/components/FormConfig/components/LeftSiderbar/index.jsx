@@ -149,20 +149,20 @@ class LeftSiderbar extends Component {
             )}
           </div>
           <div className={cls('content')}>
-            <ScrollBar>
-              <Droppable
-                droppableId="board"
-                type="COLUMN"
-                // direction="horizontal"
-                // ignoreContainerClipping={Boolean(containerHeight)}
-                // isCombineEnabled={isCombineEnabled}
-              >
-                {provided => (
-                  <ul
-                    className={cls('list-items')}
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
+            <Droppable
+              droppableId="board"
+              type="COLUMN"
+              // direction="horizontal"
+              // ignoreContainerClipping={Boolean(containerHeight)}
+              // isCombineEnabled={isCombineEnabled}
+            >
+              {provided => (
+                <ul
+                  className={cls('list-items')}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  <ScrollBar>
                     {formItems.map((item, index) => {
                       const [fieldName, { title }] = item;
                       // fieldName
@@ -208,16 +208,18 @@ class LeftSiderbar extends Component {
                         </Draggable>
                       );
                     })}
-                  </ul>
-                )}
-              </Droppable>
-              <div
-                className={cls({
-                  'un-assigned-wrapper': true,
-                  hide_ele: !showUnAssign,
-                })}
-              >
-                <ul className={cls('list-items')}>
+                  </ScrollBar>
+                </ul>
+              )}
+            </Droppable>
+            <div
+              className={cls({
+                'un-assigned-wrapper': true,
+                hide_ele: !showUnAssign,
+              })}
+            >
+              <ul className={cls('list-items')}>
+                <ScrollBar>
                   {fieldLists
                     .filter(it => !formItems.some(itc => itc[0] === it.code))
                     .map(item => {
@@ -236,9 +238,9 @@ class LeftSiderbar extends Component {
                         </li>
                       );
                     })}
-                </ul>
-              </div>
-            </ScrollBar>
+                </ScrollBar>
+              </ul>
+            </div>
           </div>
           {editData ? <EditModal {...this.getEditModalProps()} /> : null}
         </div>
