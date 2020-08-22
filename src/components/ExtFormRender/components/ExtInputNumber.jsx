@@ -17,7 +17,7 @@ class ExtInputNumber extends Component {
 
     return (
       <div className={cls(styles['ext-cmp-width'])}>
-        <InputNumber style={{ width: '100%' }} defaultValue={value} onChange={this.handleChange} />
+        <InputNumber style={{ width: '100%' }} value={value} onChange={this.handleChange} />
       </div>
     );
   }

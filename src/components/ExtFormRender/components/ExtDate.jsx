@@ -18,11 +18,7 @@ class ExtDate extends Component {
 
     return (
       <div className={cls(styles['ext-cmp-width'])}>
-        <DatePicker
-          style={{ width: '100%' }}
-          defaultValue={moment(value)}
-          onChange={this.handleChange}
-        />
+        <DatePicker style={{ width: '100%' }} value={moment(value)} onChange={this.handleChange} />
       </div>
     );
   }

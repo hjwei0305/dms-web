@@ -7,7 +7,7 @@ const { MDMSCONTEXT } = constants;
 
 class ExtComboGrid extends Component {
   getComboGridProps = () => {
-    const { schema } = this.props;
+    const { schema, value } = this.props;
     let store = null;
     const contextPath = get(schema, 'ExtComboGrid.dataModelCode');
     if (contextPath) {
@@ -32,6 +32,7 @@ class ExtComboGrid extends Component {
       }
     });
     return {
+      value,
       store,
       reader: {
         name: showField,

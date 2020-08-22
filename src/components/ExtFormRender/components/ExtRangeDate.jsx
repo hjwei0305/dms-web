@@ -18,7 +18,7 @@ class ExtRangeDate extends Component {
 
     return (
       <div className={cls(styles['ext-cmp-width'])}>
-        <DatePicker defaultValue={moment(value)} onChange={this.handleChange} />
+        <DatePicker value={moment(value)} onChange={this.handleChange} />
       </div>
     );
   }

@@ -19,7 +19,7 @@ class ExtTextArea extends Component {
 
     return (
       <div className={cls(styles['ext-cmp-width'])}>
-        <TextArea rows={3} defaultValue={value} onChange={this.handleChange} />
+        <TextArea rows={3} value={value} onChange={this.handleChange} />
       </div>
     );
   }
