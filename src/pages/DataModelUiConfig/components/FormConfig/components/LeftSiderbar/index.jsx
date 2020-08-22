@@ -4,7 +4,8 @@ import { cloneDeep, get } from 'lodash';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
-import EditModal from './EditModal';
+// import EditModal from './EditModal';
+import EditDrawer from './EditDrawer';
 
 import styles from './index.less';
 
@@ -104,10 +105,11 @@ class LeftSiderbar extends Component {
   };
 
   getEditModalProps = () => {
-    const { editData } = this.state;
+    const { editData, fieldLists } = this.state;
 
     return {
       editData,
+      fieldLists,
       onCancel: this.handleCancel,
       onSave: this.handleEditFormItem,
     };
@@ -242,7 +244,7 @@ class LeftSiderbar extends Component {
               </ul>
             </div>
           </div>
-          {editData ? <EditModal {...this.getEditModalProps()} /> : null}
+          {editData ? <EditDrawer {...this.getEditModalProps()} /> : null}
         </div>
       </DragDropContext>
     );

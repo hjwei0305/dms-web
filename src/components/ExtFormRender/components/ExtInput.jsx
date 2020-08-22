@@ -17,7 +17,7 @@ class ExtInput extends Component {
 
     return (
       <div className={cls(styles['ext-cmp-width'])}>
-        <Input {...options} defaultValue={value} onChange={this.handleChange} />
+        <Input {...options} value={value} onChange={this.handleChange} />
       </div>
     );
   }

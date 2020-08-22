@@ -45,7 +45,13 @@ export default class ColumnLayout extends PureComponent {
                 className={cls('layout-col', 'layout-right-col', slotClassName)}
                 span={rightSpan}
               >
-                <Card className={cls('no-card-title')} title={rightTitle} bordered={bordered}>
+                <Card
+                  className={cls({
+                    'no-card-title': !rightTitle,
+                  })}
+                  title={rightTitle}
+                  bordered={bordered}
+                >
                   {child}
                 </Card>
               </Col>

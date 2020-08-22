@@ -1,8 +1,10 @@
 import React from 'react';
-import { Form, Switch, Select, Input, Divider } from 'antd';
-import { ExtModal } from 'suid';
+import { Form, Switch, Select, Input, Divider, Button, Drawer } from 'antd';
 import { get } from 'lodash';
+import { ComboList } from 'suid';
+import { constants } from '@/utils';
 import ColumnLayout from '@/components/Layout/ColumnLayout';
+import ExtComboTableUiConfig from './ExtComboTableUiConfig';
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -13,9 +15,10 @@ const formItemLayout = {
     span: 16,
   },
 };
+const { MDMSCONTEXT } = constants;
 
 @Form.create()
-class EditModal extends React.Component {
+class EditDrawer extends React.Component {
   handleSave = () => {
     const { form, onSave, editData } = this.props;
     form.validateFields((err, formData) => {
@@ -29,8 +32,29 @@ class EditModal extends React.Component {
     });
   };
 
+  getComboListProps = () => {
+    const { form } = this.props;
+    return {
+      form,
+      name: 'ExtComboGrid.dataModelName',
+      store: {
+        type: 'POST',
+        autoLoad: false,
+        url: `${MDMSCONTEXT}/masterDataUiConfig/getRegisterDataByPage`,
+      },
+      rowKey: 'id',
+      reader: {
+        name: 'name',
+        description: 'dataStructure',
+        field: ['code'],
+      },
+      field: ['ExtComboGrid.dataModelCode'],
+      remotePaging: true,
+    };
+  };
+
   getContent = () => {
-    const { form, editData } = this.props;
+    const { form, editData, fieldLists } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
 
     return (
@@ -52,28 +76,29 @@ class EditModal extends React.Component {
         </FormItem>
         {getFieldValue('ui:widget') === 'ExtComboGrid' ? (
           <>
-            <FormItem label="请求类型">
-              {getFieldDecorator('ExtComboGrid.store.type', {
-                initialValue: get(editData[1], 'ExtComboGrid.store.type', 'POST'),
-              })(
-                <Select>
-                  <Select.Option value="POST">POST</Select.Option>
-                  <Select.Option value="GET">GET</Select.Option>
-                </Select>,
-              )}
-            </FormItem>
-            <FormItem label="请求地址">
-              {getFieldDecorator('ExtComboGrid.store.url', {
-                initialValue: get(editData[1], 'ExtComboGrid.store.url'),
+            <FormItem style={{ display: 'none' }}>
+              {getFieldDecorator('ExtComboGrid.dataModelCode', {
+                initialValue: get(editData[1], 'ExtComboGrid.dataModelCode'),
               })(<Input />)}
             </FormItem>
-            <FormItem label="远程分页">
-              {getFieldDecorator('ExtComboGrid.remotePaging', {
-                valuePropName: 'checked',
-                initialValue: get(editData[1], 'ExtComboGrid.remotePaging', true),
-              })(<Switch />)}
+            <FormItem label="关联数据源">
+              {getFieldDecorator('ExtComboGrid.dataModelName', {
+                initialValue: get(editData[1], 'ExtComboGrid.dataModelName'),
+              })(<ComboList {...this.getComboListProps()} />)}
             </FormItem>
-            <FormItem label="表格列">
+            {getFieldValue('ExtComboGrid.dataModelCode') ? (
+              <FormItem label="下拉表格配置">
+                {getFieldDecorator('ExtComboGrid.cfg', {
+                  initialValue: get(editData[1], 'ExtComboGrid.cfg', []),
+                })(
+                  <ExtComboTableUiConfig
+                    mapFieldLists={fieldLists}
+                    dataModelCode={getFieldValue('ExtComboGrid.dataModelCode')}
+                  />,
+                )}
+              </FormItem>
+            ) : null}
+            {/* <FormItem label="表格列">
               {getFieldDecorator('ExtComboGrid.columns', {
                 initialValue: get(editData[1], 'ExtComboGrid.columns'),
               })(<Input />)}
@@ -87,7 +112,7 @@ class EditModal extends React.Component {
               {getFieldDecorator('ExtComboGrid.submitFields', {
                 initialValue: get(editData[1], 'ExtComboGrid.submitFields'),
               })(<Input />)}
-            </FormItem>
+            </FormItem> */}
           </>
         ) : null}
         {/* <FormItem label="格式化">
@@ -148,16 +173,38 @@ class EditModal extends React.Component {
     const [, { title }] = editData;
 
     return (
-      <ExtModal
-        visible={!!editData}
+      <Drawer
+        width={720}
+        placement="left"
         title={`编辑表单元素【${title}】`}
-        onCancel={onCancel}
-        onOk={this.handleSave}
+        onClose={onCancel}
+        visible={!!editData}
+        bodyStyle={{ paddingBottom: 80 }}
+        maskClosable={false}
       >
         {this.getContent()}
-      </ExtModal>
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
+            width: '100%',
+            borderTop: '1px solid #e9e9e9',
+            padding: '10px 16px',
+            background: '#fff',
+            textAlign: 'right',
+          }}
+        >
+          <Button onClick={onCancel} style={{ marginRight: 8 }}>
+            取消
+          </Button>
+          <Button onClick={this.handleSave} type="primary">
+            保存
+          </Button>
+        </div>
+      </Drawer>
     );
   }
 }
 
-export default EditModal;
+export default EditDrawer;

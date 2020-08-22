@@ -1,27 +1,63 @@
 import React, { Component } from 'react';
 import { get } from 'lodash';
 import { ComboGrid } from 'suid';
+import { constants } from '@/utils';
+
+const { MDMSCONTEXT } = constants;
 
 class ExtComboGrid extends Component {
   getComboGridProps = () => {
     const { schema } = this.props;
-    const columns = JSON.parse(get(schema, 'ExtComboGrid.columns', '[]'));
+    let store = null;
+    const contextPath = get(schema, 'ExtComboGrid.dataModelCode');
+    if (contextPath) {
+      store = {
+        type: 'POST',
+        url: `${MDMSCONTEXT}/${contextPath}/findByPage`,
+      };
+    }
+    const FieldItems = get(schema, 'ExtComboGrid.cfg', '[]');
+    const columns = [];
+    let showField = '';
+    FieldItems.forEach(it => {
+      const { hidden, isShowField, name, code } = it;
+      if (!hidden) {
+        columns.push({
+          title: name,
+          dataIndex: code,
+        });
+      }
+      if (isShowField) {
+        showField = code;
+      }
+    });
     return {
-      ...get(schema, 'ExtComboGrid'),
+      store,
       reader: {
-        name: get(schema, 'ExtComboGrid.showField', 'name'),
+        name: showField,
       },
       columns,
+      remotePaging: true,
     };
   };
 
   handleAfterSelected = item => {
-    const { name, onChange, schema, rootValue } = this.props;
-    console.log('ExtComboGrid -> rootValue', rootValue);
-    console.log('ExtComboGrid -> schema', schema);
-    const showField = get(schema, 'ExtComboGrid.showField', 'name');
-    const submitFields = JSON.parse(get(schema, 'ExtComboGrid.submitFields', '[]'));
-    console.log('ExtComboGrid -> handleAfterSelected -> item', item);
+    const { name, onChange, schema } = this.props;
+    const FieldItems = get(schema, 'ExtComboGrid.cfg', '[]');
+    const submitFields = [];
+    let showField = '';
+    FieldItems.forEach(it => {
+      const { sumitField, isSubmit, code, isShowField } = it;
+      if (isSubmit) {
+        submitFields.push({
+          from: code,
+          to: sumitField,
+        });
+      }
+      if (isShowField) {
+        showField = code;
+      }
+    });
     if (onChange) {
       if (submitFields && submitFields.length) {
         const tempValue = {
