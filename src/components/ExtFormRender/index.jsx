@@ -28,7 +28,6 @@ class ExtFormRender extends Component {
       Object.assign(tempFormData, { ...formData[key] });
     });
     const submitData = { ...omit(formData, keys), ...tempFormData };
-    console.log('ExtFormRender -> submitData', formData);
     this.setState({ formData: submitData }, () => {
       const { onChange } = this.props;
       if (onChange) {
