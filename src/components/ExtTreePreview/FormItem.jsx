@@ -15,7 +15,7 @@ class FormItems extends PureComponent {
     if (this.valids && !this.valids.length && onSave) {
       const params = { ...editData, ...this.formValues };
       if (parentData) {
-        Object.assign(params, { parentId: parentData.id, countryId: parentData.countryId });
+        Object.assign(params, { parentId: parentData.id });
       }
       onSave(params);
     }
