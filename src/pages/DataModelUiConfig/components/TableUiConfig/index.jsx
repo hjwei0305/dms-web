@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
 // import { message, } from 'antd';
-import { get } from 'lodash';
+import { get, cloneDeep, isEqual } from 'lodash';
 import PageWrapper from '@/components/PageWrapper';
 import { constants } from '@/utils';
 import Header from './components/Header';
@@ -35,6 +35,7 @@ class TableUiConfig extends Component {
         };
     this.state = {
       tableUiConfig,
+      oldTableUiConfig: cloneDeep(tableUiConfig),
     };
   }
 
@@ -96,6 +97,10 @@ class TableUiConfig extends Component {
     const { modelUiConfig } = dataModelUiConfig;
     const { tableUiConfig = {} } = this.state;
 
+    this.setState({
+      oldTableUiConfig: cloneDeep(tableUiConfig),
+    });
+
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
@@ -107,13 +112,18 @@ class TableUiConfig extends Component {
   render() {
     const { dataModelUiConfig, loading } = this.props;
     const { currPRowData } = dataModelUiConfig;
-    const { tableUiConfig } = this.state;
+    const { tableUiConfig, oldTableUiConfig } = this.state;
 
     return (
       <PageWrapper loading={loading.global}>
         <div className={cls(styles['visual-page-config'])}>
           <div className={cls('config-header')}>
-            <Header onBack={this.handleBack} dataModel={currPRowData} />
+            <Header
+              hasUpdate={!isEqual(tableUiConfig, oldTableUiConfig)}
+              onSave={this.handleSave}
+              onBack={this.handleBack}
+              dataModel={currPRowData}
+            />
           </div>
           <div className={cls('config-left-siderbar')}>
             <RightSiderbar

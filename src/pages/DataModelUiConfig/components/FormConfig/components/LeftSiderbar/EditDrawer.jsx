@@ -138,6 +138,12 @@ class EditDrawer extends React.Component {
             initialValue: get(editData[optKey], 'ui:options.disabled'),
           })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
         </FormItem>
+        <FormItem label="是否隐藏">
+          {getFieldDecorator('ui:hidden', {
+            valuePropName: 'checked',
+            initialValue: get(editData[optKey], 'ui:hidden'),
+          })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
+        </FormItem>
         <FormItem label="描述">
           {getFieldDecorator('description', {
             initialValue: get(editData[optKey], 'description'),

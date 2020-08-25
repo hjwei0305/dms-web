@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
 import { Tabs } from 'antd';
-import { get } from 'lodash';
+import { get, isEqual, cloneDeep } from 'lodash';
 import ExtFormRender from '@/components/ExtFormRender';
 import PageWrapper from '@/components/PageWrapper';
 import Header from './components/Header';
@@ -28,6 +28,7 @@ class FormUiConfig extends Component {
         };
     this.state = {
       formUiConfig,
+      oldFormUiConfig: cloneDeep(formUiConfig),
     };
   }
 
@@ -88,6 +89,10 @@ class FormUiConfig extends Component {
     const { modelUiConfig } = dataModelUiConfig;
     const { formUiConfig } = this.state;
 
+    this.setState({
+      oldFormUiConfig: cloneDeep(formUiConfig),
+    });
+
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
@@ -99,14 +104,19 @@ class FormUiConfig extends Component {
   render() {
     const { dataModelUiConfig, loading } = this.props;
     const { currPRowData } = dataModelUiConfig;
-    const { formUiConfig } = this.state;
+    const { formUiConfig, oldFormUiConfig } = this.state;
     const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
 
     return (
       <PageWrapper loading={loading.global}>
         <div className={cls(styles['visual-page-config'])}>
           <div className={cls('config-header')}>
-            <Header onBack={this.handleBack} dataModel={currPRowData} />
+            <Header
+              hasUpdate={!isEqual(formUiConfig, oldFormUiConfig)}
+              onSave={this.handleSave}
+              onBack={this.handleBack}
+              dataModel={currPRowData}
+            />
           </div>
           <div className={cls('config-left-siderbar')}>
             <RightSiderbar

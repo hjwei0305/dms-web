@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
-import { get } from 'lodash';
+import { get, cloneDeep, isEqual } from 'lodash';
 import PageWrapper from '@/components/PageWrapper';
 import Header from './components/Header';
 import Content from './components/Content';
@@ -26,6 +26,7 @@ class TreeUiConfig extends Component {
         };
     this.state = {
       treeUiConfig,
+      oldTreeUiConfig: cloneDeep(treeUiConfig),
     };
   }
 
@@ -87,6 +88,10 @@ class TreeUiConfig extends Component {
     const { modelUiConfig } = dataModelUiConfig;
     const { treeUiConfig = {} } = this.state;
 
+    this.setState({
+      oldTreeUiConfig: cloneDeep(treeUiConfig),
+    });
+
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
@@ -98,13 +103,18 @@ class TreeUiConfig extends Component {
   render() {
     const { dataModelUiConfig, loading } = this.props;
     const { currPRowData } = dataModelUiConfig;
-    const { treeUiConfig } = this.state;
+    const { treeUiConfig, oldTreeUiConfig } = this.state;
 
     return (
       <PageWrapper loading={loading.global}>
         <div className={cls(styles['visual-page-config'])}>
           <div className={cls('config-header')}>
-            <Header onBack={this.handleBack} dataModel={currPRowData} />
+            <Header
+              hasUpdate={!isEqual(treeUiConfig, oldTreeUiConfig)}
+              onSave={this.handleSave}
+              onBack={this.handleBack}
+              dataModel={currPRowData}
+            />
           </div>
           <div className={cls('config-left-siderbar')}>
             <RightSiderbar
