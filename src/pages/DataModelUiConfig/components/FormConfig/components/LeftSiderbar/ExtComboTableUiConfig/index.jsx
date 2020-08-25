@@ -81,6 +81,7 @@ class ExtComboTableUiConfig extends Component {
   };
 
   onDragEnd = result => {
+    const { onChange } = this.props;
     const { destination, source } = result;
     const { uiCfgItems } = this.state;
     const tempUiCfgItems = uiCfgItems ? cloneDeep(uiCfgItems) : [];
@@ -88,9 +89,16 @@ class ExtComboTableUiConfig extends Component {
       const arrItem = tempUiCfgItems[destination.index];
       tempUiCfgItems[destination.index] = tempUiCfgItems[source.index];
       tempUiCfgItems[source.index] = arrItem;
-      this.setState({
-        uiCfgItems: tempUiCfgItems,
-      });
+      this.setState(
+        {
+          uiCfgItems: tempUiCfgItems,
+        },
+        () => {
+          if (onChange) {
+            onChange(tempUiCfgItems);
+          }
+        },
+      );
     }
   };
 
