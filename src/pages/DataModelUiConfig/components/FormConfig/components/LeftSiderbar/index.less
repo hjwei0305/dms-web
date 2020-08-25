@@ -64,7 +64,30 @@
             position: absolute;
             top: 6px;
             right: 8px;
-            display: none;
+            .icon-wrapper {
+              display: inline-block;
+              padding: 2px 6px;
+              text-align: center;
+              visibility: hidden;
+              &:hover {
+                background-color: #efeaea;
+                cursor: pointer;
+                > i {
+                  color: #1890ff;
+                }
+                > .del {
+                  color: red;
+                }
+              }
+            }
+            .ant-dropdown-open {
+              background-color: #efeaea;
+              visibility: visible !important;
+              cursor: pointer;
+              > i {
+                color: #1890ff;
+              }
+            }
           }
           &:hover {
             cursor: move;
@@ -72,19 +95,7 @@
             .list-item-extra {
               display: inline-block;
               .icon-wrapper {
-                display: inline-block;
-                padding: 2px 6px;
-                text-align: center;
-                &:hover {
-                  background-color: #efeaea;
-                  cursor: pointer;
-                  > i {
-                    color: #1890ff;
-                  }
-                  > .del {
-                    color: red;
-                  }
-                }
+                visibility: visible;
               }
             }
           }

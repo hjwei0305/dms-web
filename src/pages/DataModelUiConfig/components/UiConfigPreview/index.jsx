@@ -4,6 +4,8 @@ import { connect } from 'dva';
 import { Tabs, Button } from 'antd';
 import { get } from 'lodash';
 import { constants } from '@/utils';
+import ColumnLayout from '@/components/Layout/ColumnLayout';
+import ThreeColumnLayout from '@/components/Layout/ThreeColumnLayout';
 import ExtFormRender from '@/components/ExtFormRender';
 import ExtTablePreview from '@/components/ExtTablePreview';
 import ExtTreePreview from '@/components/ExtTreePreview';
@@ -56,6 +58,62 @@ class UiConfigPreview extends Component {
     }
   };
 
+  getFormPreview = () => {
+    const { dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
+    const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', ''));
+    const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
+    if (canCreateRoot) {
+      return (
+        <ThreeColumnLayout
+          gutter={4}
+          title={['新建子结点表单', '编辑子结点表单', '创建根结点表单']}
+        >
+          <ExtFormRender
+            slot="left"
+            uiConfig={{
+              ...formUiConfig,
+              ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
+            }}
+          />
+          <ExtFormRender
+            slot="center"
+            uiConfig={{
+              ...formUiConfig,
+              ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[2]]) },
+            }}
+          />
+          <ExtFormRender
+            slot="right"
+            uiConfig={{
+              ...formUiConfig,
+              ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[3]]) },
+            }}
+          />
+        </ThreeColumnLayout>
+      );
+    }
+
+    return (
+      <ColumnLayout gutter={4} layout={[12, 12]} title={['新建表单', '编辑表单']}>
+        <ExtFormRender
+          slot="left"
+          uiConfig={{
+            ...formUiConfig,
+            ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
+          }}
+        />
+        <ExtFormRender
+          slot="right"
+          uiConfig={{
+            ...formUiConfig,
+            ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[2]]) },
+          }}
+        />
+      </ColumnLayout>
+    );
+  };
+
   render() {
     const { activeKey } = this.state;
     const { dataModelUiConfig } = this.props;
@@ -63,6 +121,7 @@ class UiConfigPreview extends Component {
     const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', ''));
     const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', ''));
     const dataStructure = get(modelUiConfig, 'dataStructure', 'LIST');
+    // const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
 
     return (
       <div
@@ -110,7 +169,7 @@ class UiConfigPreview extends Component {
           </TabPane>
           <TabPane tab="表单配置预览" key="formUi">
             {formUiConfig ? (
-              <ExtFormRender uiConfig={formUiConfig} />
+              this.getFormPreview()
             ) : (
               <span className={cls('ele-center')}>
                 暂无表单配置{' '}

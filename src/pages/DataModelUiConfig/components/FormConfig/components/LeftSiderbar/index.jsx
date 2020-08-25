@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { cloneDeep, get } from 'lodash';
+import { Dropdown, Menu } from 'antd';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
@@ -14,6 +15,7 @@ class LeftSiderbar extends Component {
     fieldLists: [],
     showUnAssign: false,
     editData: null,
+    optKey: null,
   };
 
   componentDidMount() {
@@ -43,18 +45,29 @@ class LeftSiderbar extends Component {
   };
 
   handleAddFormItem = item => {
-    const { code, name } = item;
     const { onFormItemChange, uiConfig } = this.props;
+    const { code, name } = item;
     const { formItems } = uiConfig || {};
     const tempFormItems = formItems ? cloneDeep(formItems) : [];
-    tempFormItems.push([
-      code,
+    const tempFormItem = [
+      {
+        code,
+        name,
+      },
       {
         title: name,
-        // type: 'string'
         'ui:widget': 'ExtInput',
       },
-    ]);
+      {
+        title: name,
+        'ui:widget': 'ExtInput',
+      },
+      {
+        title: name,
+        'ui:widget': 'ExtInput',
+      },
+    ];
+    tempFormItems.push(tempFormItem);
     if (onFormItemChange) {
       onFormItemChange(tempFormItems);
     }
@@ -67,9 +80,10 @@ class LeftSiderbar extends Component {
     }
   };
 
-  handleToggoleEditModal = editData => {
+  handleToggoleEditModal = (optKey, editData) => {
     this.setState({
       editData,
+      optKey,
     });
   };
 
@@ -105,18 +119,49 @@ class LeftSiderbar extends Component {
   };
 
   getEditModalProps = () => {
-    const { editData, fieldLists } = this.state;
+    const { editData, fieldLists, optKey } = this.state;
 
     return {
       editData,
+      optKey,
       fieldLists,
       onCancel: this.handleCancel,
       onSave: this.handleEditFormItem,
     };
   };
 
+  getMenus = item => {
+    const { uiConfig } = this.props;
+    const canCreateRoot = get(uiConfig, 'canCreateRoot', false);
+    if (canCreateRoot) {
+      return (
+        <Menu
+          onClick={({ key }) => {
+            this.handleToggoleEditModal(key, item);
+          }}
+        >
+          <Menu.Item key="1">新建操作表单项配置</Menu.Item>
+          <Menu.Divider />
+          <Menu.Item key="2">编辑操作表单项配置</Menu.Item>
+          <Menu.Item key="3">新建根结点操作的表单项配置</Menu.Item>
+        </Menu>
+      );
+    }
+
+    return (
+      <Menu
+        onClick={({ key }) => {
+          this.handleToggoleEditModal(key, item);
+        }}
+      >
+        <Menu.Item key="1">新建表单配置</Menu.Item>
+        <Menu.Item key="2">编辑表单配置</Menu.Item>
+      </Menu>
+    );
+  };
+
   render() {
-    const { fieldLists, showUnAssign, editData } = this.state;
+    const { fieldLists, showUnAssign, editData, optKey } = this.state;
     const { uiConfig } = this.props;
     const formItems = get(uiConfig, 'formItems', []);
 
@@ -166,8 +211,7 @@ class LeftSiderbar extends Component {
                 >
                   <ScrollBar>
                     {formItems.map((item, index) => {
-                      const [fieldName, { title }] = item;
-                      // fieldName
+                      const [{ code: fieldName, name: title }] = item;
                       return (
                         <Draggable
                           draggableId={fieldName}
@@ -187,14 +231,16 @@ class LeftSiderbar extends Component {
                             >
                               {title}
                               <span className={cls('list-item-extra')}>
-                                <span className={cls('icon-wrapper')}>
-                                  <ExtIcon
-                                    type="edit"
-                                    tooltip={{ title: '编辑' }}
-                                    onClick={() => this.handleToggoleEditModal(item)}
-                                    antd
-                                  />
-                                </span>
+                                <Dropdown trigger={['click']} overlay={this.getMenus(item)}>
+                                  <span className={cls('icon-wrapper')}>
+                                    <ExtIcon
+                                      type="edit"
+                                      tooltip={{ title: '编辑' }}
+                                      // onClick={() => this.handleToggoleEditModal(item)}
+                                      antd
+                                    />
+                                  </span>
+                                </Dropdown>
                                 <span className={cls('icon-wrapper')}>
                                   <ExtIcon
                                     type="delete"
@@ -223,7 +269,7 @@ class LeftSiderbar extends Component {
               <ul className={cls('list-items')}>
                 <ScrollBar>
                   {fieldLists
-                    .filter(it => !formItems.some(itc => itc[0] === it.code))
+                    .filter(it => !formItems.some(itc => itc[0].code === it.code))
                     .map(item => {
                       const { code, name } = item;
                       return (
@@ -244,7 +290,7 @@ class LeftSiderbar extends Component {
               </ul>
             </div>
           </div>
-          {editData ? <EditDrawer {...this.getEditModalProps()} /> : null}
+          {editData ? <EditDrawer key={optKey} {...this.getEditModalProps()} /> : null}
         </div>
       </DragDropContext>
     );

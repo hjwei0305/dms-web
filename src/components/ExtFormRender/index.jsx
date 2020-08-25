@@ -45,20 +45,15 @@ class ExtFormRender extends Component {
 
   render() {
     const { formData } = this.state;
-    const { uiConfig, editable } = this.props;
+    const { uiConfig } = this.props;
     const tempProperties = cloneDeep(get(uiConfig, 'formItems', []));
     const properties = {};
     const required = [];
     tempProperties.forEach(item => {
-      const [key, value] = item;
+      const [{ code: key }, value = {}] = item;
       if (value.required) {
         required.push(key);
       }
-      let tempOptions = get(value, 'ui:options.createForm', {});
-      if (editable) {
-        tempOptions = get(value, 'ui:options.editForm', {});
-      }
-      Object.assign(value, { 'ui:options': tempOptions });
       Object.assign(properties, { [key]: value });
     });
 

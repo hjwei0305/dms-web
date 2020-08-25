@@ -20,14 +20,13 @@ class ExtComboTableUiConfig extends Component {
   }
 
   componentDidMount() {
-    this.getPropertiesByCode().then(result => {
-      const { success, data } = result;
-      if (success) {
-        this.setState({
-          fieldLists: data || [],
-        });
-      }
-    });
+    this.getPropertiesByCode();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.dataModelCode !== this.props.dataModelCode) {
+      this.getPropertiesByCode();
+    }
   }
 
   handleSave = item => {
@@ -101,6 +100,13 @@ class ExtComboTableUiConfig extends Component {
 
     return getPropertiesByCode({
       code: dataModelCode,
+    }).then(result => {
+      const { success, data } = result;
+      if (success) {
+        this.setState({
+          fieldLists: data || [],
+        });
+      }
     });
   };
 

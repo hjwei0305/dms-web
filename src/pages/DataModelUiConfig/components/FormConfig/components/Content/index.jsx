@@ -12,6 +12,8 @@ class Content extends Component {
 
   render() {
     const { uiConfig, formData } = this.props;
+    console.log('Content -> render -> uiConfig', uiConfig);
+    console.log('Content -> render -> formData', formData);
 
     return (
       <ExtFormRender

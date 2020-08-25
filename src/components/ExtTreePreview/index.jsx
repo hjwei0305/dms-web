@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Button, message, Descriptions } from 'antd';
 import cls from 'classnames';
 import { utils } from 'suid';
-import { isPlainObject, isArray } from 'lodash';
+import { isPlainObject, isArray, get } from 'lodash';
 import TreeView from '@/components/TreeView';
 import ColumnLayout from '@/components/Layout/ColumnLayout';
 import { constants } from '@/utils';
@@ -181,7 +181,10 @@ class ExtTreePreview extends Component {
     return {
       parentData,
       editData,
-      formUiConfig,
+      formUiConfig: {
+        ...formUiConfig,
+        ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[3]]) },
+      },
       saving: loading.saving,
       onSave: this.handleSave,
       visible: showCreateModal,
@@ -197,15 +200,16 @@ class ExtTreePreview extends Component {
 
   render() {
     const { showCreateModal, treeData, selectedNode } = this.state;
-    const { treeUiConfig } = this.props;
-    const { detailFields = [], allowCreateRoot } = treeUiConfig || {};
+    const { treeUiConfig, formUiConfig } = this.props;
+    const { detailFields = [] } = treeUiConfig || {};
+    const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
 
     return (
       <div className={cls(styles['ext-tree-preview'])}>
         <ColumnLayout className={cls('culumn-layout')} title={[null, null]} gutter={4}>
           <TreeView
             slot="left"
-            toolBar={allowCreateRoot ? this.getToolBarProps() : null}
+            toolBar={canCreateRoot ? this.getToolBarProps() : null}
             treeData={treeData}
             onSelect={this.handleSelect}
             iconOpts={[

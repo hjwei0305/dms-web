@@ -83,7 +83,11 @@ class EditForm extends Component {
               <Select>
                 {mapFieldLists.map(it => {
                   const { code, name } = it;
-                  return <Select.Option value={code}>{name}</Select.Option>;
+                  return (
+                    <Select.Option key={code} value={code}>
+                      {name}
+                    </Select.Option>
+                  );
                 })}
               </Select>,
             )}

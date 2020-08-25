@@ -28,7 +28,6 @@ class RightSiderbar extends React.Component {
       if (onSave) {
         onSave({ ...editData, ...formData });
       }
-      // this.updateUiConfig({ ...editData, ...formData });
     });
   };
 
@@ -55,7 +54,7 @@ class RightSiderbar extends React.Component {
   };
 
   render() {
-    const { editData, form } = this.props;
+    const { editData, form, dataModel } = this.props;
     const { getFieldDecorator } = form;
 
     return (
@@ -119,6 +118,20 @@ class RightSiderbar extends React.Component {
               />,
             )}
           </FormItem>
+          {get(dataModel, 'dataStructure', 'LIST') === 'TREE' ? (
+            <FormItem label="允许创建根节点">
+              {getFieldDecorator('canCreateRoot', {
+                valuePropName: 'checked',
+                initialValue: get(editData, 'canCreateRoot', false),
+              })(
+                <Switch
+                  onChange={canCreateRoot => {
+                    this.updateUiConfig({ canCreateRoot });
+                  }}
+                />,
+              )}
+            </FormItem>
+          ) : null}
           <FormItem
             label="描述"
             style={{

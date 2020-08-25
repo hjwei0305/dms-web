@@ -1,9 +1,8 @@
 import React from 'react';
-import { Form, Switch, Select, Input, Divider, Button, Drawer } from 'antd';
+import { Form, Switch, Select, Input, Button, Drawer } from 'antd';
 import { get } from 'lodash';
 import { ComboList } from 'suid';
 import { constants } from '@/utils';
-import ColumnLayout from '@/components/Layout/ColumnLayout';
 import ExtComboTableUiConfig from './ExtComboTableUiConfig';
 
 const FormItem = Form.Item;
@@ -20,13 +19,13 @@ const { MDMSCONTEXT } = constants;
 @Form.create()
 class EditDrawer extends React.Component {
   handleSave = () => {
-    const { form, onSave, editData } = this.props;
+    const { form, onSave, editData, optKey } = this.props;
     form.validateFields((err, formData) => {
       if (err) {
         return;
       }
       if (onSave) {
-        Object.assign(editData[1], formData);
+        Object.assign(editData[optKey], formData);
         onSave(editData);
       }
     });
@@ -54,14 +53,14 @@ class EditDrawer extends React.Component {
   };
 
   getContent = () => {
-    const { form, editData, fieldLists } = this.props;
+    const { form, editData, fieldLists, optKey } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
 
     return (
       <Form {...formItemLayout}>
         <FormItem label="表单类型">
           {getFieldDecorator('ui:widget', {
-            initialValue: get(editData[1], 'ui:widget'),
+            initialValue: get(editData[optKey], 'ui:widget'),
           })(
             <Select>
               <Select.Option value="ExtInput">输入框</Select.Option>
@@ -78,18 +77,18 @@ class EditDrawer extends React.Component {
           <>
             <FormItem style={{ display: 'none' }}>
               {getFieldDecorator('ExtComboGrid.dataModelCode', {
-                initialValue: get(editData[1], 'ExtComboGrid.dataModelCode'),
+                initialValue: get(editData[optKey], 'ExtComboGrid.dataModelCode'),
               })(<Input />)}
             </FormItem>
             <FormItem label="关联数据源">
               {getFieldDecorator('ExtComboGrid.dataModelName', {
-                initialValue: get(editData[1], 'ExtComboGrid.dataModelName'),
+                initialValue: get(editData[optKey], 'ExtComboGrid.dataModelName'),
               })(<ComboList {...this.getComboListProps()} />)}
             </FormItem>
             {getFieldValue('ExtComboGrid.dataModelCode') ? (
               <FormItem label="下拉表格配置">
                 {getFieldDecorator('ExtComboGrid.cfg', {
-                  initialValue: get(editData[1], 'ExtComboGrid.cfg', []),
+                  initialValue: get(editData[optKey], 'ExtComboGrid.cfg', []),
                 })(
                   <ExtComboTableUiConfig
                     mapFieldLists={fieldLists}
@@ -100,24 +99,24 @@ class EditDrawer extends React.Component {
             ) : null}
             {/* <FormItem label="表格列">
               {getFieldDecorator('ExtComboGrid.columns', {
-                initialValue: get(editData[1], 'ExtComboGrid.columns'),
+                initialValue: get(editData[optKey], 'ExtComboGrid.columns'),
               })(<Input />)}
             </FormItem>
             <FormItem label="显示字段">
               {getFieldDecorator('ExtComboGrid.showField', {
-                initialValue: get(editData[1], 'ExtComboGrid.showField'),
+                initialValue: get(editData[optKey], 'ExtComboGrid.showField'),
               })(<Input />)}
             </FormItem>
             <FormItem label="提交字段">
               {getFieldDecorator('ExtComboGrid.submitFields', {
-                initialValue: get(editData[1], 'ExtComboGrid.submitFields'),
+                initialValue: get(editData[optKey], 'ExtComboGrid.submitFields'),
               })(<Input />)}
             </FormItem> */}
           </>
         ) : null}
         {/* <FormItem label="格式化">
           {getFieldDecorator('format', {
-            initialValue: get(editData[1], 'format'),
+            initialValue: get(editData[optKey], 'format'),
           })(<Select>
             <Select.Option value="date">日期</Select.Option>
           </Select>)}
@@ -125,33 +124,20 @@ class EditDrawer extends React.Component {
         <FormItem label="是否必输">
           {getFieldDecorator('required', {
             valuePropName: 'checked',
-            initialValue: get(editData[1], 'required'),
+            initialValue: get(editData[optKey], 'required'),
+          })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
+        </FormItem>
+        <FormItem label="是否只读">
+          {getFieldDecorator('ui:options.disabled', {
+            valuePropName: 'checked',
+            initialValue: get(editData[optKey], 'ui:options.disabled'),
           })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
         </FormItem>
         <FormItem label="描述">
           {getFieldDecorator('description', {
-            initialValue: get(editData[1], 'description'),
+            initialValue: get(editData[optKey], 'description'),
           })(<Input />)}
         </FormItem>
-        <Divider>新增和编辑时可不同的属性配置</Divider>
-        <ColumnLayout layout={[12, 12]} title={['新建时属性', '编辑时属性']} gutter={4}>
-          <div slot="left">
-            <FormItem label="是否只读">
-              {getFieldDecorator('ui:options.createForm.disabled', {
-                valuePropName: 'checked',
-                initialValue: get(editData[1], 'ui:options.createForm.disabled'),
-              })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
-            </FormItem>
-          </div>
-          <div slot="right">
-            <FormItem label="是否只读">
-              {getFieldDecorator('ui:options.editForm.disabled', {
-                valuePropName: 'checked',
-                initialValue: get(editData[1], 'ui:options.editForm.disabled'),
-              })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
-            </FormItem>
-          </div>
-        </ColumnLayout>
         {/* <FormItem label="支持复制" {...colFormItemLayout}>
           {getFieldDecorator('isCopy', {
             valuePropName: 'checked',
