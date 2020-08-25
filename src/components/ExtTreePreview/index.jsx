@@ -177,13 +177,23 @@ class ExtTreePreview extends Component {
   getModalProps = () => {
     const { formUiConfig } = this.props;
     const { parentData, editData, showCreateModal, loading } = this.state;
+    // 默认创建子节点
+    let uiIndex = 1;
+    // 编辑子节点
+    if (editData) {
+      uiIndex = 2;
+    }
+    // 创建根结点
+    if (!parentData && !editData) {
+      uiIndex = 3;
+    }
 
     return {
       parentData,
       editData,
       formUiConfig: {
         ...formUiConfig,
-        ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[3]]) },
+        ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[uiIndex]]) },
       },
       saving: loading.saving,
       onSave: this.handleSave,
