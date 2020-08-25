@@ -33,7 +33,7 @@ class EditPopover extends Component {
         title={`编辑字段【${name}】`}
         trigger="click"
         visible={visible}
-        placement="rightTop"
+        placement="right"
         onVisibleChange={this.handleVisibleChange}
         overlayStyle={{ width: 500 }}
       >
