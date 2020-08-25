@@ -58,6 +58,11 @@ class EditDrawer extends React.Component {
 
     return (
       <Form {...formItemLayout}>
+        <FormItem label="别名">
+          {getFieldDecorator('title', {
+            initialValue: get(editData[optKey], 'title'),
+          })(<Input />)}
+        </FormItem>
         <FormItem label="表单类型">
           {getFieldDecorator('ui:widget', {
             initialValue: get(editData[optKey], 'ui:widget'),
