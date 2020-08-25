@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { cloneDeep } from 'lodash';
+import { Popconfirm } from 'antd';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
@@ -191,15 +192,22 @@ class LeftSiderbar extends Component {
                                     antd
                                   />
                                 </span>
-                                <span className={cls('icon-wrapper')}>
-                                  <ExtIcon
-                                    type="delete"
-                                    className="del"
-                                    tooltip={{ title: '删除' }}
-                                    onClick={() => this.handleDelCol(item)}
-                                    antd
-                                  />
-                                </span>
+                                <Popconfirm
+                                  title="删除后不能恢复，确认删除吗？"
+                                  placement="rightTop"
+                                  cancelText="否"
+                                  okText="是"
+                                  onConfirm={() => this.handleDelCol(item)}
+                                >
+                                  <span className={cls('icon-wrapper')}>
+                                    <ExtIcon
+                                      type="delete"
+                                      className="del"
+                                      tooltip={{ title: '删除' }}
+                                      antd
+                                    />
+                                  </span>
+                                </Popconfirm>
                               </span>
                             </li>
                           )}
