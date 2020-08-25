@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Switch, Select, Input, Button, Drawer } from 'antd';
 import { get } from 'lodash';
-import { ComboList } from 'suid';
+import { ComboList, ScrollBar } from 'suid';
 import { constants } from '@/utils';
 import ExtComboTableUiConfig from './ExtComboTableUiConfig';
 
@@ -176,10 +176,28 @@ class EditDrawer extends React.Component {
         title={`编辑表单元素【${title}】`}
         onClose={onCancel}
         visible={!!editData}
-        bodyStyle={{ paddingBottom: 80 }}
+        bodyStyle={{
+          height: 'calc(100% - 55px)',
+          paddingBottom: 53,
+        }}
         maskClosable={false}
       >
-        {this.getContent()}
+        <div
+          style={{
+            height: '100%',
+          }}
+        >
+          <ScrollBar>
+            <div
+              style={{
+                overflow: 'hidden',
+                paddingRight: 15,
+              }}
+            >
+              {this.getContent()}
+            </div>
+          </ScrollBar>
+        </div>
         <div
           style={{
             position: 'absolute',
