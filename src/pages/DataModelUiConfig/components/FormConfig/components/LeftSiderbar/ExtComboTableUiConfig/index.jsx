@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
-// import { cloneDeep, } from 'lodahs';
+import { Popconfirm } from 'antd';
+import { cloneDeep } from 'lodash';
 import ColumnLayout from '@/components/Layout/ColumnLayout';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { ScrollBar, ExtIcon } from 'suid';
@@ -80,19 +81,17 @@ class ExtComboTableUiConfig extends Component {
   };
 
   onDragEnd = result => {
-    console.log('ExtComboTableUiConfig -> result', result);
-    // const { destination, source } = result;
-    // const { onFormItemChange, uiConfig } = this.props;
-    // const { formItems } = uiConfig || {};
-    // const tempFormItems = formItems ? cloneDeep(formItems) : [];
-    // if (destination && source) {
-    //   const arrItem = tempFormItems[destination.index];
-    //   tempFormItems[destination.index] = tempFormItems[source.index];
-    //   tempFormItems[source.index] = arrItem;
-    //   if (onFormItemChange) {
-    //     onFormItemChange(tempFormItems);
-    //   }
-    // }
+    const { destination, source } = result;
+    const { uiCfgItems } = this.state;
+    const tempUiCfgItems = uiCfgItems ? cloneDeep(uiCfgItems) : [];
+    if (destination && source) {
+      const arrItem = tempUiCfgItems[destination.index];
+      tempUiCfgItems[destination.index] = tempUiCfgItems[source.index];
+      tempUiCfgItems[source.index] = arrItem;
+      this.setState({
+        uiCfgItems: tempUiCfgItems,
+      });
+    }
   };
 
   getPropertiesByCode = () => {
@@ -190,7 +189,23 @@ class ExtComboTableUiConfig extends Component {
                                     <ExtIcon type="edit" tooltip={{ title: '编辑' }} antd />
                                   </span>
                                 </EditPopover>
-                                <span className={cls('icon-wrapper')}>
+                                <Popconfirm
+                                  title="删除后不能恢复，确认删除吗？"
+                                  placement="rightTop"
+                                  cancelText="否"
+                                  okText="是"
+                                  onConfirm={() => this.handleDelCfgItem(item)}
+                                >
+                                  <span className={cls('icon-wrapper')}>
+                                    <ExtIcon
+                                      type="delete"
+                                      className="del"
+                                      tooltip={{ title: '删除' }}
+                                      antd
+                                    />
+                                  </span>
+                                </Popconfirm>
+                                {/* <span className={cls('icon-wrapper')}>
                                   <ExtIcon
                                     type="delete"
                                     className="del"
@@ -198,7 +213,7 @@ class ExtComboTableUiConfig extends Component {
                                     onClick={() => this.handleDelCfgItem(item)}
                                     antd
                                   />
-                                </span>
+                                </span> */}
                               </span>
                             </li>
                           )}
