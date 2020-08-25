@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Card, Row, Col } from 'antd';
 import cls from 'classnames';
+import { ScrollBar } from 'suid';
 import styles from './index.less';
 
 export default class ThreeColumnLayout extends PureComponent {
@@ -33,7 +34,7 @@ export default class ThreeColumnLayout extends PureComponent {
                   title={leftTitle}
                   bordered={bordered}
                 >
-                  {child}
+                  <ScrollBar>{child}</ScrollBar>
                 </Card>
               </Col>
             );
@@ -52,7 +53,7 @@ export default class ThreeColumnLayout extends PureComponent {
                   title={centerTitle}
                   bordered={bordered}
                 >
-                  {child}
+                  <ScrollBar>{child}</ScrollBar>
                 </Card>
               </Col>
             );
@@ -71,7 +72,7 @@ export default class ThreeColumnLayout extends PureComponent {
                   title={rightTitle}
                   bordered={bordered}
                 >
-                  {child}
+                  <ScrollBar>{child}</ScrollBar>
                 </Card>
               </Col>
             );

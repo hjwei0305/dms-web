@@ -119,7 +119,7 @@ class RightSiderbar extends React.Component {
             )}
           </FormItem>
           {get(dataModel, 'dataStructure', 'LIST') === 'TREE' ? (
-            <FormItem label="允许创建根节点">
+            <FormItem label="允许创根">
               {getFieldDecorator('canCreateRoot', {
                 valuePropName: 'checked',
                 initialValue: get(editData, 'canCreateRoot', false),

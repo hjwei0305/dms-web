@@ -71,12 +71,14 @@ class UiConfigPreview extends Component {
         >
           <ExtFormRender
             slot="left"
+            slotClassName={cls('slot-col-wrapper')}
             uiConfig={{
               ...formUiConfig,
               ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
             }}
           />
           <ExtFormRender
+            slotClassName={cls('slot-col-wrapper')}
             slot="center"
             uiConfig={{
               ...formUiConfig,
@@ -85,6 +87,7 @@ class UiConfigPreview extends Component {
           />
           <ExtFormRender
             slot="right"
+            slotClassName={cls('slot-col-wrapper')}
             uiConfig={{
               ...formUiConfig,
               ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[3]]) },
@@ -98,6 +101,7 @@ class UiConfigPreview extends Component {
       <ColumnLayout gutter={4} layout={[12, 12]} title={['新建表单', '编辑表单']}>
         <ExtFormRender
           slot="left"
+          slotClassName={cls('slot-col-wrapper')}
           uiConfig={{
             ...formUiConfig,
             ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
@@ -105,6 +109,7 @@ class UiConfigPreview extends Component {
         />
         <ExtFormRender
           slot="right"
+          slotClassName={cls('slot-col-wrapper')}
           uiConfig={{
             ...formUiConfig,
             ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[2]]) },
@@ -121,7 +126,6 @@ class UiConfigPreview extends Component {
     const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', ''));
     const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', ''));
     const dataStructure = get(modelUiConfig, 'dataStructure', 'LIST');
-    // const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
 
     return (
       <div

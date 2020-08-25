@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Card, Row, Col } from 'antd';
+import { ScrollBar } from 'suid';
 import cls from 'classnames';
 import styles from './index.less';
 
@@ -33,7 +34,7 @@ export default class ColumnLayout extends PureComponent {
                   title={leftTitle}
                   bordered={bordered}
                 >
-                  {child}
+                  <ScrollBar>{child}</ScrollBar>
                 </Card>
               </Col>
             );
@@ -52,7 +53,7 @@ export default class ColumnLayout extends PureComponent {
                   title={rightTitle}
                   bordered={bordered}
                 >
-                  {child}
+                  <ScrollBar>{child}</ScrollBar>
                 </Card>
               </Col>
             );

@@ -140,10 +140,9 @@ class LeftSiderbar extends Component {
             this.handleToggoleEditModal(key, item);
           }}
         >
-          <Menu.Item key="1">新建操作表单项配置</Menu.Item>
-          <Menu.Divider />
-          <Menu.Item key="2">编辑操作表单项配置</Menu.Item>
-          <Menu.Item key="3">新建根结点操作的表单项配置</Menu.Item>
+          <Menu.Item key="1">新建表单的表单项配置</Menu.Item>
+          <Menu.Item key="2">编辑表单的表单项配置</Menu.Item>
+          <Menu.Item key="3">新建根结点表单的表单项配置</Menu.Item>
         </Menu>
       );
     }
@@ -154,8 +153,8 @@ class LeftSiderbar extends Component {
           this.handleToggoleEditModal(key, item);
         }}
       >
-        <Menu.Item key="1">新建表单配置</Menu.Item>
-        <Menu.Item key="2">编辑表单配置</Menu.Item>
+        <Menu.Item key="1">新建表单的表单项配置</Menu.Item>
+        <Menu.Item key="2">编辑表单的表单项配置</Menu.Item>
       </Menu>
     );
   };
@@ -233,12 +232,7 @@ class LeftSiderbar extends Component {
                               <span className={cls('list-item-extra')}>
                                 <Dropdown trigger={['click']} overlay={this.getMenus(item)}>
                                   <span className={cls('icon-wrapper')}>
-                                    <ExtIcon
-                                      type="edit"
-                                      tooltip={{ title: '编辑' }}
-                                      // onClick={() => this.handleToggoleEditModal(item)}
-                                      antd
-                                    />
+                                    <ExtIcon type="setting" tooltip={{ title: '配置' }} antd />
                                   </span>
                                 </Dropdown>
                                 <Popconfirm
