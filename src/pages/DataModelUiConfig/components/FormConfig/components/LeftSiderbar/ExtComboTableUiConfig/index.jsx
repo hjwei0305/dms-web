@@ -135,7 +135,7 @@ class ExtComboTableUiConfig extends Component {
                 .map(item => {
                   const { code, name } = item;
                   return (
-                    <li key={code} className={cls('list-item')}>
+                    <li key={code} className={cls('list-item', 'no-move')}>
                       {name}
                       <span className={cls('list-item-extra')}>
                         <ExtIcon
