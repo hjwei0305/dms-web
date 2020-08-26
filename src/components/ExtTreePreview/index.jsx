@@ -211,7 +211,7 @@ class ExtTreePreview extends Component {
   render() {
     const { showCreateModal, treeData, selectedNode } = this.state;
     const { treeUiConfig, formUiConfig } = this.props;
-    const { detailFields = [] } = treeUiConfig || {};
+    const { detailFields = [], column } = treeUiConfig || {};
     const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
 
     return (
@@ -243,7 +243,7 @@ class ExtTreePreview extends Component {
           />
           <div slot="right" className={cls('detail-wrapper')}>
             {selectedNode ? (
-              <Descriptions column={1} title={`结点${selectedNode.name}详情`}>
+              <Descriptions column={column} title={`结点${selectedNode.name}详情`}>
                 {detailFields.map(item => {
                   const { code, name } = item;
                   return (

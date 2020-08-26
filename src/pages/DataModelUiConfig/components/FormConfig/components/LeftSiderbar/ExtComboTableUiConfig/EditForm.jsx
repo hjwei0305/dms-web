@@ -47,15 +47,15 @@ class EditForm extends Component {
     const { getFieldDecorator, getFieldValue } = form;
     return (
       <Form {...formItemLayout}>
-        <FormItem label="代码">
+        {/* <FormItem label="代码">
           {getFieldDecorator('code', {
             initialValue: get(editData, 'code'),
           })(<Input disabled />)}
-        </FormItem>
+        </FormItem> */}
         <FormItem label="名称">
           {getFieldDecorator('name', {
             initialValue: get(editData, 'name'),
-          })(<Input />)}
+          })(<Input disabled />)}
         </FormItem>
         <FormItem label="是否隐藏列">
           {getFieldDecorator('hidden', {
@@ -76,9 +76,15 @@ class EditForm extends Component {
           })(<Switch />)}
         </FormItem>
         {getFieldValue('isSubmit') ? (
-          <FormItem label="提交字段">
+          <FormItem label="对应提交字段">
             {getFieldDecorator('sumitField', {
-              initialValue: get(editData, 'sumitField') || get(editData, 'code'),
+              initialValue: get(editData, 'sumitField'),
+              rules: [
+                {
+                  required: true,
+                  message: '对应提交字段不能为空',
+                },
+              ],
             })(
               <Select>
                 {mapFieldLists.map(it => {

@@ -33,7 +33,7 @@ class DataModelUiConfig extends Component {
               '主数据',
               `${currPRowData ? `主数据【${currPRowData.name}】的UI配置预览` : ''}`,
             ]}
-            layout={[7, 17]}
+            layout={[8, 16]}
           >
             <ParentTable slot="left" />
             {currPRowData && modelUiConfig ? (

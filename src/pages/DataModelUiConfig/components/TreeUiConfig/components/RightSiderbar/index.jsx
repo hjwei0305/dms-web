@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Card, Switch } from 'antd';
+import { Form, Card, Select } from 'antd';
 import { ExtIcon } from 'suid';
 import { get } from 'lodash';
 import cls from 'classnames';
@@ -7,6 +7,7 @@ import cls from 'classnames';
 import styles from './index.less';
 
 const FormItem = Form.Item;
+const { Option } = Select;
 const formItemLayout = {
   labelCol: {
     span: 5,
@@ -65,7 +66,7 @@ class RightSiderbar extends React.Component {
         title="树属性"
       >
         <Form {...formItemLayout}>
-          <FormItem label="允许创建根结点" {...colFormItemLayout}>
+          {/* <FormItem label="允许创建根结点" {...colFormItemLayout}>
             {getFieldDecorator('allowCreateRoot', {
               valuePropName: 'checked',
               initialValue: get(editData, 'allowCreateRoot'),
@@ -81,8 +82,35 @@ class RightSiderbar extends React.Component {
                 }}
               />,
             )}
+          </FormItem> */}
+          <FormItem label="详情列配置" {...colFormItemLayout}>
+            {getFieldDecorator('column', {
+              initialValue: get(editData, 'column', 1),
+              rules: [
+                {
+                  required: true,
+                  message: '列配置不能为空',
+                },
+              ],
+            })(
+              <Select
+                style={{ marginRight: 8 }}
+                onChange={column => {
+                  const { onEditTable } = this.props;
+                  if (onEditTable) {
+                    onEditTable({
+                      column,
+                    });
+                  }
+                }}
+              >
+                <Option value={1}>一行一列</Option>
+                <Option value={2}>一行二列</Option>
+                <Option value={3}>一行三列</Option>
+              </Select>,
+            )}
           </FormItem>
-          <FormItem label="查询文本提示" {...colFormItemLayout}>
+          {/* <FormItem label="查询文本提示" {...colFormItemLayout}>
             {getFieldDecorator('showSearchTooltip', {
               valuePropName: 'checked',
               initialValue: get(editData, 'showSearchTooltip'),
@@ -98,7 +126,7 @@ class RightSiderbar extends React.Component {
                 }}
               />,
             )}
-          </FormItem>
+          </FormItem> */}
         </Form>
       </Card>
     );
