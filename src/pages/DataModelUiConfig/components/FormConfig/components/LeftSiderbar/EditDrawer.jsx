@@ -165,15 +165,40 @@ class EditDrawer extends React.Component {
     );
   };
 
+  getDrawerTitle = () => {
+    const { editData, optKey } = this.props;
+    const [, { title }] = editData;
+    let subTitle = '新建操作表单';
+    if (optKey === '2') {
+      subTitle = '编辑操作表单';
+    }
+    if (optKey === '3') {
+      subTitle = '新建根结点操作表单';
+    }
+    return (
+      <span>
+        <span>{`配置【${title}】表单项`}</span>
+        <span
+          style={{
+            marginLeft: 12,
+            color: 'rgba(0,0,0,.45)',
+            fontSize: 14,
+          }}
+        >
+          {subTitle}
+        </span>
+      </span>
+    );
+  };
+
   render() {
     const { editData, onCancel } = this.props;
-    const [, { title }] = editData;
 
     return (
       <Drawer
         width={720}
         placement="left"
-        title={`编辑表单元素【${title}】`}
+        title={this.getDrawerTitle()}
         onClose={onCancel}
         visible={!!editData}
         bodyStyle={{
