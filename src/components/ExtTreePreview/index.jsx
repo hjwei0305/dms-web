@@ -219,6 +219,7 @@ class ExtTreePreview extends Component {
         <ColumnLayout className={cls('culumn-layout')} title={[null, null]} gutter={4}>
           <TreeView
             slot="left"
+            slotClassName={cls('slot-col-wrapper')}
             toolBar={canCreateRoot ? this.getToolBarProps() : null}
             treeData={treeData}
             onSelect={this.handleSelect}
