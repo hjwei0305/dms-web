@@ -54,6 +54,7 @@ class ExtFormRender extends Component {
       if (value.required) {
         required.push(key);
       }
+      Object.assign(value, { type: 'string' });
       Object.assign(properties, { [key]: value });
     });
 

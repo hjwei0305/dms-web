@@ -65,13 +65,13 @@ class RightSiderbar extends React.Component {
         title="表单容器属性"
       >
         <Form {...formItemLayout}>
-          <FormItem label="列配置">
+          <FormItem label="整体布局">
             {getFieldDecorator('column', {
               initialValue: get(editData, 'column', 1),
               rules: [
                 {
                   required: true,
-                  message: '列配置不能为空',
+                  message: '整体布局不能为空',
                 },
               ],
             })(

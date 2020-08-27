@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Switch, Select, Input, Button, Drawer } from 'antd';
 import { get } from 'lodash';
 import { ComboList, ScrollBar } from 'suid';
-import { constants } from '@/utils';
+import { constants, validateRules } from '@/utils';
 import ExtComboTableUiConfig from './ExtComboTableUiConfig';
 
 const FormItem = Form.Item;
@@ -50,6 +50,14 @@ class EditDrawer extends React.Component {
       field: ['ExtComboGrid.dataModelCode'],
       remotePaging: true,
     };
+  };
+
+  handleRuleSelected = rule => {
+    const { form } = this.props;
+    const { setFieldsValue } = form;
+    setFieldsValue({
+      'message.pattern': validateRules[rule].message,
+    });
   };
 
   getContent = () => {
@@ -143,6 +151,27 @@ class EditDrawer extends React.Component {
             valuePropName: 'checked',
             initialValue: get(editData[optKey], 'ui:hidden'),
           })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
+        </FormItem>
+        <FormItem label="校验规则">
+          {getFieldDecorator('pattern', {
+            initialValue: get(editData[optKey], 'pattern'),
+          })(
+            <Select onSelect={this.handleRuleSelected}>
+              {Object.keys(validateRules).map(ruleKey => {
+                const { title } = validateRules[ruleKey];
+                return (
+                  <Select.Option key={ruleKey} value={ruleKey}>
+                    {title}
+                  </Select.Option>
+                );
+              })}
+            </Select>,
+          )}
+        </FormItem>
+        <FormItem label="校验规则信息">
+          {getFieldDecorator('message.pattern', {
+            initialValue: get(editData[optKey], 'message.pattern'),
+          })(<Input />)}
         </FormItem>
         <FormItem label="描述">
           {getFieldDecorator('description', {
