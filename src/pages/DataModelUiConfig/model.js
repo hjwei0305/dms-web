@@ -32,6 +32,7 @@ export default modelExtend(model, {
     vTableUiConfig: false,
     vFormUiConfig: false,
     vTreeUiConfig: false,
+    vExportUiConfig: false,
     modelUiConfig: null,
   },
   effects: {

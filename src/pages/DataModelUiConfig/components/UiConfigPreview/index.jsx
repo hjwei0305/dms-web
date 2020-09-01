@@ -41,6 +41,16 @@ class UiConfigPreview extends Component {
     });
   };
 
+  handleConfigExportUI = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'dataModelUiConfig/updatePageState',
+      payload: {
+        vExportUiConfig: true,
+      },
+    });
+  };
+
   handleTabChange = activeKey => {
     this.setState({
       activeKey,
@@ -55,6 +65,10 @@ class UiConfigPreview extends Component {
 
     if (activeKey === 'formUi') {
       this.handleConfigFormUI();
+    }
+
+    if (activeKey === 'exportUi') {
+      this.handleConfigExportUI();
     }
   };
 
@@ -123,8 +137,9 @@ class UiConfigPreview extends Component {
     const { activeKey } = this.state;
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
-    const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', ''));
-    const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', ''));
+    const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', null));
+    const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', null));
+    const exportUiConfig = JSON.parse(get(modelUiConfig, 'exportUi', null));
     const dataStructure = get(modelUiConfig, 'dataStructure', 'LIST');
 
     return (
@@ -178,6 +193,18 @@ class UiConfigPreview extends Component {
               <span className={cls('ele-center')}>
                 暂无表单配置{' '}
                 <Button size="large" type="link" onClick={this.handleConfigFormUI}>
+                  去配置
+                </Button>
+              </span>
+            )}
+          </TabPane>
+          <TabPane tab="数据导出配置预览" key="exportUi">
+            {exportUiConfig ? (
+              this.getFormPreview()
+            ) : (
+              <span className={cls('ele-center')}>
+                暂无导出配置{' '}
+                <Button size="large" type="link" onClick={this.handleConfigExportUI}>
                   去配置
                 </Button>
               </span>

@@ -10,6 +10,7 @@ import UiConfigPreview from './components/UiConfigPreview';
 import TableUiConfig from './components/TableUiConfig';
 import FormConfig from './components/FormConfig';
 import TreeUiConfig from './components/TreeUiConfig';
+import ExportUiConfig from './components/ExportUiConfig';
 import styles from './index.less';
 
 @withRouter
@@ -17,7 +18,13 @@ import styles from './index.less';
 class DataModelUiConfig extends Component {
   render() {
     const { dataModelUiConfig, loading } = this.props;
-    const { currPRowData, vTableUiConfig, vFormUiConfig, modelUiConfig } = dataModelUiConfig;
+    const {
+      currPRowData,
+      vTableUiConfig,
+      vFormUiConfig,
+      modelUiConfig,
+      vExportUiConfig,
+    } = dataModelUiConfig;
 
     return (
       <>
@@ -25,7 +32,7 @@ class DataModelUiConfig extends Component {
           loading={loading.global}
           className={cls({
             [styles['container-box']]: true,
-            hide_ele: vTableUiConfig || vFormUiConfig,
+            hide_ele: vTableUiConfig || vFormUiConfig || vExportUiConfig,
           })}
         >
           <CascadeLayout
@@ -50,6 +57,8 @@ class DataModelUiConfig extends Component {
           <TreeUiConfig modelUiConfig={modelUiConfig} />
         ) : null}
         {vFormUiConfig ? <FormConfig modelUiConfig={modelUiConfig} /> : null}
+
+        {vExportUiConfig ? <ExportUiConfig modelUiConfig={modelUiConfig} /> : null}
       </>
     );
   }
