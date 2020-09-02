@@ -67,13 +67,7 @@ class ExtTablePreview extends React.Component {
   };
 
   render() {
-    return (
-      <ExtTable
-        onTableRef={inst => (this.tableRef = inst)}
-        key={Math.random()}
-        {...this.getExtTableProps()}
-      />
-    );
+    return <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtTableProps()} />;
   }
 }
 

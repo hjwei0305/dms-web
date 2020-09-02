@@ -6,6 +6,7 @@ import { utils, ExtIcon } from 'suid';
 import { constants } from '@/utils';
 import ExtTablePreview from '@/components/ExtTablePreview';
 import FormModal from './FormModal';
+import ExportModal from './ExportModal';
 import styles from '../../index.less';
 
 const { authAction } = utils;
@@ -15,6 +16,7 @@ const { MDMSCONTEXT } = constants;
 class ChildTable extends Component {
   state = {
     delRowId: null,
+    exportVisible: false,
   };
 
   reloadData = () => {
@@ -152,6 +154,18 @@ class ChildTable extends Component {
     );
   };
 
+  handleImport = () => {
+    this.setState({
+      exportVisible: true,
+    });
+  };
+
+  closeExportFormModal = () => {
+    this.setState({
+      exportVisible: false,
+    });
+  };
+
   getExtableProps = () => {
     const { masterDataMaintain } = this.props;
     const { modelUiConfig, currPRowData } = masterDataMaintain;
@@ -213,6 +227,16 @@ class ChildTable extends Component {
               新建
             </Button>,
           )}
+          {authAction(
+            <Button key="add" onClick={this.handleImport} ignore="true">
+              导入
+            </Button>,
+          )}
+          {authAction(
+            <Button key="add" onClick={this.handleExport} ignore="true">
+              导出
+            </Button>,
+          )}
           <Button onClick={this.reloadData}>刷新</Button>
         </Fragment>
       ),
@@ -240,7 +264,18 @@ class ChildTable extends Component {
     };
   };
 
+  getExportModalProps = () => {
+    const { masterDataMaintain } = this.props;
+    const { currPRowData, modelUiConfig } = masterDataMaintain;
+    return {
+      editData: currPRowData,
+      uiConfig: modelUiConfig,
+      onCancel: this.closeExportFormModal,
+    };
+  };
+
   render() {
+    const { exportVisible } = this.state;
     return (
       <div className={cls(styles['container-box'])}>
         <ExtTablePreview
@@ -249,6 +284,7 @@ class ChildTable extends Component {
         />
         {/* <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} /> */}
         <FormModal {...this.getFormModalProps()} />
+        {exportVisible ? <ExportModal {...this.getExportModalProps()} /> : null}
       </div>
     );
   }

@@ -11,6 +11,7 @@ import TableUiConfig from './components/TableUiConfig';
 import FormConfig from './components/FormConfig';
 import TreeUiConfig from './components/TreeUiConfig';
 import ExportUiConfig from './components/ExportUiConfig';
+import ImportUiConfig from './components/ImportUiConfig';
 import styles from './index.less';
 
 @withRouter
@@ -24,6 +25,7 @@ class DataModelUiConfig extends Component {
       vFormUiConfig,
       modelUiConfig,
       vExportUiConfig,
+      vImportUiConfig,
     } = dataModelUiConfig;
 
     return (
@@ -32,7 +34,7 @@ class DataModelUiConfig extends Component {
           loading={loading.global}
           className={cls({
             [styles['container-box']]: true,
-            hide_ele: vTableUiConfig || vFormUiConfig || vExportUiConfig,
+            hide_ele: vTableUiConfig || vFormUiConfig || vExportUiConfig || vImportUiConfig,
           })}
         >
           <CascadeLayout
@@ -59,6 +61,8 @@ class DataModelUiConfig extends Component {
         {vFormUiConfig ? <FormConfig modelUiConfig={modelUiConfig} /> : null}
 
         {vExportUiConfig ? <ExportUiConfig modelUiConfig={modelUiConfig} /> : null}
+
+        {vImportUiConfig ? <ImportUiConfig modelUiConfig={modelUiConfig} /> : null}
       </>
     );
   }

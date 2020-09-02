@@ -51,6 +51,16 @@ class UiConfigPreview extends Component {
     });
   };
 
+  handleConfigImportUI = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'dataModelUiConfig/updatePageState',
+      payload: {
+        vImportUiConfig: true,
+      },
+    });
+  };
+
   handleTabChange = activeKey => {
     this.setState({
       activeKey,
@@ -205,6 +215,18 @@ class UiConfigPreview extends Component {
               <span className={cls('ele-center')}>
                 暂无导出配置{' '}
                 <Button size="large" type="link" onClick={this.handleConfigExportUI}>
+                  去配置
+                </Button>
+              </span>
+            )}
+          </TabPane>
+          <TabPane tab="数据导入配置预览" key="importUi">
+            {exportUiConfig ? (
+              this.getFormPreview()
+            ) : (
+              <span className={cls('ele-center')}>
+                暂无导入配置{' '}
+                <Button size="large" type="link" onClick={this.handleConfigImportUI}>
                   去配置
                 </Button>
               </span>
