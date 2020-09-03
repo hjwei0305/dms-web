@@ -20,15 +20,17 @@ class ExportUiConfig extends Component {
     super(props);
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
-    const exportUiConfigJson = get(modelUiConfig, 'exportUi');
-    const exportUiConfig = exportUiConfigJson
-      ? JSON.parse(exportUiConfigJson)
-      : {
-          filterFormCfg: {
-            formItems: [],
-          },
-          colItems: [],
-        };
+    const impExpData = JSON.parse(get(modelUiConfig, 'impExpData', JSON.stringify({})));
+    const { exportUiConfig: exportUiConfigJson } = impExpData;
+    const exportUiConfig = exportUiConfigJson || {
+      filterFormCfg: {
+        column: 1,
+        displayType: 'column',
+        labelWidth: 80,
+        formItems: [],
+      },
+      colItems: [],
+    };
     this.state = {
       exportUiConfig,
       oldExportUiConfig: cloneDeep(exportUiConfig),
@@ -55,9 +57,9 @@ class ExportUiConfig extends Component {
 
   handleDelFormItem = col => {
     const { exportUiConfig = {} } = this.state;
-    const { formItems = [] } = exportUiConfig;
-    const tempFormItems = formItems.filter(item => item[0] !== col[0]);
-    Object.assign(exportUiConfig, { formItems: tempFormItems });
+    const { formItems = [] } = exportUiConfig.filterFormCfg;
+    const tempFormItems = formItems.filter(item => item[0].code !== col[0].code);
+    Object.assign(exportUiConfig.filterFormCfg, { formItems: tempFormItems });
     this.setState({
       exportUiConfig,
     });
@@ -65,15 +67,15 @@ class ExportUiConfig extends Component {
 
   handleEditFormItem = col => {
     const { exportUiConfig = {} } = this.state;
-    const { columns = [] } = exportUiConfig;
+    const { formItems = [] } = exportUiConfig.filterFormCfg;
 
-    const tempColumns = columns.map(item => {
-      if (item.dataIndex !== col.dataIndex) {
+    const tempColumns = formItems.map(item => {
+      if (item[0].code !== col[0].code) {
         return item;
       }
       return col;
     });
-    Object.assign(exportUiConfig, { columns: tempColumns });
+    Object.assign(exportUiConfig.filterFormCfg, { formItems: tempColumns });
     this.setState({
       exportUiConfig,
     });
@@ -121,21 +123,25 @@ class ExportUiConfig extends Component {
   };
 
   handleSave = () => {
-    // const { dispatch, dataModelUiConfig } = this.props;
-    // const { modelUiConfig } = dataModelUiConfig;
+    const { dispatch, dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
     const { exportUiConfig } = this.state;
-    console.log('ExportUiConfig -> handleSave -> exportUiConfig', exportUiConfig);
 
     this.setState({
       oldExportUiConfig: cloneDeep(exportUiConfig),
     });
-
-    // dispatch({
-    //   type: 'dataModelUiConfig/saveModelUiConfig',
-    //   payload: {
-    //     modelUiConfig: { ...modelUiConfig, formData: JSON.stringify(exportUiConfig) },
-    //   },
-    // });
+    const tempImp = JSON.parse(get(modelUiConfig, 'impExpData', JSON.stringify({})));
+    dispatch({
+      type: 'dataModelUiConfig/saveModelUiConfig',
+      payload: {
+        modelUiConfig: {
+          ...modelUiConfig,
+          impExpData: tempImp
+            ? JSON.stringify({ ...tempImp, exportUiConfig })
+            : JSON.stringify({ exportUiConfig }),
+        },
+      },
+    });
   };
 
   render() {

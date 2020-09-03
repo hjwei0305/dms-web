@@ -195,15 +195,9 @@ class EditDrawer extends React.Component {
   };
 
   getDrawerTitle = () => {
-    const { editData, optKey } = this.props;
+    const { editData } = this.props;
     const [, { title }] = editData;
-    let subTitle = '新建操作表单';
-    if (optKey === '2') {
-      subTitle = '编辑操作表单';
-    }
-    if (optKey === '3') {
-      subTitle = '新建根结点操作表单';
-    }
+    const subTitle = '过滤操作表单';
     return (
       <span>
         <span>{`配置【${title}】表单项`}</span>

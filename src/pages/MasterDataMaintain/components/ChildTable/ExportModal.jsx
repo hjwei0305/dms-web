@@ -1,120 +1,52 @@
 import React, { PureComponent } from 'react';
-import { ExtModal, utils } from 'suid';
-import { Button, Upload, Icon, message } from 'antd';
-
-const { dataExport } = utils;
-const { exportJsonToXlsx } = dataExport;
+import { ExtModal, ScrollBar } from 'suid';
+import ExtFormRender from '@/components/ExtFormRender';
 
 class ExportModal extends PureComponent {
-  handleDownload = () => {
-    const { editData } = this.props;
-    const { name, typeName } = editData;
-    const temp = [
-      [
-        {
-          code: 'code',
-          name: '代码',
-        },
-        {
-          title: '代码',
-        },
-      ],
-      [
-        {
-          code: 'frozen',
-          name: '冻结',
-        },
-        {
-          title: '冻结',
-        },
-      ],
-      [
-        {
-          code: 'name',
-          name: '名称',
-        },
-        {
-          title: '名称',
-        },
-      ],
-      [
-        {
-          code: 'rank',
-          name: '排序',
-        },
-        {
-          title: '排序',
-        },
-      ],
-    ];
-    const columns = temp.map(item => {
-      const [{ code: dataIndex }, { title }] = item;
-
-      return {
-        title,
-        dataIndex,
-      };
-    });
-
-    exportJsonToXlsx({
-      columns,
-      data: [],
-      fileName: `${typeName}-${name}主数据导入模版`,
-      sheetName: '模版',
-      beforeExport: () => {
-        console.log('ExportModal -> handleDownload -> beforeExport');
-        // this.setState({
-        //   loading: true,
-        // });
-        return true;
-      },
-      afterExport: () => {
-        console.log('ExportModal -> handleDownload -> afterExport');
-        // this.setState({
-        //   loading: false,
-        // });
-      },
-    });
+  onFormSubmit = () => {
+    const { onSave } = this.props;
+    if (this.valids && !this.valids.length && onSave) {
+      onSave(this.formValues);
+    }
   };
 
-  getUploadProps = () => {
-    return {
-      name: 'file',
-      accept: '.xls,.xlsx',
-      // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-      showUploadList: false,
-      // headers: {
-      //   authorization: 'authorization-text',
-      // },
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
+  handleFormValueChange = values => {
+    this.formValues = values;
+  };
+
+  handleValidate = valids => {
+    this.valids = valids;
   };
 
   render() {
-    const { editData, onCancel } = this.props;
+    const { saving, onCancel, filterFormData, uiConfig } = this.props;
+
+    const title = '批量导出';
 
     return (
-      <ExtModal title={`${editData.name}批量导入`} visible onCancel={onCancel}>
-        1、下载{`${editData.name}主数据`}导入模版进行填写，
-        <Button style={{ padding: 0 }} type="link" onClick={this.handleDownload}>
-          下载模版
-        </Button>
-        <br />
-        2、
-        <Upload {...this.getUploadProps()}>
-          <Button>
-            <Icon type="upload" /> 选择文件
-          </Button>
-        </Upload>
+      <ExtModal
+        visible
+        destroyOnClose
+        centered
+        onCancel={onCancel}
+        confirmLoading={saving}
+        title={title}
+        onOk={() => {
+          this.onFormSubmit();
+        }}
+        width={550}
+        okText="导出"
+      >
+        <div>
+          <ScrollBar>
+            <ExtFormRender
+              onValidate={this.handleValidate}
+              onChange={this.handleFormValueChange}
+              uiConfig={uiConfig}
+              formData={filterFormData}
+            />
+          </ScrollBar>
+        </div>
       </ExtModal>
     );
   }

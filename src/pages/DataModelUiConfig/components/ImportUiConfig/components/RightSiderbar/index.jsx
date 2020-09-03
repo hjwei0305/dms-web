@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { cloneDeep, get } from 'lodash';
-import { Popconfirm } from 'antd';
+import { Popconfirm, Empty } from 'antd';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
+import ColumnLayout from '@/components/Layout/ColumnLayout';
 import EditPopover from './EditPopover';
 
 import styles from './index.less';
@@ -75,6 +76,22 @@ class LeftSiderbar extends Component {
     }
   };
 
+  handleSave = () => {
+    const { onSave } = this.props;
+    if (onSave) {
+      onSave();
+    }
+    // const { form, editData, onSave } = this.props;
+    // form.validateFields((err, formData) => {
+    //   if (err) {
+    //     return;
+    //   }
+    //   if (onSave) {
+    //     onSave({ ...editData, ...formData });
+    //   }
+    // });
+  };
+
   onDragEnd = result => {
     const { destination, source } = result;
     const { onItemChange, uiConfig } = this.props;
@@ -90,8 +107,16 @@ class LeftSiderbar extends Component {
     }
   };
 
+  getCardExtra = () => {
+    return (
+      <span className={cls('icon-wrapper', 'title-extra')} onClick={this.handleSave}>
+        <ExtIcon type="save" style={{ fontSize: '20px' }} tooltip={{ title: '保存' }} antd />
+      </span>
+    );
+  };
+
   render() {
-    const { fieldLists, showUnAssign } = this.state;
+    const { fieldLists } = this.state;
     const { uiConfig } = this.props;
     const colItems = get(uiConfig, 'colItems', []);
 
@@ -99,115 +124,104 @@ class LeftSiderbar extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <div className={cls(styles['left-sider-bar'])}>
           <div className={cls('title')}>
-            {showUnAssign ? (
-              <>
-                <span className={cls('back-icon')}>
-                  <ExtIcon
-                    type="left"
-                    tooltip={{ title: '返回' }}
-                    onClick={this.toggoleShowUnAssign}
-                    antd
-                  />
-                </span>
-                可配导出列
-              </>
-            ) : (
-              '已配导出列'
-            )}
-            {showUnAssign ? null : (
-              <span className={cls('title-extra')}>
-                <ExtIcon
-                  type="plus"
-                  tooltip={{ title: '添加导出列' }}
-                  onClick={this.toggoleShowUnAssign}
-                  antd
-                />
-              </span>
-            )}
+            导入配置
+            {this.getCardExtra()}
           </div>
           <div className={cls('content')}>
-            <Droppable droppableId="board" type="COLUMN">
-              {provided => (
-                <ul
-                  className={cls('list-items')}
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  <ScrollBar>
-                    {colItems.map((item, index) => {
-                      const [{ code, name }] = item;
-                      return (
-                        <Draggable draggableId={code} index={index} key={code}>
-                          {dragprovided => (
-                            <li
-                              className={cls('list-item')}
-                              {...dragprovided.draggableProps}
-                              {...dragprovided.dragHandleProps}
-                              ref={dragprovided.innerRef}
-                              title={name}
-                            >
-                              {name}
-                              <span className={cls('list-item-extra')}>
-                                <EditPopover editData={item} onSave={this.handleEditItem}>
-                                  <span className={cls('icon-wrapper')}>
-                                    <ExtIcon type="setting" tooltip={{ title: '配置' }} antd />
-                                  </span>
-                                </EditPopover>
-                                <Popconfirm
-                                  title="删除后不能恢复，确认删除吗？"
-                                  placement="rightTop"
-                                  cancelText="否"
-                                  okText="是"
-                                  onConfirm={() => this.handleDelItem(item)}
+            <ColumnLayout
+              layout={[12, 12]}
+              title={['已配导入列', '未配导入列']}
+              gutter={4}
+              className={cls('column-extra-cls')}
+            >
+              <div className={cls('assigned-wrapper')} slot="left">
+                <Droppable droppableId="board" type="COLUMN">
+                  {provided => (
+                    <ul
+                      className={cls('list-items')}
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      <ScrollBar>
+                        {colItems.map((item, index) => {
+                          const [{ code, name }] = item;
+                          return (
+                            <Draggable draggableId={code} index={index} key={code}>
+                              {dragprovided => (
+                                <li
+                                  className={cls('list-item')}
+                                  {...dragprovided.draggableProps}
+                                  {...dragprovided.dragHandleProps}
+                                  ref={dragprovided.innerRef}
+                                  title={name}
                                 >
-                                  <span className={cls('icon-wrapper')}>
-                                    <ExtIcon
-                                      type="delete"
-                                      className="del"
-                                      tooltip={{ title: '删除' }}
-                                      antd
-                                    />
+                                  {name}
+                                  <span className={cls('list-item-extra')}>
+                                    <EditPopover editData={item} onSave={this.handleEditItem}>
+                                      <span className={cls('icon-wrapper')}>
+                                        <ExtIcon type="setting" tooltip={{ title: '配置' }} antd />
+                                      </span>
+                                    </EditPopover>
+                                    <Popconfirm
+                                      title="删除后不能恢复，确认删除吗？"
+                                      placement="rightTop"
+                                      cancelText="否"
+                                      okText="是"
+                                      onConfirm={() => this.handleDelItem(item)}
+                                    >
+                                      <span className={cls('icon-wrapper')}>
+                                        <ExtIcon
+                                          type="delete"
+                                          className="del"
+                                          tooltip={{ title: '删除' }}
+                                          antd
+                                        />
+                                      </span>
+                                    </Popconfirm>
                                   </span>
-                                </Popconfirm>
-                              </span>
-                            </li>
-                          )}
-                        </Draggable>
-                      );
-                    })}
+                                </li>
+                              )}
+                            </Draggable>
+                          );
+                        })}
+                        {!colItems || !colItems.length ? (
+                          <Empty description="暂未配置导入列" />
+                        ) : null}
+                      </ScrollBar>
+                    </ul>
+                  )}
+                </Droppable>
+              </div>
+              <div
+                slot="right"
+                className={cls({
+                  'un-assigned-wrapper': true,
+                })}
+              >
+                <ul className={cls('list-items')}>
+                  <ScrollBar>
+                    {fieldLists
+                      .filter(it => !colItems.some(itc => itc[0].code === it.code))
+                      .map(item => {
+                        const { code, name } = item;
+                        return (
+                          <li key={code} className={cls('list-item')}>
+                            {name}
+                            <span className={cls('list-item-extra')}>
+                              <ExtIcon
+                                type="plus"
+                                tooltip={{ title: '添加' }}
+                                onClick={() => this.handleAddExportColItem(item)}
+                                antd
+                              />
+                            </span>
+                          </li>
+                        );
+                      })}
                   </ScrollBar>
                 </ul>
-              )}
-            </Droppable>
-            <div
-              className={cls({
-                'un-assigned-wrapper': true,
-                hide_ele: !showUnAssign,
-              })}
-            >
-              <ul className={cls('list-items')}>
-                <ScrollBar>
-                  {fieldLists
-                    .filter(it => !colItems.some(itc => itc[0].code === it.code))
-                    .map(item => {
-                      const { code, name } = item;
-                      return (
-                        <li key={code} className={cls('list-item')}>
-                          {name}
-                          <span className={cls('list-item-extra')}>
-                            <ExtIcon
-                              type="plus"
-                              tooltip={{ title: '添加' }}
-                              onClick={() => this.handleAddExportColItem(item)}
-                              antd
-                            />
-                          </span>
-                        </li>
-                      );
-                    })}
-                </ScrollBar>
-              </ul>
-            </div>
+              </div>
+            </ColumnLayout>
           </div>
         </div>
       </DragDropContext>

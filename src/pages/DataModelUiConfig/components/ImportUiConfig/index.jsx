@@ -20,15 +20,12 @@ class ImportUiConfig extends Component {
     super(props);
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
-    const importUiConfigJson = get(modelUiConfig, 'exportUi');
-    const importUiConfig = importUiConfigJson
-      ? JSON.parse(importUiConfigJson)
-      : {
-          filterFormCfg: {
-            formItems: [],
-          },
-          colItems: [],
-        };
+
+    const impExpData = JSON.parse(get(modelUiConfig, 'impExpData', JSON.stringify({})));
+    const { importUiConfig: importUiConfigJson } = impExpData;
+    const importUiConfig = importUiConfigJson || {
+      colItems: [],
+    };
     this.state = {
       importUiConfig,
       oldImportUiConfig: cloneDeep(importUiConfig),
@@ -42,40 +39,6 @@ class ImportUiConfig extends Component {
       payload: {
         vImportUiConfig: false,
       },
-    });
-  };
-
-  handleFormItemChange = formItems => {
-    const { importUiConfig = {} } = this.state;
-    Object.assign(importUiConfig.filterFormCfg, { formItems });
-    this.setState({
-      importUiConfig,
-    });
-  };
-
-  handleDelFormItem = col => {
-    const { importUiConfig = {} } = this.state;
-    const { formItems = [] } = importUiConfig;
-    const tempFormItems = formItems.filter(item => item[0] !== col[0]);
-    Object.assign(importUiConfig, { formItems: tempFormItems });
-    this.setState({
-      importUiConfig,
-    });
-  };
-
-  handleEditFormItem = col => {
-    const { importUiConfig = {} } = this.state;
-    const { columns = [] } = importUiConfig;
-
-    const tempColumns = columns.map(item => {
-      if (item.dataIndex !== col.dataIndex) {
-        return item;
-      }
-      return col;
-    });
-    Object.assign(importUiConfig, { columns: tempColumns });
-    this.setState({
-      importUiConfig,
     });
   };
 
@@ -112,29 +75,26 @@ class ImportUiConfig extends Component {
     });
   };
 
-  handleFilterUiCfgChange = props => {
-    const { importUiConfig = {} } = this.state;
-    Object.assign(importUiConfig.filterFormCfg, props);
-    this.setState({
-      importUiConfig,
-    });
-  };
-
   handleSave = () => {
-    // const { dispatch, dataModelUiConfig } = this.props;
-    // const { modelUiConfig } = dataModelUiConfig;
+    const { dispatch, dataModelUiConfig } = this.props;
+    const { modelUiConfig } = dataModelUiConfig;
     const { importUiConfig } = this.state;
 
     this.setState({
       oldImportUiConfig: cloneDeep(importUiConfig),
     });
-
-    // dispatch({
-    //   type: 'dataModelUiConfig/saveModelUiConfig',
-    //   payload: {
-    //     modelUiConfig: { ...modelUiConfig, formData: JSON.stringify(importUiConfig) },
-    //   },
-    // });
+    const tempImp = JSON.parse(get(modelUiConfig, 'impExpData', JSON.stringify({})));
+    dispatch({
+      type: 'dataModelUiConfig/saveModelUiConfig',
+      payload: {
+        modelUiConfig: {
+          ...modelUiConfig,
+          impExpData: tempImp
+            ? JSON.stringify({ ...tempImp, importUiConfig })
+            : JSON.stringify({ importUiConfig }),
+        },
+      },
+    });
   };
 
   render() {
@@ -171,6 +131,7 @@ class ImportUiConfig extends Component {
               onEditItem={this.handleEditColItem}
               uiConfig={importUiConfig}
               dataModel={currPRowData}
+              onSave={this.handleSave}
             />
           </div>
           <div className={cls('config-right-siderbar')}>

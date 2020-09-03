@@ -2,10 +2,12 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm } from 'antd';
+import { get } from 'lodash';
 import { utils, ExtIcon } from 'suid';
 import { constants } from '@/utils';
 import ExtTablePreview from '@/components/ExtTablePreview';
 import FormModal from './FormModal';
+import ImportModal from './ImportModal';
 import ExportModal from './ExportModal';
 import styles from '../../index.less';
 
@@ -16,6 +18,7 @@ const { MDMSCONTEXT } = constants;
 class ChildTable extends Component {
   state = {
     delRowId: null,
+    importVisible: false,
     exportVisible: false,
   };
 
@@ -156,11 +159,23 @@ class ChildTable extends Component {
 
   handleImport = () => {
     this.setState({
+      importVisible: true,
+    });
+  };
+
+  closeImportModal = () => {
+    this.setState({
+      importVisible: false,
+    });
+  };
+
+  handleExport = () => {
+    this.setState({
       exportVisible: true,
     });
   };
 
-  closeExportFormModal = () => {
+  closeExportModal = () => {
     this.setState({
       exportVisible: false,
     });
@@ -264,18 +279,29 @@ class ChildTable extends Component {
     };
   };
 
-  getExportModalProps = () => {
+  getImportModalProps = () => {
     const { masterDataMaintain } = this.props;
     const { currPRowData, modelUiConfig } = masterDataMaintain;
     return {
       editData: currPRowData,
       uiConfig: modelUiConfig,
-      onCancel: this.closeExportFormModal,
+      onCancel: this.closeImportModal,
+    };
+  };
+
+  getExportModalProps = () => {
+    const { masterDataMaintain } = this.props;
+    const { modelUiConfig } = masterDataMaintain;
+    const { exportUiConfig = {} } =
+      JSON.parse(get(modelUiConfig, 'impExpData', JSON.stringify({}))) || {};
+    return {
+      uiConfig: exportUiConfig.filterFormCfg,
+      onCancel: this.closeExportModal,
     };
   };
 
   render() {
-    const { exportVisible } = this.state;
+    const { importVisible, exportVisible } = this.state;
     return (
       <div className={cls(styles['container-box'])}>
         <ExtTablePreview
@@ -284,6 +310,7 @@ class ChildTable extends Component {
         />
         {/* <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} /> */}
         <FormModal {...this.getFormModalProps()} />
+        {importVisible ? <ImportModal {...this.getImportModalProps()} /> : null}
         {exportVisible ? <ExportModal {...this.getExportModalProps()} /> : null}
       </div>
     );
