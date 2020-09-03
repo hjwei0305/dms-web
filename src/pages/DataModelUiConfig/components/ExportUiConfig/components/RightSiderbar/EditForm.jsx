@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Input, Form, Button } from 'antd';
+import { Input, Form, Button, Select } from 'antd';
 import { get, omit } from 'lodash';
 
+const { Option } = Select;
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
@@ -27,7 +28,23 @@ const tailFormItemLayout = {
 
 @Form.create({})
 class EditForm extends Component {
-  getSelectOptions = () => {};
+  validateRules = [
+    {
+      label: '文本',
+      value: 'text',
+    },
+    {
+      label: '日期',
+      value: 'date',
+    },
+  ];
+
+  getSelectOptions = () =>
+    this.validateRules.map(item => (
+      <Option key={item.value} value={item.value}>
+        {item.label}
+      </Option>
+    ));
 
   handleSave = () => {
     const { form, onSave, editData } = this.props;
@@ -36,7 +53,7 @@ class EditForm extends Component {
         return;
       }
       if (onSave) {
-        Object.assign(editData[0], omit(formData, 'name'));
+        Object.assign(editData[1], omit(formData, 'name'));
         onSave(editData);
       }
     });
@@ -56,6 +73,11 @@ class EditForm extends Component {
           {getFieldDecorator('title', {
             initialValue: get(editData[1], 'title') || get(editData[0], 'name'),
           })(<Input />)}
+        </FormItem>
+        <FormItem label="格式化">
+          {getFieldDecorator('formatter', {
+            initialValue: get(editData[1], 'formatter', 'text'),
+          })(<Select>{this.getSelectOptions()}</Select>)}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" onClick={this.handleSave}>

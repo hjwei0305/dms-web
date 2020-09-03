@@ -81,6 +81,10 @@ class UiConfigPreview extends Component {
     if (activeKey === 'exportUi') {
       this.handleConfigExportUI();
     }
+
+    if (activeKey === 'importUi') {
+      this.handleConfigImportUI();
+    }
   };
 
   getFormPreview = () => {

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Input, Form, Button } from 'antd';
+import { Input, Form, Button, Select } from 'antd';
 import { get, omit } from 'lodash';
 
+const { Option } = Select;
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
@@ -27,7 +28,19 @@ const tailFormItemLayout = {
 
 @Form.create({})
 class EditForm extends Component {
-  getSelectOptions = () => {};
+  validateRules = [
+    {
+      label: '唯一性',
+      value: 'unique',
+    },
+  ];
+
+  getSelectOptions = () =>
+    this.validateRules.map(item => (
+      <Option key={item.value} value={item.value}>
+        {item.label}
+      </Option>
+    ));
 
   handleSave = () => {
     const { form, onSave, editData } = this.props;
@@ -36,7 +49,7 @@ class EditForm extends Component {
         return;
       }
       if (onSave) {
-        Object.assign(editData[0], omit(formData, 'name'));
+        Object.assign(editData[1], omit(formData, 'name'));
         onSave(editData);
       }
     });
@@ -55,6 +68,16 @@ class EditForm extends Component {
         <FormItem label="别名">
           {getFieldDecorator('title', {
             initialValue: get(editData[1], 'title') || get(editData[0], 'name'),
+          })(<Input />)}
+        </FormItem>
+        <FormItem label="验证规则">
+          {getFieldDecorator('validateRules', {
+            initialValue: get(editData[1], 'validateRules', []),
+          })(<Select mode="multiple">{this.getSelectOptions()}</Select>)}
+        </FormItem>
+        <FormItem label="自定义验证">
+          {getFieldDecorator('customRule', {
+            initialValue: get(editData[1], 'customRule'),
           })(<Input />)}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
