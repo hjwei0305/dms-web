@@ -27,7 +27,7 @@ class ExportModal extends PureComponent {
       <ExtModal
         visible
         destroyOnClose
-        centered
+        // centered
         onCancel={onCancel}
         confirmLoading={saving}
         title={title}
