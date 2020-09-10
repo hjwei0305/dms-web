@@ -102,15 +102,16 @@ class LargeFileUpload extends Component {
           const { success: sucs, data: checkData, message: mesg } = result || {};
           const { chunks = [], docId, chunkSize, uploadState } = checkData || {};
           if (sucs && uploadState !== 'completed') {
-            const chunkFileList = this.createFileChunks(file, chunkSize).filter((_, index) =>
-              (chunks || []).some(it => it.chunkNumber !== index + 1),
+            const chunkFileList = this.createFileChunks(file, chunkSize || SIZE).filter(
+              (_, index) => !(chunks || []).some(it => it.chunkNumber === index + 1),
             );
             this.setState({
               processFile: false,
               uploading: true,
             });
             this.uploadChunks(chunkFileList, file, hash)
-              .then(() => {
+              .then(test => {
+                console.log('handleUpload -> test', test);
                 this.setState({
                   uploading: false,
                   mergeFile: true,
@@ -140,7 +141,6 @@ class LargeFileUpload extends Component {
                       }
                     },
                   );
-                  console.timeEnd('calculateHash');
                 } else {
                   message.error(msg || '合并文件时出错了');
                 }
@@ -162,8 +162,11 @@ class LargeFileUpload extends Component {
                     size: file.size,
                   },
                 ].concat(hasUploadFileList),
+                fileList: [],
+                processFile: false,
               }),
               () => {
+                console.log('handleUpload -> afterUpload', afterUpload);
                 if (afterUpload) {
                   afterUpload({
                     id: docId,

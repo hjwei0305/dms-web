@@ -6,14 +6,8 @@ class LargeFileUploadModal extends PureComponent {
   render() {
     const { visible, onCancel, afterUpload } = this.props;
     return (
-      <Modal
-        title="大文件上传"
-        visible={visible}
-        onCancel={onCancel}
-        footer={null}
-        afterUpload={afterUpload}
-      >
-        <LargeFileUpload />
+      <Modal title="大文件上传" visible={visible} onCancel={onCancel} footer={null}>
+        <LargeFileUpload afterUpload={afterUpload} />
       </Modal>
     );
   }
