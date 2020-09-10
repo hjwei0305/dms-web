@@ -23,6 +23,7 @@ export default [
       { title: '数据模型UI管理', path: '/dataModelUiConfig', component: './DataModelUiConfig' },
       { title: '主数据维护', path: '/masterDataMaintain', component: './MasterDataMaintain' },
       { title: '主数据分享关系图', path: '/dataSharedDiagram', component: './DataSharedDiagram' },
+      { title: '大文件上传', path: '/largeFileUpload', component: './LargeFileUpload' },
     ],
   },
 ];

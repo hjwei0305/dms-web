@@ -11,4 +11,9 @@ export default {
     secure: false,
     pathRewrite: { '^/api-gateway': '' },
   },
+  '/file': {
+    target: 'http://10.7.84.27:8080/',
+    changeOrigin: true,
+    secure: false,
+  },
 };
