@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 // /public/hash.js
-self.importScripts("/spark-md5.min.js"); // 导入脚本
+self.importScripts("/mdms-web/spark-md5.min.js"); // 导入脚本
 
 // 生成文件 hash
 self.onmessage = e => {
