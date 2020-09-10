@@ -192,7 +192,7 @@ class LargeFileUpload extends Component {
 
   calculateHash = fileChunkList => {
     return new Promise(resolve => {
-      const hashWorker = new Worker('/hash.js');
+      const hashWorker = new Worker('/mdms-web/hash.js');
       hashWorker.postMessage({ fileChunkList });
       hashWorker.onmessage = e => {
         const { hash } = e.data;
