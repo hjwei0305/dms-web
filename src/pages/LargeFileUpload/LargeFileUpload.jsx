@@ -63,7 +63,6 @@ class LargeFileUpload extends Component {
   uploadChunks = (fileChunks, originFile, hash, totalChunks) => {
     const requestList = fileChunks
       .map(({ file, chunkNumber }) => {
-        console.log('LargeFileUpload -> uploadChunks -> chunkNumber', chunkNumber);
         const formData = new FormData();
         formData.append('file', file, originFile.name);
         formData.append('fileMd5', hash);
