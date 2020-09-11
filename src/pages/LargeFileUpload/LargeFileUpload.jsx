@@ -21,9 +21,11 @@ class LargeFileUpload extends Component {
   createFileChunks = (file, chunkSize = SIZE) => {
     const fileChunkList = [];
     let cur = 0;
+    let chunkNumber = 1;
     while (cur < file.size) {
-      fileChunkList.push({ file: file.slice(cur, cur + chunkSize) });
+      fileChunkList.push({ file: file.slice(cur, cur + chunkSize), chunkNumber });
       cur += chunkSize;
+      chunkNumber += 1;
     }
 
     return fileChunkList;
@@ -58,16 +60,17 @@ class LargeFileUpload extends Component {
     });
   };
 
-  uploadChunks = (fileChunks, originFile, hash) => {
+  uploadChunks = (fileChunks, originFile, hash, totalChunks) => {
     const requestList = fileChunks
-      .map(({ file }, index) => {
+      .map(({ file, chunkNumber }) => {
+        console.log('LargeFileUpload -> uploadChunks -> chunkNumber', chunkNumber);
         const formData = new FormData();
         formData.append('file', file, originFile.name);
         formData.append('fileMd5', hash);
         formData.append('currentChunkSize', file.size);
-        formData.append('chunkNumber', index + 1);
+        formData.append('chunkNumber', chunkNumber);
         formData.append('chunkSize', SIZE);
-        formData.append('totalChunks', fileChunks.length);
+        formData.append('totalChunks', totalChunks || fileChunks.length);
         formData.append('totalSize', originFile.size);
         return {
           formData,
@@ -100,18 +103,17 @@ class LargeFileUpload extends Component {
       })
         .then(result => {
           const { success: sucs, data: checkData, message: mesg } = result || {};
-          const { chunks = [], docId, chunkSize, uploadState } = checkData || {};
+          const { chunks = [], docId, chunkSize, uploadState, totalChunks } = checkData || {};
           if (sucs && uploadState !== 'completed') {
             const chunkFileList = this.createFileChunks(file, chunkSize || SIZE).filter(
-              (_, index) => !(chunks || []).some(it => it.chunkNumber === index + 1),
+              item => !(chunks || []).some(it => it.chunkNumber === item.chunkNumber),
             );
             this.setState({
               processFile: false,
               uploading: true,
             });
-            this.uploadChunks(chunkFileList, file, hash)
-              .then(test => {
-                console.log('handleUpload -> test', test);
+            this.uploadChunks(chunkFileList, file, hash, totalChunks)
+              .then(() => {
                 this.setState({
                   uploading: false,
                   mergeFile: true,
@@ -166,7 +168,6 @@ class LargeFileUpload extends Component {
                 processFile: false,
               }),
               () => {
-                console.log('handleUpload -> afterUpload', afterUpload);
                 if (afterUpload) {
                   afterUpload({
                     id: docId,
