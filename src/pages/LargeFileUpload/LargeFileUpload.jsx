@@ -11,12 +11,19 @@ class LargeFileUpload extends Component {
     fileList: [],
     uploading: false,
     percent: 0,
+    uploadSpeed: '0 B/s',
     hasUploadFileList: [],
     processFile: false,
     mergeFile: false,
   };
 
-  loaded = [];
+  loadedPercent = [];
+
+  progress = [];
+
+  startUploadTime = 0;
+
+  startUploadSize = 0;
 
   createFileChunks = (file, chunkSize = SIZE) => {
     const fileChunkList = [];
@@ -31,16 +38,53 @@ class LargeFileUpload extends Component {
     return fileChunkList;
   };
 
+  // formatUploadTime = s => {
+  //   let m = Math.floor(s/60);;
+  // }
+
+  calculateUploadSpeed = () => {
+    let totalLoaded = 0;
+    // let totalSize = 0;
+    const tempTime = new Date().getTime();
+    const perTime = (tempTime - this.startUploadTime) / 1000;
+    this.startUploadTime = new Date().getTime();
+    this.progress.forEach(item => {
+      const { loaded = 0 } = item || {};
+      totalLoaded += loaded;
+      // totalSize += total;
+    });
+    const perLoaded = totalLoaded - this.startUploadSize;
+    this.startUploadSize = totalLoaded;
+    let uploadSpeed = perLoaded / perTime;
+    // let bspeed = uploadSpeed;
+    let units = 'b/s';
+    if (uploadSpeed / 1024 > 1) {
+      uploadSpeed /= 1024;
+      units = 'k/s';
+    }
+    if (uploadSpeed / 1024 > 1) {
+      uploadSpeed /= 1024;
+      units = 'M/s';
+    }
+    uploadSpeed = uploadSpeed.toFixed(1);
+    // let resttime = ((evt.total-evt.loaded)/bspeed).toFixed(1);
+    // resttime = s_to_hs(resttime);
+    return `${uploadSpeed} ${units}`;
+  };
+
   handleProgress = (progressEvent, index, chunkNumber) => {
     const complete = Math.floor((progressEvent.loaded / progressEvent.total).toFixed(2) * 100);
-    this.loaded[index] = complete;
+    this.loadedPercent[index] = complete;
+    this.progress[index] = { total: progressEvent.total, loaded: progressEvent.loaded };
     let percent = 0;
-    this.loaded.forEach(item => {
+    this.loadedPercent.forEach(item => {
       percent += item;
     });
     percent = Math.floor(percent / chunkNumber);
+
     this.setState({
       percent,
+      uploadSpeed: this.calculateUploadSpeed(),
     });
   };
 
@@ -111,6 +155,8 @@ class LargeFileUpload extends Component {
               processFile: false,
               uploading: true,
             });
+            this.startUploadTime = new Date().getTime();
+            this.startUploadSize = 0;
             this.uploadChunks(chunkFileList, file, hash, totalChunks)
               .then(() => {
                 this.setState({
@@ -150,6 +196,7 @@ class LargeFileUpload extends Component {
                 this.setState({
                   mergeFile: false,
                   percent: 0,
+                  uploadSpeed: '0 B/s',
                 });
               });
           }
@@ -252,21 +299,31 @@ class LargeFileUpload extends Component {
   };
 
   render() {
-    const { uploading, fileList, percent, processFile, mergeFile, hasUploadFileList } = this.state;
+    const {
+      uploading,
+      fileList,
+      percent,
+      uploadSpeed,
+      processFile,
+      mergeFile,
+      hasUploadFileList,
+    } = this.state;
     const props = {
       showUploadList: false,
       onRemove: () => {
-        this.loaded = [];
+        this.loadedPercent = [];
         this.setState({
           fileList: [],
           percent: 0,
+          uploadSpeed: '0 B/s',
         });
       },
       beforeUpload: file => {
-        this.loaded = [];
+        this.loadedPercent = [];
         this.setState({
           fileList: [file],
           percent: 0,
+          uploadSpeed: '0 B/s',
         });
         return false;
       },
@@ -316,6 +373,7 @@ class LargeFileUpload extends Component {
               ) : (
                 <div style={{ width: 150 }}>
                   <Progress percent={percent} status={percent !== 100 ? 'active' : 'success'} />
+                  {percent !== 100 ? uploadSpeed : null}
                 </div>
               )}
             </List.Item>
