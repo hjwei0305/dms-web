@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Upload, Button, Icon, Progress, List, Divider, Popconfirm, message } from 'antd';
 import { utils } from 'suid';
-import SparkMD5 from 'spark-md5';
 
 import workerStr from './worker.js';
 
@@ -240,18 +239,6 @@ class LargeFileUpload extends Component {
             processFile: false,
           });
         });
-    });
-  };
-
-  getFileMd5 = fileChunkList => {
-    const spark = new SparkMD5.ArrayBuffer();
-    const reader = new FileReader();
-    return new Promise(resolve => {
-      reader.readAsArrayBuffer(fileChunkList[0].file);
-      reader.onload = event => {
-        spark.append(event.target.result);
-        resolve({ hash: spark.end() });
-      };
     });
   };
 

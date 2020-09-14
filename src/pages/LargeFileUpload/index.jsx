@@ -19,14 +19,15 @@ class UploadBtn extends Component {
     });
   };
 
-  handleLargeFileUpload = file => {
-    console.log({
-      id: file.id,
-      name: file.name,
-      uid: file.id,
-      response: [file],
-      status: 'done',
-    });
+  handleLargeFileUpload = () => {
+    // TODO:
+    // console.log({
+    //   id: file.id,
+    //   name: file.name,
+    //   uid: file.id,
+    //   response: [file],
+    //   status: 'done',
+    // });
   };
 
   render() {
