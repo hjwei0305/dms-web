@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Upload, Button, Icon, Progress, List, Divider, Popconfirm, message } from 'antd';
 import { utils } from 'suid';
+import SparkMD5 from 'spark-md5';
+
+import workerStr from './worker.js';
 
 const SIZE = 50 * 1024 * 1024; // 切片大小
 
@@ -240,9 +243,21 @@ class LargeFileUpload extends Component {
     });
   };
 
+  getFileMd5 = fileChunkList => {
+    const spark = new SparkMD5.ArrayBuffer();
+    const reader = new FileReader();
+    return new Promise(resolve => {
+      reader.readAsArrayBuffer(fileChunkList[0].file);
+      reader.onload = event => {
+        spark.append(event.target.result);
+        resolve({ hash: spark.end() });
+      };
+    });
+  };
+
   calculateHash = fileChunkList => {
     return new Promise(resolve => {
-      const hashWorker = new Worker('/mdms-web/hash.js');
+      const hashWorker = new Worker(URL.createObjectURL(new Blob([workerStr])));
       hashWorker.postMessage({ fileChunkList });
       hashWorker.onmessage = e => {
         const { hash } = e.data;
