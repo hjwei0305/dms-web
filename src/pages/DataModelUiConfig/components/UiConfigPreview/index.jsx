@@ -162,7 +162,11 @@ class UiConfigPreview extends Component {
           slotClassName={cls('slot-col-wrapper')}
           uiConfig={filterFormCfg}
         />
-        <ExtExportPriview slot="right" colItems={colItems} />
+        <ExtExportPriview
+          slotClassName={cls('slot-col-wrapper')}
+          slot="right"
+          colItems={colItems}
+        />
       </ColumnLayout>
     );
   };

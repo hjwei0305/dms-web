@@ -424,7 +424,6 @@ export class DataSharedDiagram extends Component {
               {
                 name: '魏延327',
               },
-              {},
             ],
             focusNodeAdjacency: true,
             roam: true,

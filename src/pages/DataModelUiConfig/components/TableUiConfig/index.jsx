@@ -143,6 +143,7 @@ class TableUiConfig extends Component {
           </div>
           <div className={cls('config-right-siderbar')}>
             <Content
+              key={JSON.stringify(tableUiConfig)}
               tableUiConfig={tableUiConfig}
               store={{
                 type: 'POST',

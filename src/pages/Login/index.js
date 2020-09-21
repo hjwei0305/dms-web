@@ -15,15 +15,12 @@ const { Option } = Select;
 class LoginForm extends PureComponent {
   static loginReqId;
 
-  constructor(props) {
-    super(props);
-    this.loginReqId = utils.getUUID();
-  }
-
   componentDidMount() {
     this.userInput.focus();
     this.handleVertify();
   }
+
+  loginReqId = utils.getUUID();
 
   handlerSubmit = () => {
     const { form } = this.props;
