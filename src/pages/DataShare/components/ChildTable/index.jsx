@@ -198,6 +198,14 @@ class ChildTable extends Component {
           );
         },
       },
+      {
+        title: '模块代码',
+        dataIndex: 'code',
+      },
+      {
+        title: '模块名称',
+        dataIndex: 'name',
+      },
     ];
     const toolBar = {
       left: (
@@ -215,6 +223,8 @@ class ChildTable extends Component {
     return {
       toolBar,
       columns,
+      searchProperties: ['code', 'name'],
+      searchPlaceHolder: '输入代码或名称进行搜索',
       store: {
         type: 'POST',
         url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
@@ -227,8 +237,8 @@ class ChildTable extends Component {
     const { currPRowData, currCRowData, cVisible } = dataShare;
     return {
       onSave: this.save,
-      pRowData: currPRowData,
-      rowData: currCRowData,
+      parentData: currPRowData,
+      editData: currCRowData,
       visible: cVisible,
       onCancel: this.closeFormModal,
       saving: loading.effects['dataShare/saveChild'],

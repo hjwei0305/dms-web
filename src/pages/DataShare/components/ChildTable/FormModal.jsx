@@ -3,6 +3,8 @@ import { Form, Input, Switch } from 'antd';
 import { omit } from 'lodash';
 import { ExtModal, ComboGrid } from 'suid';
 import { constants } from '@/utils';
+import ExtTransfer from '../ExtTransfer';
+import { getPropertiesByCode } from '../../service.js';
 
 const { MDMSCONTEXT } = constants;
 const FormItem = Form.Item;
@@ -17,6 +19,14 @@ const formItemLayout = {
 
 @Form.create()
 class FormModal extends PureComponent {
+  state = {
+    fieldLists: [],
+  };
+
+  componentDidMount() {
+    this.getPropertiesByCode();
+  }
+
   handleSave = () => {
     const { form, onSave, editData } = this.props;
     form.validateFields((err, formData) => {
@@ -26,6 +36,21 @@ class FormModal extends PureComponent {
       const params = {};
       Object.assign(params, editData, formData);
       onSave(omit(params, 'register'));
+    });
+  };
+
+  getPropertiesByCode = () => {
+    const { parentData } = this.props;
+
+    return getPropertiesByCode({
+      code: parentData.code,
+    }).then(result => {
+      const { success, data } = result;
+      if (success) {
+        this.setState({
+          fieldLists: data || [],
+        });
+      }
     });
   };
 
@@ -72,16 +97,18 @@ class FormModal extends PureComponent {
   };
 
   render() {
-    const { form, editData, onClose, saving, visible, parentData } = this.props;
+    const { fieldLists } = this.state;
+    const { form, editData, onCancel, saving, visible, parentData } = this.props;
     const { getFieldDecorator } = form;
     const title = editData ? '编辑' : '新建';
 
     return (
       <ExtModal
         destroyOnClose
-        onCancel={onClose}
+        onCancel={onCancel}
         visible={visible}
         centered
+        width={600}
         confirmLoading={saving}
         maskClosable={false}
         title={title}
@@ -89,45 +116,20 @@ class FormModal extends PureComponent {
         onOk={this.handleSave}
       >
         <Form {...formItemLayout} layout="horizontal">
-          <FormItem label="主数据分类代码" style={{ display: 'none' }}>
-            {getFieldDecorator('typeCode', {
+          <FormItem label="主数据代码" style={{ display: 'none' }}>
+            {getFieldDecorator('masterCode', {
               initialValue: parentData && parentData.code,
             })(<Input disabled={!!parentData} />)}
           </FormItem>
-          <FormItem label="主数据分类">
-            {getFieldDecorator('typeName', {
-              initialValue: parentData && parentData.name,
-            })(<Input disabled={!!parentData} />)}
-          </FormItem>
-          <FormItem label="主数据" style={{ display: editData ? 'none' : '' }}>
-            {getFieldDecorator('register', {
+          <FormItem label="业务模块">
+            {getFieldDecorator('businessModule', {
               initialValue: '',
             })(<ComboGrid {...this.getDsComboGridProps()} />)}
           </FormItem>
-          <FormItem label="数据结构代码" style={{ display: 'none' }}>
-            {getFieldDecorator('dataStructure', {
-              initialValue: editData ? editData.dataStructure : '',
-            })(<Input disabled />)}
-          </FormItem>
-          <FormItem label="数据结构">
-            {getFieldDecorator('dataStructureEnumRemark', {
-              initialValue: editData ? editData.dataStructureEnumRemark : '',
-            })(<Input disabled />)}
-          </FormItem>
-          <FormItem label="主数据代码">
-            {getFieldDecorator('code', {
-              initialValue: editData ? editData.code : '',
-            })(<Input disabled />)}
-          </FormItem>
-          <FormItem label="主数据名称">
-            {getFieldDecorator('name', {
-              initialValue: editData ? editData.name : '',
-            })(<Input />)}
-          </FormItem>
-          <FormItem label="主数据描述">
-            {getFieldDecorator('remark', {
-              initialValue: editData ? editData.remark : '',
-            })(<Input.TextArea />)}
+          <FormItem label="分享字段">
+            {getFieldDecorator('shareFields', {
+              initialValue: [],
+            })(<ExtTransfer itemList={fieldLists} />)}
           </FormItem>
           <FormItem label="冻结">
             {getFieldDecorator('frozen', {

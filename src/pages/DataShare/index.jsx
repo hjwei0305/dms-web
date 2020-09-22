@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
-import { get } from 'lodash';
 import cls from 'classnames';
 import { Empty } from 'antd';
 import PageWrapper from '@/components/PageWrapper';
 import CascadeLayout from '@/components/Layout/CascadeLayout';
-import ExtTreePreview from '@/components/ExtTreePreview';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
 import styles from './index.less';
@@ -16,25 +14,9 @@ import styles from './index.less';
 class DataShare extends Component {
   getRightCmp = () => {
     const { dataShare } = this.props;
-    const { currPRowData, modelUiConfig } = dataShare;
-    const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', null));
-    const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', null));
-    const dataStructure = get(modelUiConfig, 'dataStructure', 'LIST');
-
-    if (currPRowData && formUiConfig && tableUiConfig && dataStructure === 'TREE') {
-      return (
-        <ExtTreePreview
-          key={currPRowData.id}
-          slot="right"
-          treeUiConfig={tableUiConfig}
-          dataModelCode={modelUiConfig.code}
-          formUiConfig={formUiConfig}
-        />
-      );
-    }
-
-    if (currPRowData && tableUiConfig && dataStructure === 'LIST') {
-      return <ChildTable key={currPRowData.id} slot="right" modelUiConfig={modelUiConfig} />;
+    const { currPRowData } = dataShare;
+    if (currPRowData) {
+      return <ChildTable key={currPRowData.id} slot="right" />;
     }
 
     return null;

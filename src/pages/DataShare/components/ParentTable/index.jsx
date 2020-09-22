@@ -96,7 +96,6 @@ class CascadeTableMaster extends Component {
           type: 'dataShare/updatePageState',
           payload: {
             currPRowData: selectedItem,
-            modelUiConfig: selectedItem,
           },
         }).then(() => {
           dispatch({
