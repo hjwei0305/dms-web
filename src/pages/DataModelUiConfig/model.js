@@ -11,7 +11,7 @@ import {
   saveParent,
   saveChild,
   delChildRow,
-  getConfigByCode,
+  getConfigById,
   saveModelUiConfig,
 } from './service';
 
@@ -93,9 +93,9 @@ export default modelExtend(model, {
 
       return result;
     },
-    *getConfigByCode({ payload }, { call, put, select }) {
+    *getConfigById({ payload }, { call, put, select }) {
       const currPRowData = yield select(state => state.dataModelUiConfig.currPRowData);
-      const result = yield call(getConfigByCode, payload);
+      const result = yield call(getConfigById, payload);
       const { success, data: modelUiConfig } = result || {};
 
       message.destroy();

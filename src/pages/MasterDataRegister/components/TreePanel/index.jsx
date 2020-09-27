@@ -28,9 +28,9 @@ class TreePanel extends Component {
         },
       }).then(({ currNode }) => {
         dispatch({
-          type: 'masterDataRegister/queryListByTypeCode',
+          type: 'masterDataRegister/queryListByTypeId',
           payload: {
-            typeCode: currNode.code,
+            categoryId: currNode.id,
           },
         });
       });

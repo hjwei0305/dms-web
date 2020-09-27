@@ -38,7 +38,7 @@ class FormModal extends PureComponent {
       store: {
         type: 'GET',
         autoLoad: false,
-        url: `${MDMSCONTEXT}/masterDataUiConfig/getAllMasterData`,
+        url: `${MDMSCONTEXT}/dataDefinition/getAllData`,
       },
       columns: [
         {
@@ -90,12 +90,12 @@ class FormModal extends PureComponent {
       >
         <Form {...formItemLayout} layout="horizontal">
           <FormItem label="主数据分类代码" style={{ display: 'none' }}>
-            {getFieldDecorator('typeCode', {
-              initialValue: parentData && parentData.code,
+            {getFieldDecorator('categoryId', {
+              initialValue: parentData && parentData.id,
             })(<Input disabled={!!parentData} />)}
           </FormItem>
           <FormItem label="主数据分类">
-            {getFieldDecorator('typeName', {
+            {getFieldDecorator('categoryName', {
               initialValue: parentData && parentData.name,
             })(<Input disabled={!!parentData} />)}
           </FormItem>

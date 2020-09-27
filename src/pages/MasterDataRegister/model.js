@@ -10,7 +10,7 @@ import {
   del,
   save,
   listAllTree,
-  getConfigByTypeCode,
+  getConfigByTypeId,
   addAuditFields,
   saveTreeNode,
   delTreeNode,
@@ -57,8 +57,8 @@ export default modelExtend(model, {
 
       return payload;
     },
-    *queryListByTypeCode({ payload }, { call, put }) {
-      const result = yield call(getConfigByTypeCode, payload);
+    *queryListByTypeId({ payload }, { call, put }) {
+      const result = yield call(getConfigByTypeId, payload);
       const { data, success, message: msg } = result || {};
       if (success) {
         yield put({

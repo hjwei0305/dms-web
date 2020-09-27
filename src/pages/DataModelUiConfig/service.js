@@ -60,8 +60,8 @@ export async function getPropertiesByCode({ code }) {
 }
 
 /** 根据模型code获取ui配置 */
-export async function getConfigByCode({ code }) {
-  const url = `${MockServerPath}${contextPath}/getConfigByCode?code=${code}`;
+export async function getConfigById({ id }) {
+  const url = `${MockServerPath}${contextPath}/getConfigByCode?id=${id}`;
   return request({
     url,
     method: 'GET',
@@ -71,6 +71,16 @@ export async function getConfigByCode({ code }) {
 /** 保存模型ui配置 */
 export async function saveModelUiConfig(data) {
   const url = `${MockServerPath}${contextPath}/save`;
+  return request({
+    url,
+    method: 'POST',
+    data,
+  });
+}
+
+/** 保存模型ui配置 */
+export async function saveUiConfig(data) {
+  const url = `${MockServerPath}/dataDefinition/saveConfig`;
   return request({
     url,
     method: 'POST',

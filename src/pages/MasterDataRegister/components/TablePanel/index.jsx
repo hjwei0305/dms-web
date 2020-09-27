@@ -15,9 +15,9 @@ class TablePanel extends Component {
 
     if (currNode) {
       dispatch({
-        type: 'masterDataRegister/queryListByTypeCode',
+        type: 'masterDataRegister/queryListByTypeId',
         payload: {
-          typeCode: currNode.code,
+          categoryId: currNode.id,
         },
       });
     }

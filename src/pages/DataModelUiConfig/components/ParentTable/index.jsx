@@ -84,7 +84,7 @@ class CascadeTableMaster extends Component {
     if (selectedNode) {
       store = {
         type: 'Get',
-        url: `${MDMSCONTEXT}/masterDataUiConfig/getConfigByTypeCode?typeCode=${selectedNode.code}`,
+        url: `${MDMSCONTEXT}/dataDefinition/getRegisterDataByCategoryId?categoryId=${selectedNode.id}`,
       };
     }
 
@@ -99,9 +99,9 @@ class CascadeTableMaster extends Component {
           },
         }).then(() => {
           dispatch({
-            type: 'dataModelUiConfig/getConfigByCode',
+            type: 'dataModelUiConfig/getConfigById',
             payload: {
-              code: selectedItem.code,
+              id: selectedItem.id,
             },
           });
         });

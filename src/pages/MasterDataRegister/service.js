@@ -15,7 +15,7 @@ const treeTextPath = '/dataModelType';
 
 /** 注册 */
 export async function save(data) {
-  const url = `${MockServerPath}${contextPath}/register`;
+  const url = `${MockServerPath}/dataDefinition/register`;
   return request({
     url,
     method: 'POST',
@@ -95,7 +95,7 @@ export async function listAllTree(params = {}) {
 /**
  * 根据树结点code获取模型类型
  */
-export async function getConfigByTypeCode({ typeCode }) {
-  const url = `${MockServerPath}/masterDataUiConfig/getRegisterDataByTypeCode?typeCode=${typeCode}`;
+export async function getConfigByTypeId({ categoryId }) {
+  const url = `${MockServerPath}/dataDefinition/getRegisterDataByCategoryId?categoryId=${categoryId}`;
   return request.get(url);
 }
