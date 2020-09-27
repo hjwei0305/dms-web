@@ -76,15 +76,9 @@ class FormItems extends PureComponent {
             </FormItem>
           ) : null}
 
-          <FormItem label="代码">
+          <FormItem label="代码" style={{ display: 'none' }}>
             {getFieldDecorator('code', {
               initialValue: code,
-              rules: [
-                {
-                  required: true,
-                  message: '代码不能为空',
-                },
-              ],
             })(<Input disabled={!!editData} />)}
           </FormItem>
           <FormItem label="名称">

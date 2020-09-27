@@ -11,7 +11,7 @@ const { request } = utils;
 const { MDMSCONTEXT: MockServerPath } = constants;
 
 const contextPath = '/masterDataUiConfig';
-const treeTextPath = '/dataModelType';
+// const treeTextPath = '/dataModelType';
 
 /** 注册 */
 export async function save(data) {
@@ -67,7 +67,7 @@ export async function del(params) {
 
 /** 保存树结点 */
 export async function saveTreeNode(data) {
-  const url = `${MockServerPath}${treeTextPath}/save`;
+  const url = `${MockServerPath}/dataCategory/save`;
   return request({
     url,
     method: 'POST',
@@ -77,7 +77,7 @@ export async function saveTreeNode(data) {
 
 /** 删除树结点 */
 export async function delTreeNode(params) {
-  const url = `${MockServerPath}${treeTextPath}/delete/${params.id}`;
+  const url = `${MockServerPath}/dataCategory/delete/${params.id}`;
   return request({
     url,
     method: 'DELETE',
@@ -88,7 +88,7 @@ export async function delTreeNode(params) {
  * 获取所有树结构数据
  */
 export async function listAllTree(params = {}) {
-  const url = `${MockServerPath}${treeTextPath}/getModelTypeTree`;
+  const url = `${MockServerPath}/dataCategory/getTypeTree`;
   return request.get(url, params);
 }
 
