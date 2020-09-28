@@ -20,12 +20,15 @@ class ImportUiConfig extends Component {
     super(props);
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
-
-    const impExpData = JSON.parse(get(modelUiConfig, 'impExpData', JSON.stringify({})));
-    const { importUiConfig: importUiConfigJson } = impExpData;
-    const importUiConfig = importUiConfigJson || {
-      colItems: [],
-    };
+    const importUiConfig = JSON.parse(
+      get(
+        modelUiConfig,
+        'Import',
+        JSON.stringify({
+          colItems: [],
+        }),
+      ),
+    );
     this.state = {
       importUiConfig,
       oldImportUiConfig: cloneDeep(importUiConfig),
@@ -77,22 +80,22 @@ class ImportUiConfig extends Component {
 
   handleSave = () => {
     const { dispatch, dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
+    const { modelUiConfig, currPRowData } = dataModelUiConfig;
     const { importUiConfig } = this.state;
+    const data = {
+      configData: JSON.stringify(importUiConfig),
+      configType: 'Import',
+      dataDefinitionId: currPRowData.id,
+    };
 
     this.setState({
       oldImportUiConfig: cloneDeep(importUiConfig),
     });
-    const tempImp = JSON.parse(get(modelUiConfig, 'impExpData', JSON.stringify({})));
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
-        modelUiConfig: {
-          ...modelUiConfig,
-          impExpData: tempImp
-            ? JSON.stringify({ ...tempImp, importUiConfig })
-            : JSON.stringify({ importUiConfig }),
-        },
+        modelUiConfig: Object.assign(modelUiConfig, { Import: data.configData }),
+        data,
       },
     });
   };

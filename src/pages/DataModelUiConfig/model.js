@@ -6,14 +6,7 @@
  */
 import { message } from 'antd';
 import { utils } from 'suid';
-import {
-  delParentRow,
-  saveParent,
-  saveChild,
-  delChildRow,
-  getConfigById,
-  saveModelUiConfig,
-} from './service';
+import { getConfigById, saveModelUiConfig } from './service';
 
 const { dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
@@ -45,54 +38,6 @@ export default modelExtend(model, {
 
       return payload;
     },
-    *saveChild({ payload }, { call }) {
-      const result = yield call(saveChild, payload);
-      const { success, message: msg } = result || {};
-      message.destroy();
-      if (success) {
-        message.success(msg);
-      } else {
-        message.error(msg);
-      }
-
-      return result;
-    },
-    *saveParent({ payload }, { call }) {
-      const result = yield call(saveParent, payload);
-      const { success, message: msg } = result || {};
-      message.destroy();
-      if (success) {
-        message.success(msg);
-      } else {
-        message.error(msg);
-      }
-
-      return result;
-    },
-    *delPRow({ payload }, { call }) {
-      const result = yield call(delParentRow, payload);
-      const { message: msg, success } = result || {};
-      message.destroy();
-      if (success) {
-        message.success(msg);
-      } else {
-        message.error(msg);
-      }
-
-      return result;
-    },
-    *delCRow({ payload }, { call }) {
-      const result = yield call(delChildRow, payload);
-      const { message: msg, success } = result || {};
-      message.destroy();
-      if (success) {
-        message.success(msg);
-      } else {
-        message.error(msg);
-      }
-
-      return result;
-    },
     *getConfigById({ payload }, { call, put, select }) {
       const currPRowData = yield select(state => state.dataModelUiConfig.currPRowData);
       const result = yield call(getConfigById, payload);
@@ -119,7 +64,7 @@ export default modelExtend(model, {
       return result;
     },
     *saveModelUiConfig({ payload }, { call, put }) {
-      const result = yield call(saveModelUiConfig, payload.modelUiConfig);
+      const result = yield call(saveModelUiConfig, payload.data);
       const { message: msg, success } = result || {};
       if (success) {
         message.success(msg);

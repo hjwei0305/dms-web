@@ -19,13 +19,11 @@ class FormUiConfig extends Component {
     super(props);
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
-    const formDataJson = get(modelUiConfig, 'formData');
-    const formUiConfig = formDataJson
-      ? JSON.parse(formDataJson)
-      : {
-          showDescIcon: true,
-          formItems: [],
-        };
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const formUiConfig = get(uiObj, 'formConfig', {
+      showDescIcon: true,
+      formItems: [],
+    });
     this.state = {
       formUiConfig,
       oldFormUiConfig: cloneDeep(formUiConfig),
@@ -86,8 +84,14 @@ class FormUiConfig extends Component {
 
   handleSave = () => {
     const { dispatch, dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
+    const { modelUiConfig, currPRowData } = dataModelUiConfig;
     const { formUiConfig } = this.state;
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const data = {
+      configData: JSON.stringify(Object.assign(uiObj, { formConfig: formUiConfig })),
+      configType: 'UI',
+      dataDefinitionId: currPRowData.id,
+    };
 
     this.setState({
       oldFormUiConfig: cloneDeep(formUiConfig),
@@ -96,7 +100,8 @@ class FormUiConfig extends Component {
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
-        modelUiConfig: { ...modelUiConfig, formData: JSON.stringify(formUiConfig) },
+        modelUiConfig: Object.assign(modelUiConfig, { UI: data.configData }),
+        data,
       },
     });
   };

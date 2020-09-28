@@ -52,7 +52,7 @@ class DataModelUiConfig extends Component {
             )}
           </CascadeLayout>
         </PageWrapper>
-        {vTableUiConfig && currPRowData.dataStructure === 'LIST' ? (
+        {vTableUiConfig && currPRowData.dataStructure === 'GENERAL' ? (
           <TableUiConfig modelUiConfig={modelUiConfig} />
         ) : null}
         {vTableUiConfig && currPRowData.dataStructure === 'TREE' ? (

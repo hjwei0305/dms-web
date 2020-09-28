@@ -90,7 +90,8 @@ class UiConfigPreview extends Component {
   getFormPreview = () => {
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
-    const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', ''));
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const formUiConfig = get(uiObj, 'formConfig', null);
     const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
     if (canCreateRoot) {
       return (
@@ -151,9 +152,11 @@ class UiConfigPreview extends Component {
   getExportPreview = () => {
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
-    const { exportUiConfig = {} } = JSON.parse(
-      get(modelUiConfig, 'impExpData', JSON.stringify({})),
-    );
+    const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', JSON.stringify({})));
+    // const exportUiConfig = get(uiObj, 'formConfig', null);
+    // const { exportUiConfig = {} } = JSON.parse(
+    //   get(modelUiConfig, 'impExpData', JSON.stringify({})),
+    // );
     const { colItems = [], filterFormCfg } = exportUiConfig;
     return (
       <ColumnLayout gutter={4} layout={[8, 16]} title={['过滤表单', '导出列']}>
@@ -174,14 +177,14 @@ class UiConfigPreview extends Component {
   render() {
     const { activeKey } = this.state;
     const { dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
-    const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', null));
-    const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', null));
-    const { importUiConfig, exportUiConfig } = JSON.parse(
-      get(modelUiConfig, 'impExpData', JSON.stringify({})),
-    );
+    const { modelUiConfig, currPRowData } = dataModelUiConfig;
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const formUiConfig = get(uiObj, 'formConfig', null);
+    const tableUiConfig = get(uiObj, 'showConfig', null);
+    const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', JSON.stringify({})));
+    const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', JSON.stringify({})));
     const { colItems: importColItems } = importUiConfig || {};
-    const dataStructure = get(modelUiConfig, 'dataStructure', 'LIST');
+    const dataStructure = get(modelUiConfig, 'dataStructure', 'GENERAL');
 
     return (
       <div
@@ -204,19 +207,19 @@ class UiConfigPreview extends Component {
           onChange={this.handleTabChange}
         >
           <TabPane tab={dataStructure === 'TREE' ? '树形配置预览' : '列表配置预览'} key="tableUi">
-            {tableUiConfig && dataStructure === 'LIST' ? (
+            {tableUiConfig && dataStructure === 'GENERAL' ? (
               <ExtTablePreview
                 tableUiConfig={tableUiConfig}
                 store={{
                   type: 'POST',
-                  url: `${MDMSCONTEXT}/${modelUiConfig.code}/findByPage`,
+                  url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
                 }}
               />
             ) : null}
             {tableUiConfig && dataStructure === 'TREE' ? (
               <ExtTreePreview
                 treeUiConfig={tableUiConfig}
-                dataModelCode={modelUiConfig.code}
+                dataModelCode={currPRowData.code}
                 formUiConfig={formUiConfig}
               />
             ) : null}

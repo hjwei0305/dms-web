@@ -16,14 +16,12 @@ class TreeUiConfig extends Component {
     super(props);
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
-    const treeDataJson = get(modelUiConfig, 'tableData');
-    const treeUiConfig = treeDataJson
-      ? JSON.parse(treeDataJson)
-      : {
-          showSearchTooltip: true,
-          allowCreateRoot: true,
-          detailFields: [],
-        };
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const treeUiConfig = get(uiObj, 'showConfig', {
+      showSearchTooltip: true,
+      allowCreateRoot: true,
+      detailFields: [],
+    });
     this.state = {
       treeUiConfig,
       oldTreeUiConfig: cloneDeep(treeUiConfig),
@@ -85,8 +83,15 @@ class TreeUiConfig extends Component {
 
   handleSave = () => {
     const { dispatch, dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
+    const { modelUiConfig, currPRowData } = dataModelUiConfig;
     const { treeUiConfig = {} } = this.state;
+
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const data = {
+      configData: JSON.stringify(Object.assign(uiObj, { showConfig: treeUiConfig })),
+      configType: 'UI',
+      dataDefinitionId: currPRowData.id,
+    };
 
     this.setState({
       oldTreeUiConfig: cloneDeep(treeUiConfig),
@@ -95,7 +100,8 @@ class TreeUiConfig extends Component {
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
-        modelUiConfig: { ...modelUiConfig, tableData: JSON.stringify(treeUiConfig) },
+        modelUiConfig: Object.assign(modelUiConfig, { UI: data.configData }),
+        data,
       },
     });
   };

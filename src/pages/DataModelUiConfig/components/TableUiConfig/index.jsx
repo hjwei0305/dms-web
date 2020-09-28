@@ -20,19 +20,17 @@ class TableUiConfig extends Component {
     super(props);
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
-    const tableDataJson = get(modelUiConfig, 'tableData');
-    const tableUiConfig = tableDataJson
-      ? JSON.parse(tableDataJson)
-      : {
-          store: {
-            type: 'POST',
-            url: '',
-          },
-          showSearchTooltip: true,
-          allowCustomColumns: true,
-          remotePaging: true,
-          columns: [],
-        };
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const tableUiConfig = get(uiObj, 'showConfig', {
+      store: {
+        type: 'POST',
+        url: '',
+      },
+      showSearchTooltip: true,
+      allowCustomColumns: true,
+      remotePaging: true,
+      columns: [],
+    });
     this.state = {
       tableUiConfig,
       oldTableUiConfig: cloneDeep(tableUiConfig),
@@ -94,8 +92,14 @@ class TableUiConfig extends Component {
 
   handleSave = () => {
     const { dispatch, dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
+    const { modelUiConfig = {}, currPRowData } = dataModelUiConfig;
     const { tableUiConfig = {} } = this.state;
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const data = {
+      configData: JSON.stringify(Object.assign(uiObj, { showConfig: tableUiConfig })),
+      configType: 'UI',
+      dataDefinitionId: currPRowData.id,
+    };
 
     this.setState({
       oldTableUiConfig: cloneDeep(tableUiConfig),
@@ -104,7 +108,8 @@ class TableUiConfig extends Component {
     dispatch({
       type: 'dataModelUiConfig/saveModelUiConfig',
       payload: {
-        modelUiConfig: { ...modelUiConfig, tableData: JSON.stringify(tableUiConfig) },
+        modelUiConfig: Object.assign(modelUiConfig, { UI: data.configData }),
+        data,
       },
     });
   };

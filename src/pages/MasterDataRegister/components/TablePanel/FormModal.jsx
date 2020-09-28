@@ -89,12 +89,12 @@ class FormModal extends PureComponent {
         onOk={this.handleSave}
       >
         <Form {...formItemLayout} layout="horizontal">
-          <FormItem label="主数据分类代码" style={{ display: 'none' }}>
+          <FormItem label="数据分类Id" style={{ display: 'none' }}>
             {getFieldDecorator('categoryId', {
               initialValue: parentData && parentData.id,
             })(<Input disabled={!!parentData} />)}
           </FormItem>
-          <FormItem label="主数据分类">
+          <FormItem label="数据分类">
             {getFieldDecorator('categoryName', {
               initialValue: parentData && parentData.name,
             })(<Input disabled={!!parentData} />)}
