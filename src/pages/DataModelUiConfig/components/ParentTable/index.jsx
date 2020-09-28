@@ -37,7 +37,7 @@ class CascadeTableMaster extends Component {
         width: 150,
       },
       store: {
-        url: `${MDMSCONTEXT}/dataModelType/getModelTypeTree`,
+        url: `${MDMSCONTEXT}/dataCategory/getTypeTree`,
       },
       reader: {
         name: 'name',
