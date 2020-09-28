@@ -6,7 +6,7 @@
  */
 import { message } from 'antd';
 import { utils } from 'suid';
-import { delParentRow, saveParent, saveChild, delChildRow } from './service';
+import { delParentRow, saveParent, saveChild, delChildRow, getConfigById } from './service';
 
 const { dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
@@ -39,6 +39,24 @@ export default modelExtend(model, {
       message.destroy();
       if (success) {
         message.success(msg);
+      } else {
+        message.error(msg);
+      }
+
+      return result;
+    },
+    *getConfigById({ payload }, { call, put }) {
+      const result = yield call(getConfigById, payload);
+      const { success, data: modelUiConfig, message: msg } = result || {};
+
+      message.destroy();
+      if (success) {
+        yield put({
+          type: 'updateState',
+          payload: {
+            modelUiConfig,
+          },
+        });
       } else {
         message.error(msg);
       }

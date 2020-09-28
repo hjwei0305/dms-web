@@ -184,11 +184,12 @@ class ChildTable extends Component {
   getExtableProps = () => {
     const { masterDataMaintain } = this.props;
     const { modelUiConfig, currPRowData } = masterDataMaintain;
-    const tableProps = modelUiConfig.tableData
-      ? JSON.parse(modelUiConfig.tableData)
-      : {
-          columns: [],
-        };
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    // const formUiConfig = get(uiObj, 'formConfig', null);
+    const tableUiConfig = get(uiObj, 'showConfig', null);
+    const tableProps = tableUiConfig || {
+      columns: [],
+    };
 
     const columns = [
       {
@@ -268,12 +269,14 @@ class ChildTable extends Component {
   getFormModalProps = () => {
     const { loading, masterDataMaintain } = this.props;
     const { currPRowData, currCRowData, cVisible, modelUiConfig } = masterDataMaintain;
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const formUiConfig = get(uiObj, 'formConfig', null);
     return {
+      formUiConfig,
       onSave: this.save,
       pRowData: currPRowData,
       rowData: currCRowData,
       visible: cVisible,
-      formUiConfig: JSON.parse(modelUiConfig.formData),
       onCancel: this.closeFormModal,
       saving: loading.effects['masterDataMaintain/saveChild'],
     };
@@ -292,8 +295,8 @@ class ChildTable extends Component {
   getExportModalProps = () => {
     const { masterDataMaintain } = this.props;
     const { modelUiConfig } = masterDataMaintain;
-    const { exportUiConfig = {} } =
-      JSON.parse(get(modelUiConfig, 'impExpData', JSON.stringify({}))) || {};
+    const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', JSON.stringify({})));
+
     return {
       uiConfig: exportUiConfig.filterFormCfg,
       onCancel: this.closeExportModal,

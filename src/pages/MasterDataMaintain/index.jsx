@@ -17,9 +17,12 @@ class MasterDataMaintain extends Component {
   getRightCmp = () => {
     const { masterDataMaintain } = this.props;
     const { currPRowData, modelUiConfig } = masterDataMaintain;
-    const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', null));
-    const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', null));
-    const dataStructure = get(modelUiConfig, 'dataStructure', 'LIST');
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const formUiConfig = get(uiObj, 'formConfig', null);
+    const tableUiConfig = get(uiObj, 'showConfig', null);
+    // const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', null));
+    // const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', null));
+    const dataStructure = get(modelUiConfig, 'dataStructure', 'GENERAL');
 
     if (currPRowData && formUiConfig && tableUiConfig && dataStructure === 'TREE') {
       return (
@@ -33,7 +36,7 @@ class MasterDataMaintain extends Component {
       );
     }
 
-    if (currPRowData && tableUiConfig && dataStructure === 'LIST') {
+    if (currPRowData && tableUiConfig && dataStructure === 'GENERAL') {
       return <ChildTable key={currPRowData.id} slot="right" modelUiConfig={modelUiConfig} />;
     }
 

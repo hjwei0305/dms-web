@@ -13,9 +13,9 @@ class ExportModal extends PureComponent {
   };
 
   handleDownload = () => {
-    const { editData } = this.props;
+    const { editData, uiConfig } = this.props;
     const { name, typeName } = editData;
-    const { importUiConfig = {} } = JSON.parse(get(editData, 'impExpData', JSON.stringify({})));
+    const importUiConfig = JSON.parse(get(uiConfig, 'Import', JSON.stringify({})));
     const { colItems } = importUiConfig;
     const columns = colItems.map(item => {
       const [{ code: dataIndex }, { title }] = item;

@@ -182,7 +182,7 @@ class UiConfigPreview extends Component {
     const formUiConfig = get(uiObj, 'formConfig', null);
     const tableUiConfig = get(uiObj, 'showConfig', null);
     const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', JSON.stringify({})));
-    const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', JSON.stringify({})));
+    const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const { colItems: importColItems } = importUiConfig || {};
     const dataStructure = get(modelUiConfig, 'dataStructure', 'GENERAL');
 

@@ -50,3 +50,12 @@ export async function delChildRow(params) {
     method: 'DELETE',
   });
 }
+
+/** 根据模型id获取ui配置 */
+export async function getConfigById({ id }) {
+  const url = `${MockServerPath}/dataDefinition/getConfigById?id=${id}`;
+  return request({
+    url,
+    method: 'GET',
+  });
+}
