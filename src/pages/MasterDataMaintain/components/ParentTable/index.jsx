@@ -92,19 +92,25 @@ class CascadeTableMaster extends Component {
       showSearch: false,
       store,
       onSelectChange: (_, [selectedItem]) => {
-        dispatch({
-          type: 'masterDataMaintain/updatePageState',
-          payload: {
-            currPRowData: selectedItem,
-          },
-        }).then(() => {
+        const { masterDataMaintain } = this.props;
+        const { currPRowData } = masterDataMaintain;
+        const { id } = currPRowData || {};
+        if (selectedItem.id !== id) {
           dispatch({
-            type: 'masterDataMaintain/getConfigById',
+            type: 'masterDataMaintain/updatePageState',
             payload: {
-              id: selectedItem.id,
+              currPRowData: selectedItem,
+              modelUiConfig: null,
             },
+          }).then(() => {
+            dispatch({
+              type: 'masterDataMaintain/getConfigById',
+              payload: {
+                id: selectedItem.id,
+              },
+            });
           });
-        });
+        }
       },
       searchProperties: ['code', 'name'],
       itemField: {

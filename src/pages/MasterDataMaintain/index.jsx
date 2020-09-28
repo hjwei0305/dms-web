@@ -20,9 +20,7 @@ class MasterDataMaintain extends Component {
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
     const formUiConfig = get(uiObj, 'formConfig', null);
     const tableUiConfig = get(uiObj, 'showConfig', null);
-    // const formUiConfig = JSON.parse(get(modelUiConfig, 'formData', null));
-    // const tableUiConfig = JSON.parse(get(modelUiConfig, 'tableData', null));
-    const dataStructure = get(modelUiConfig, 'dataStructure', 'GENERAL');
+    const dataStructure = get(currPRowData, 'dataStructure', 'GENERAL');
 
     if (currPRowData && formUiConfig && tableUiConfig && dataStructure === 'TREE') {
       return (
@@ -30,7 +28,7 @@ class MasterDataMaintain extends Component {
           key={currPRowData.id}
           slot="right"
           treeUiConfig={tableUiConfig}
-          dataModelCode={modelUiConfig.code}
+          dataModelCode={currPRowData.code}
           formUiConfig={formUiConfig}
         />
       );
