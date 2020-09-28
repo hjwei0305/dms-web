@@ -244,7 +244,7 @@ class ExtTreePreview extends Component {
           />
           <div slot="right" className={cls('detail-wrapper')}>
             {selectedNode ? (
-              <Descriptions column={column} title={`结点${selectedNode.name}详情`}>
+              <Descriptions column={column} title={`${selectedNode.name}详情`}>
                 {detailFields.map(item => {
                   const { code, name } = item;
                   return (

@@ -39,7 +39,7 @@ class EditDrawer extends React.Component {
       store: {
         type: 'POST',
         autoLoad: false,
-        url: `${MDMSCONTEXT}/masterDataUiConfig/getRegisterDataByPage`,
+        url: `${MDMSCONTEXT}/dataDefinition/getRegisterDataByPage`,
       },
       rowKey: 'id',
       reader: {

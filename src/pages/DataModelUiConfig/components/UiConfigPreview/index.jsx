@@ -153,10 +153,6 @@ class UiConfigPreview extends Component {
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
     const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', JSON.stringify({})));
-    // const exportUiConfig = get(uiObj, 'formConfig', null);
-    // const { exportUiConfig = {} } = JSON.parse(
-    //   get(modelUiConfig, 'impExpData', JSON.stringify({})),
-    // );
     const { colItems = [], filterFormCfg } = exportUiConfig;
     return (
       <ColumnLayout gutter={4} layout={[8, 16]} title={['过滤表单', '导出列']}>
@@ -181,10 +177,10 @@ class UiConfigPreview extends Component {
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
     const formUiConfig = get(uiObj, 'formConfig', null);
     const tableUiConfig = get(uiObj, 'showConfig', null);
-    const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', JSON.stringify({})));
+    const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
     const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const { colItems: importColItems } = importUiConfig || {};
-    const dataStructure = get(modelUiConfig, 'dataStructure', 'GENERAL');
+    const dataStructure = get(currPRowData, 'dataStructure', 'GENERAL');
 
     return (
       <div
