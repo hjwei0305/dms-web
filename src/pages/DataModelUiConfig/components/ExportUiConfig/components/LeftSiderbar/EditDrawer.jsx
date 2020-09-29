@@ -225,7 +225,7 @@ class EditDrawer extends React.Component {
         onClose={onCancel}
         visible={!!editData}
         bodyStyle={{
-          height: 'calc(100% - 55px)',
+          height: 'calc(100% - 56px)',
           paddingBottom: 53,
         }}
         maskClosable={false}
