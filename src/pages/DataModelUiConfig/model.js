@@ -28,6 +28,7 @@ export default modelExtend(model, {
     vExportUiConfig: false,
     vImportUiConfig: false,
     modelUiConfig: null,
+    modelUiIds: {},
   },
   effects: {
     *updatePageState({ payload }, { put }) {
@@ -38,40 +39,47 @@ export default modelExtend(model, {
 
       return payload;
     },
-    *getConfigById({ payload }, { call, put, select }) {
-      const currPRowData = yield select(state => state.dataModelUiConfig.currPRowData);
+    *getConfigById({ payload }, { call, put }) {
       const result = yield call(getConfigById, payload);
-      const { success, data: modelUiConfig } = result || {};
-
+      const { success, data, message: msg } = result || {};
+      const modelUiConfig = {};
+      const modelUiIds = {};
+      (data || []).forEach(it => {
+        const { configType, id, configData } = it;
+        modelUiIds[configType] = id;
+        modelUiConfig[configType] = configData;
+      });
       message.destroy();
       if (success) {
         yield put({
           type: 'updateState',
           payload: {
             modelUiConfig,
+            modelUiIds,
           },
         });
       } else {
-        yield put({
-          type: 'updateState',
-          payload: {
-            modelUiConfig: currPRowData,
-          },
-        });
-        // message.error(msg);
+        message.error(msg);
       }
 
       return result;
     },
-    *saveModelUiConfig({ payload }, { call, put }) {
-      const result = yield call(saveModelUiConfig, payload.data);
-      const { message: msg, success } = result || {};
+    *saveModelUiConfig({ payload }, { call, put, select }) {
+      const modelUiIds = yield select(state => state.dataModelUiConfig.modelUiIds);
+      const { configType: cfgType } = payload.data;
+      const result = yield call(saveModelUiConfig, {
+        ...payload.data,
+        ...{ id: modelUiIds[cfgType] },
+      });
+      const { message: msg, success, data } = result || {};
+      const { id, configType } = data;
       if (success) {
         message.success(msg);
         yield put({
           type: 'updateState',
           payload: {
             modelUiConfig: payload.modelUiConfig,
+            modelUiIds: { ...modelUiIds, ...{ [configType]: id } },
           },
         });
       } else {

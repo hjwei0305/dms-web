@@ -47,7 +47,12 @@ export default modelExtend(model, {
     },
     *getConfigById({ payload }, { call, put }) {
       const result = yield call(getConfigById, payload);
-      const { success, data: modelUiConfig, message: msg } = result || {};
+      const { success, data, message: msg } = result || {};
+      const modelUiConfig = {};
+      (data || []).forEach(it => {
+        const { configType, configData } = it;
+        modelUiConfig[configType] = configData;
+      });
 
       message.destroy();
       if (success) {
