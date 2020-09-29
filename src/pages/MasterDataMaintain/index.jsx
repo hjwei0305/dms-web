@@ -15,7 +15,7 @@ import styles from './index.less';
 @connect(({ masterDataMaintain, loading }) => ({ masterDataMaintain, loading }))
 class MasterDataMaintain extends Component {
   getRightCmp = () => {
-    const { masterDataMaintain } = this.props;
+    const { masterDataMaintain, loading } = this.props;
     const { currPRowData, modelUiConfig } = masterDataMaintain;
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
     const formUiConfig = get(uiObj, 'formConfig', null);
@@ -38,7 +38,7 @@ class MasterDataMaintain extends Component {
       return <ChildTable key={currPRowData.id} slot="right" modelUiConfig={modelUiConfig} />;
     }
 
-    if (currPRowData) {
+    if (currPRowData && !loading.effects['masterDataMaintain/getConfigById']) {
       return (
         <span className={cls('ele-center')} slot="right">
           暂无维护主数据【{currPRowData.name}】相关的可视化配置{' '}
