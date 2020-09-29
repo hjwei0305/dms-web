@@ -3,7 +3,7 @@ import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
 import { get } from 'lodash';
 import cls from 'classnames';
-import { Empty } from 'antd';
+import { Empty, Button } from 'antd';
 import PageWrapper from '@/components/PageWrapper';
 import CascadeLayout from '@/components/Layout/CascadeLayout';
 import ExtTreePreview from '@/components/ExtTreePreview';
@@ -36,6 +36,17 @@ class MasterDataMaintain extends Component {
 
     if (currPRowData && tableUiConfig && dataStructure === 'GENERAL') {
       return <ChildTable key={currPRowData.id} slot="right" modelUiConfig={modelUiConfig} />;
+    }
+
+    if (currPRowData) {
+      return (
+        <span className={cls('ele-center')} slot="right">
+          暂无维护主数据【{currPRowData.name}】相关的可视化配置{' '}
+          <Button size="large" type="link" onClick={() => {}}>
+            去配置
+          </Button>
+        </span>
+      );
     }
 
     return null;
