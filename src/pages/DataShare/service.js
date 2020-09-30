@@ -53,7 +53,7 @@ export async function delChildRow(params) {
 
 /** 获取主数据字段 */
 export async function getPropertiesByCode({ code }) {
-  const url = `${MockServerPath}/masterDataUiConfig/getPropertiesByCode?code=${code}&random=${Math.random()}`;
+  const url = `${MockServerPath}/dataDefinition/getPropertiesByCode?code=${code}&random=${Math.random()}`;
   return request({
     url,
     method: 'GET',
