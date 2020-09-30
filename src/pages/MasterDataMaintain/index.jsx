@@ -66,6 +66,7 @@ class MasterDataMaintain extends Component {
         <CascadeLayout
           title={['主数据', `${currPRowData ? `${currPRowData.name}的数据` : ''}`]}
           layout={[8, 16]}
+          canShrink
         >
           <ParentTable slot="left" />
           {this.getRightCmp() || (

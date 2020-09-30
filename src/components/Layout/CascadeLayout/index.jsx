@@ -59,7 +59,7 @@ export default class CascadeLayout extends Component {
                     })}
                     onClick={this.handleClick}
                   >
-                    <Icon type={shrinked ? 'right' : 'left'} />
+                    <Icon type={shrinked ? 'menu-unfold' : 'menu-fold'} />
                   </span>
                 ) : null}
                 <Card title={rightTitle} bordered={bordered}>
