@@ -13,7 +13,7 @@ class ExportModal extends PureComponent {
 
   handleDownload = () => {
     const { editData, uiConfig } = this.props;
-    const { name, typeName } = editData;
+    const { name, categoryName } = editData;
     const { colItems } = uiConfig;
     const columns = colItems.map(item => {
       const [{ code: dataIndex }, { title }] = item;
@@ -27,7 +27,7 @@ class ExportModal extends PureComponent {
     exportJsonToXlsx({
       columns,
       data: [],
-      fileName: `${typeName}-${name}主数据导入模版`,
+      fileName: `${categoryName}-${name}主数据导入模版`,
       sheetName: '模版',
       beforeExport: () => {
         console.log('ExportModal -> handleDownload -> beforeExport');
