@@ -51,18 +51,25 @@ export default class CascadeLayout extends Component {
                 className={cls('layout-col', 'layout-col-right', slotClassName)}
                 span={shrinked ? 24 : rightSpan}
               >
-                {canShrink ? (
-                  <span
-                    className={cls({
-                      triangle: true,
-                      shrinked_icon: shrinked,
-                    })}
-                    onClick={this.handleClick}
-                  >
-                    <Icon type={shrinked ? 'menu-unfold' : 'menu-fold'} />
-                  </span>
-                ) : null}
-                <Card title={rightTitle} bordered={bordered}>
+                <Card
+                  title={
+                    <span>
+                      {canShrink ? (
+                        <span
+                          className={cls({
+                            'icon-wrapper': true,
+                            shrinked_icon: shrinked,
+                          })}
+                          onClick={this.handleClick}
+                        >
+                          <Icon type={shrinked ? 'menu-unfold' : 'menu-fold'} />
+                        </span>
+                      ) : null}
+                      {rightTitle}
+                    </span>
+                  }
+                  bordered={bordered}
+                >
                   {child}
                 </Card>
               </Col>
