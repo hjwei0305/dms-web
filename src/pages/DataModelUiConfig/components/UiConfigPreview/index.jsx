@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
-import { Tabs, Button, Icon } from 'antd';
+import { Tabs, Button } from 'antd';
 import { get } from 'lodash';
 import { constants } from '@/utils';
 import ColumnLayout from '@/components/Layout/ColumnLayout';
@@ -232,7 +232,7 @@ class UiConfigPreview extends Component {
             tab={
               <span>
                 表单配置预览
-                <Icon type="edit" />
+                {/* <Icon type="edit" /> */}
               </span>
             }
             key="formUi"
