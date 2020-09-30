@@ -186,6 +186,8 @@ class ChildTable extends Component {
     const { modelUiConfig, currPRowData } = masterDataMaintain;
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
     // const formUiConfig = get(uiObj, 'formConfig', null);
+    const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
+    const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const tableUiConfig = get(uiObj, 'showConfig', null);
     const tableProps = tableUiConfig || {
       columns: [],
@@ -243,16 +245,21 @@ class ChildTable extends Component {
               新建
             </Button>,
           )}
-          {authAction(
-            <Button key="add" onClick={this.handleImport} ignore="true">
-              导入
-            </Button>,
-          )}
-          {authAction(
-            <Button key="add" onClick={this.handleExport} ignore="true">
-              导出
-            </Button>,
-          )}
+
+          {importUiConfig
+            ? authAction(
+                <Button key="add" onClick={this.handleImport} ignore="true">
+                  导入
+                </Button>,
+              )
+            : null}
+          {exportUiConfig
+            ? authAction(
+                <Button key="add" onClick={this.handleExport} ignore="true">
+                  导出
+                </Button>,
+              )
+            : null}
           <Button onClick={this.reloadData}>刷新</Button>
         </Fragment>
       ),
