@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react';
-import { Button, message, Descriptions } from 'antd';
+import { Button, message, Descriptions, Dropdown, Menu } from 'antd';
 import cls from 'classnames';
-import { utils } from 'suid';
+import { utils, ExtIcon } from 'suid';
 import { isPlainObject, isArray, get } from 'lodash';
 import TreeView from '@/components/TreeView';
 import ColumnLayout from '@/components/Layout/ColumnLayout';
 import { constants } from '@/utils';
+import ImportModal from './ImportModal';
+import ExportModal from './ExportModal';
 import FormModal from './FormModal';
 
 import styles from './index.less';
@@ -16,6 +18,8 @@ const { Item: DescriptionItem } = Descriptions;
 
 class ExtTreePreview extends Component {
   state = {
+    importVisible: false,
+    exportVisible: false,
     parentData: null,
     editData: null,
     selectedNode: null,
@@ -31,6 +35,30 @@ class ExtTreePreview extends Component {
   componentDidMount() {
     this.findByTree();
   }
+
+  toggleModalVisible = type => {
+    this.setState(state => ({
+      [type]: !state[type],
+    }));
+  };
+
+  getImportModalProps = () => {
+    const { importUiConfig, dataModel } = this.props;
+    return {
+      editData: dataModel,
+      uiConfig: importUiConfig,
+      onCancel: () => this.toggleModalVisible('importVisible'),
+    };
+  };
+
+  getExportModalProps = () => {
+    const { exportUiConfig } = this.props;
+
+    return {
+      uiConfig: exportUiConfig.filterFormCfg,
+      onCancel: () => this.toggleModalVisible('exportVisible'),
+    };
+  };
 
   updateLoadingState = newLoading => {
     const { loading } = this.state;
@@ -164,12 +192,47 @@ class ExtTreePreview extends Component {
     });
   };
 
+  getDownloadMenu = () => {
+    const { importUiConfig, exportUiConfig } = this.props;
+    if (importUiConfig || exportUiConfig) {
+      return (
+        <Dropdown
+          overlay={
+            <Menu>
+              {importUiConfig ? (
+                <Menu.Item>
+                  <Button type="link" onClick={() => this.toggleModalVisible('importVisible')}>
+                    导入
+                  </Button>
+                </Menu.Item>
+              ) : null}
+              {exportUiConfig ? (
+                <Menu.Item>
+                  <Button type="link" onClick={() => this.toggleModalVisible('exportVisible')}>
+                    导出
+                  </Button>
+                </Menu.Item>
+              ) : null}
+            </Menu>
+          }
+        >
+          <span className={cls('icon-wrapper')}>
+            <ExtIcon type="more" antd />
+          </span>
+        </Dropdown>
+      );
+    }
+
+    return null;
+  };
+
   getToolBarProps = () => ({
     left: (
       <Fragment>
         <Button onClick={this.handleCreateRootNode} type="primary">
           创建根结点
         </Button>
+        {this.getDownloadMenu()}
       </Fragment>
     ),
   });
@@ -209,7 +272,7 @@ class ExtTreePreview extends Component {
   };
 
   render() {
-    const { showCreateModal, treeData, selectedNode } = this.state;
+    const { showCreateModal, treeData, selectedNode, importVisible, exportVisible } = this.state;
     const { treeUiConfig, formUiConfig } = this.props;
     const { detailFields = [], column } = treeUiConfig || {};
     const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
@@ -262,6 +325,8 @@ class ExtTreePreview extends Component {
           </div>
         </ColumnLayout>
         {showCreateModal ? <FormModal {...this.getModalProps()} /> : null}
+        {importVisible ? <ImportModal {...this.getImportModalProps()} /> : null}
+        {exportVisible ? <ExportModal {...this.getExportModalProps()} /> : null}
       </div>
     );
   }
