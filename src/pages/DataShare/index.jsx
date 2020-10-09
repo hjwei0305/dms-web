@@ -31,6 +31,7 @@ class DataShare extends Component {
         <CascadeLayout
           title={['主数据', `${currPRowData ? `${currPRowData.name}数据订阅模块` : ''}`]}
           layout={[8, 16]}
+          canShrink
         >
           <ParentTable slot="left" />
           {this.getRightCmp() || (
