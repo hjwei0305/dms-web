@@ -37,6 +37,7 @@ const LOCAL_PATH = process.env.NODE_ENV !== 'production' ? '..' : `../${APP_BASE
 const SERVER_PATH = getServerPath();
 
 const MDMSCONTEXT = `${SERVER_PATH}/mdms/`;
+const BASICCONTEXT = `${SERVER_PATH}/sei-basic`;
 
 const LOGIN_STATUS = {
   SUCCESS: 'success',
@@ -61,4 +62,5 @@ export default {
   APP_MODULE_BTN_KEY,
   LOGIN_STATUS,
   MDMSCONTEXT,
+  BASICCONTEXT,
 };

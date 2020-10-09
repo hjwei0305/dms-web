@@ -6,7 +6,7 @@ import { constants } from '@/utils';
 import ExtTransfer from '../ExtTransfer';
 import { getPropertiesByCode } from '../../service.js';
 
-const { MDMSCONTEXT } = constants;
+const { BASICCONTEXT } = constants;
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
@@ -63,7 +63,7 @@ class FormModal extends PureComponent {
       store: {
         type: 'GET',
         autoLoad: false,
-        url: `${MDMSCONTEXT}/masterDataUiConfig/getAllMasterData`,
+        url: `${BASICCONTEXT}/appModule/findAll`,
       },
       columns: [
         {
@@ -77,11 +77,6 @@ class FormModal extends PureComponent {
           dataIndex: 'name',
         },
         {
-          title: '数据结构',
-          width: 80,
-          dataIndex: 'dataStructureEnumRemark',
-        },
-        {
           title: '描述',
           width: 200,
           dataIndex: 'remark',
@@ -90,9 +85,9 @@ class FormModal extends PureComponent {
       rowKey: 'code',
       reader: {
         name: 'name',
-        field: ['code', 'name', 'remark', 'dataStructure', 'dataStructureEnumRemark'],
+        field: ['code', 'name', 'remark'],
       },
-      field: ['code', 'name', 'remark', 'dataStructure', 'dataStructureEnumRemark'],
+      field: ['code', 'name', 'remark'],
     };
   };
 
