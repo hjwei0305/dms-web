@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Icon } from 'antd';
+import { Card, Row, Col } from 'antd';
+import { ExtIcon } from 'suid';
 import cls from 'classnames';
 import styles from './index.less';
 
@@ -62,7 +63,8 @@ export default class CascadeLayout extends Component {
                           })}
                           onClick={this.handleClick}
                         >
-                          <Icon type={shrinked ? 'menu-unfold' : 'menu-fold'} />
+                          {/* tooltip={{title: shrinked ? '展开' : '收缩'}} */}
+                          <ExtIcon type={shrinked ? 'menu-unfold' : 'menu-fold'} antd />
                         </span>
                       ) : null}
                       {rightTitle}
