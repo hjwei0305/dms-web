@@ -31,16 +31,31 @@ class CascadeTableMaster extends Component {
   };
 
   getComboTreeProps = () => {
+    const { selectedNode: selNode } = this.state;
+
+    let value = '';
+    if (selNode) {
+      value = selNode.name;
+    }
+
     return {
+      value,
       placeholder: '选择主数据分类',
       style: {
         width: 150,
       },
       store: {
         url: `${MDMSCONTEXT}/dataCategory/getTypeTree`,
+        autoLoad: true,
       },
       reader: {
         name: 'name',
+      },
+      afterLoaded: data => {
+        const [selectedNode] = data || [];
+        if (selectedNode) {
+          this.handleAfterSelect(selectedNode);
+        }
       },
     };
   };
