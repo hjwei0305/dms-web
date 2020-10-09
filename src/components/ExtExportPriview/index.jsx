@@ -8,8 +8,8 @@ export class ExtExportPriview extends PureComponent {
     const { colItems = [] } = this.props;
     return (
       <tr>
-        {colItems.map(([{ code }, { title }]) => (
-          <td key={code}>{title}</td>
+        {colItems.map(({ field, title }) => (
+          <td key={field}>{title}</td>
         ))}
       </tr>
     );

@@ -9,7 +9,7 @@ import ThreeColumnLayout from '@/components/Layout/ThreeColumnLayout';
 import ExtFormRender from '@/components/ExtFormRender';
 import ExtTablePreview from '@/components/ExtTablePreview';
 import ExtTreePreview from '@/components/ExtTreePreview';
-import ExtExportPriview from '@/components/ExtExportPriview';
+// import ExtExportPriview from '@/components/ExtExportPriview';
 
 import styles from './index.less';
 
@@ -38,6 +38,16 @@ class UiConfigPreview extends Component {
       type: 'dataModelUiConfig/updatePageState',
       payload: {
         vFormUiConfig: true,
+      },
+    });
+  };
+
+  handleConfigFilterFormUI = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'dataModelUiConfig/updatePageState',
+      payload: {
+        vFilterFormConfig: true,
       },
     });
   };
@@ -149,26 +159,26 @@ class UiConfigPreview extends Component {
     );
   };
 
-  getExportPreview = () => {
-    const { dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
-    const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', JSON.stringify({})));
-    const { colItems = [], filterFormCfg } = exportUiConfig;
-    return (
-      <ColumnLayout gutter={4} layout={[8, 16]} title={['过滤表单', '导出列']}>
-        <ExtFormRender
-          slot="left"
-          slotClassName={cls('slot-col-wrapper')}
-          uiConfig={filterFormCfg}
-        />
-        <ExtExportPriview
-          slotClassName={cls('slot-col-wrapper')}
-          slot="right"
-          colItems={colItems}
-        />
-      </ColumnLayout>
-    );
-  };
+  // getExportPreview = () => {
+  //   const { dataModelUiConfig } = this.props;
+  //   const { modelUiConfig } = dataModelUiConfig;
+  //   const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', JSON.stringify({})));
+  //   const { colItems = [], filterFormCfg } = exportUiConfig;
+  //   return (
+  //     <ColumnLayout gutter={4} layout={[8, 16]} title={['过滤表单', '导出列']}>
+  //       <ExtFormRender
+  //         slot="left"
+  //         slotClassName={cls('slot-col-wrapper')}
+  //         uiConfig={filterFormCfg}
+  //       />
+  //       <ExtExportPriview
+  //         slotClassName={cls('slot-col-wrapper')}
+  //         slot="right"
+  //         colItems={colItems}
+  //       />
+  //     </ColumnLayout>
+  //   );
+  // };
 
   render() {
     const { activeKey } = this.state;
@@ -176,10 +186,11 @@ class UiConfigPreview extends Component {
     const { modelUiConfig, currPRowData } = dataModelUiConfig;
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
     const formUiConfig = get(uiObj, 'formConfig', null);
+    const filterFormUiConfig = get(uiObj, 'filterFormConfig', null);
     const tableUiConfig = get(uiObj, 'showConfig', null);
-    const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
-    const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
-    const { colItems: importColItems } = importUiConfig || {};
+    // const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
+    // const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
+    // const { colItems: importColItems } = importUiConfig || {};
     const dataStructure = get(currPRowData, 'dataStructure', 'GENERAL');
 
     return (
@@ -192,8 +203,9 @@ class UiConfigPreview extends Component {
           tabBarExtraContent={
             (activeKey === 'tableUi' && tableUiConfig) ||
             (activeKey === 'formUi' && formUiConfig) ||
-            (activeKey === 'importUi' && importUiConfig) ||
-            (activeKey === 'exportUi' && exportUiConfig) ? (
+            (activeKey === 'filterFormUi' && formUiConfig) ? (
+              // (activeKey === 'importUi' && importUiConfig) ||
+              // (activeKey === 'exportUi' && exportUiConfig)
               <Button type="link" onClick={this.handleEdit}>
                 去编辑
               </Button>
@@ -228,6 +240,21 @@ class UiConfigPreview extends Component {
               </span>
             ) : null}
           </TabPane>
+          {dataStructure === 'GENERAL' ? (
+            <TabPane tab={<span>过滤表单配置预览</span>} key="flterFormUi">
+              {filterFormUiConfig ? (
+                this.getFormPreview()
+              ) : (
+                <span className={cls('ele-center')}>
+                  暂无过滤表单配置{' '}
+                  <Button size="large" type="link" onClick={this.handleConfigFilterFormUI}>
+                    去配置
+                  </Button>
+                </span>
+              )}
+            </TabPane>
+          ) : null}
+
           <TabPane
             tab={
               <span>
@@ -248,7 +275,7 @@ class UiConfigPreview extends Component {
               </span>
             )}
           </TabPane>
-          <TabPane tab="数据导出配置预览" key="exportUi">
+          {/* <TabPane tab="数据导出配置预览" key="exportUi">
             {exportUiConfig ? (
               this.getExportPreview()
             ) : (
@@ -271,7 +298,7 @@ class UiConfigPreview extends Component {
                 </Button>
               </span>
             )}
-          </TabPane>
+          </TabPane> */}
         </Tabs>
       </div>
     );

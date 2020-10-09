@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { cloneDeep, get } from 'lodash';
-import { Popconfirm } from 'antd';
+import { Menu, Popconfirm } from 'antd';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
-import EditPopover from './EditPopover';
+// import EditModal from './EditModal';
+import EditDrawer from './EditDrawer';
 
 import styles from './index.less';
 
@@ -13,6 +14,8 @@ class LeftSiderbar extends Component {
   state = {
     fieldLists: [],
     showUnAssign: false,
+    editData: null,
+    optKey: null,
   };
 
   componentDidMount() {
@@ -41,59 +44,125 @@ class LeftSiderbar extends Component {
     });
   };
 
-  handleAddExportColItem = item => {
-    const { onItemChange, uiConfig } = this.props;
+  handleAddFormItem = item => {
+    const { onFormItemChange, uiConfig } = this.props;
     const { code, name } = item;
-    const exportColItems = get(uiConfig, 'colItems', []);
-    const tempExportColItems = exportColItems ? cloneDeep(exportColItems) : [];
-    const tempExportColItem = {
-      field: code,
-      title: name,
-      formatter: '',
-      orgin: {
+    const { formItems } = uiConfig || {};
+    const tempFormItems = formItems ? cloneDeep(formItems) : [];
+    const tempFormItem = [
+      {
         code,
         name,
       },
-    };
-    tempExportColItems.push(tempExportColItem);
-    if (onItemChange) {
-      onItemChange(tempExportColItems);
+      {
+        title: name,
+        'ui:widget': 'ExtInput',
+      },
+      {
+        title: name,
+        'ui:widget': 'ExtInput',
+      },
+      {
+        title: name,
+        'ui:widget': 'ExtInput',
+      },
+    ];
+    tempFormItems.push(tempFormItem);
+    if (onFormItemChange) {
+      onFormItemChange(tempFormItems);
     }
   };
 
-  handleDelItem = item => {
-    const { onDelItem } = this.props;
-    if (onDelItem) {
-      onDelItem(item);
+  handleDelFormItem = item => {
+    const { onDelFormItem } = this.props;
+    if (onDelFormItem) {
+      onDelFormItem(item);
     }
   };
 
-  handleEditItem = item => {
-    const { onEditItem } = this.props;
-    if (onEditItem) {
-      onEditItem(cloneDeep(item));
+  handleToggoleEditModal = (optKey, editData) => {
+    this.setState({
+      editData,
+      optKey,
+    });
+  };
+
+  handleEditFormItem = item => {
+    const { onEditFormItem } = this.props;
+    if (onEditFormItem) {
+      onEditFormItem(cloneDeep(item));
+      this.setState({
+        editData: null,
+      });
     }
   };
 
   onDragEnd = result => {
     const { destination, source } = result;
-    const { onItemChange, uiConfig } = this.props;
-    const exportColItems = get(uiConfig, 'colItems', []);
-    const tempExportColItems = exportColItems ? cloneDeep(exportColItems) : [];
+    const { onFormItemChange, uiConfig } = this.props;
+    const { formItems } = uiConfig || {};
+    const tempFormItems = formItems ? cloneDeep(formItems) : [];
     if (destination && source) {
-      const arrItem = tempExportColItems[destination.index];
-      tempExportColItems[destination.index] = tempExportColItems[source.index];
-      tempExportColItems[source.index] = arrItem;
-      if (onItemChange) {
-        onItemChange(tempExportColItems);
+      const arrItem = tempFormItems[destination.index];
+      tempFormItems[destination.index] = tempFormItems[source.index];
+      tempFormItems[source.index] = arrItem;
+      if (onFormItemChange) {
+        onFormItemChange(tempFormItems);
       }
     }
   };
 
-  render() {
-    const { fieldLists, showUnAssign } = this.state;
+  handleCancel = () => {
+    this.setState({
+      editData: null,
+    });
+  };
+
+  getEditModalProps = () => {
+    const { editData, fieldLists, optKey } = this.state;
+
+    return {
+      editData,
+      optKey,
+      fieldLists,
+      onCancel: this.handleCancel,
+      onSave: this.handleEditFormItem,
+    };
+  };
+
+  getMenus = item => {
     const { uiConfig } = this.props;
-    const colItems = get(uiConfig, 'colItems', []);
+    const canCreateRoot = get(uiConfig, 'canCreateRoot', false);
+    if (canCreateRoot) {
+      return (
+        <Menu
+          onClick={({ key }) => {
+            this.handleToggoleEditModal(key, item);
+          }}
+        >
+          <Menu.Item key="1">新建表单</Menu.Item>
+          <Menu.Item key="2">编辑表单</Menu.Item>
+          <Menu.Item key="3">新建根结点表单</Menu.Item>
+        </Menu>
+      );
+    }
+
+    return (
+      <Menu
+        onClick={({ key }) => {
+          this.handleToggoleEditModal(key, item);
+        }}
+      >
+        <Menu.Item key="1">新建表单</Menu.Item>
+        <Menu.Item key="2">编辑表单</Menu.Item>
+      </Menu>
+    );
+  };
+
+  render() {
+    const { fieldLists, showUnAssign, editData, optKey } = this.state;
+    const { uiConfig } = this.props;
+    const formItems = get(uiConfig, 'formItems', []);
 
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
@@ -109,16 +178,16 @@ class LeftSiderbar extends Component {
                     antd
                   />
                 </span>
-                可配导出列
+                可配表单元素
               </>
             ) : (
-              '已配导出列'
+              '已配表单元素'
             )}
             {showUnAssign ? null : (
               <span className={cls('title-extra')}>
                 <ExtIcon
                   type="plus"
-                  tooltip={{ title: '添加导出列' }}
+                  tooltip={{ title: '添加表单元素' }}
                   onClick={this.toggoleShowUnAssign}
                   antd
                 />
@@ -126,7 +195,13 @@ class LeftSiderbar extends Component {
             )}
           </div>
           <div className={cls('content')}>
-            <Droppable droppableId="board" type="COLUMN">
+            <Droppable
+              droppableId="board"
+              type="COLUMN"
+              // direction="horizontal"
+              // ignoreContainerClipping={Boolean(containerHeight)}
+              // isCombineEnabled={isCombineEnabled}
+            >
               {provided => (
                 <ul
                   className={cls('list-items')}
@@ -134,31 +209,41 @@ class LeftSiderbar extends Component {
                   {...provided.droppableProps}
                 >
                   <ScrollBar>
-                    {colItems.map((item, index) => {
-                      const { code, name } = item.orgin;
+                    {formItems.map((item, index) => {
+                      const [{ code: fieldName, name: title }] = item;
                       return (
-                        <Draggable draggableId={code} index={index} key={code}>
-                          {dragprovided => (
+                        <Draggable
+                          draggableId={fieldName}
+                          index={index}
+                          key={fieldName}
+                          // isDragDisabled={isDragDisabled}
+                        >
+                          {(dragprovided, snapshot) => (
                             <li
                               className={cls('list-item')}
                               {...dragprovided.draggableProps}
                               {...dragprovided.dragHandleProps}
                               ref={dragprovided.innerRef}
-                              title={name}
+                              isdragging={snapshot.isDragging}
+                              title={title}
+                              // isDragging={snapshot.isDragging}
                             >
-                              {name}
+                              {title}
                               <span className={cls('list-item-extra')}>
-                                <EditPopover editData={item} onSave={this.handleEditItem}>
-                                  <span className={cls('icon-wrapper')}>
-                                    <ExtIcon type="setting" tooltip={{ title: '配置' }} antd />
-                                  </span>
-                                </EditPopover>
+                                {/* <Dropdown trigger={['click']} overlay={this.getMenus(item)}> */}
+                                <span
+                                  className={cls('icon-wrapper')}
+                                  onClick={() => this.handleToggoleEditModal('1', item)}
+                                >
+                                  <ExtIcon type="setting" tooltip={{ title: '表单项配置' }} antd />
+                                </span>
+                                {/* </Dropdown> */}
                                 <Popconfirm
                                   title="删除后不能恢复，确认删除吗？"
                                   placement="rightTop"
                                   cancelText="否"
                                   okText="是"
-                                  onConfirm={() => this.handleDelItem(item)}
+                                  onConfirm={() => this.handleDelFormItem(item)}
                                 >
                                   <span className={cls('icon-wrapper')}>
                                     <ExtIcon
@@ -188,7 +273,7 @@ class LeftSiderbar extends Component {
               <ul className={cls('list-items')}>
                 <ScrollBar>
                   {fieldLists
-                    .filter(it => !colItems.some(itc => itc.orgin.code === it.code))
+                    .filter(it => !formItems.some(itc => itc[0].code === it.code))
                     .map(item => {
                       const { code, name } = item;
                       return (
@@ -198,7 +283,7 @@ class LeftSiderbar extends Component {
                             <ExtIcon
                               type="plus"
                               tooltip={{ title: '添加' }}
-                              onClick={() => this.handleAddExportColItem(item)}
+                              onClick={() => this.handleAddFormItem(item)}
                               antd
                             />
                           </span>
@@ -209,6 +294,7 @@ class LeftSiderbar extends Component {
               </ul>
             </div>
           </div>
+          {editData ? <EditDrawer key={optKey} {...this.getEditModalProps()} /> : null}
         </div>
       </DragDropContext>
     );

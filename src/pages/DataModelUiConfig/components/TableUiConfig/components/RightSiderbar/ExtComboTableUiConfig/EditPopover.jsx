@@ -24,7 +24,7 @@ class EditPopover extends Component {
   render() {
     const { visible } = this.state;
     const { children, editData, mapFieldLists } = this.props;
-    const { name } = editData.orgin;
+    const { name } = editData;
     return (
       <Popover
         content={

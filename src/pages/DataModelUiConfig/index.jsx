@@ -9,6 +9,7 @@ import ParentTable from './components/ParentTable';
 import UiConfigPreview from './components/UiConfigPreview';
 import TableUiConfig from './components/TableUiConfig';
 import FormConfig from './components/FormConfig';
+import FilterFormConfig from './components/FilterFormConfig';
 import TreeUiConfig from './components/TreeUiConfig';
 import ExportUiConfig from './components/ExportUiConfig';
 import ImportUiConfig from './components/ImportUiConfig';
@@ -26,6 +27,7 @@ class DataModelUiConfig extends Component {
       modelUiConfig,
       vExportUiConfig,
       vImportUiConfig,
+      vFilterFormConfig,
     } = dataModelUiConfig;
 
     return (
@@ -34,7 +36,12 @@ class DataModelUiConfig extends Component {
           loading={loading.global}
           className={cls({
             [styles['container-box']]: true,
-            hide_ele: vTableUiConfig || vFormUiConfig || vExportUiConfig || vImportUiConfig,
+            hide_ele:
+              vTableUiConfig ||
+              vFormUiConfig ||
+              vExportUiConfig ||
+              vImportUiConfig ||
+              vFilterFormConfig,
           })}
         >
           <CascadeLayout
@@ -55,6 +62,9 @@ class DataModelUiConfig extends Component {
         </PageWrapper>
         {vTableUiConfig && currPRowData.dataStructure === 'GENERAL' ? (
           <TableUiConfig modelUiConfig={modelUiConfig} />
+        ) : null}
+        {vFilterFormConfig && currPRowData.dataStructure === 'GENERAL' ? (
+          <FilterFormConfig modelUiConfig={modelUiConfig} />
         ) : null}
         {vTableUiConfig && currPRowData.dataStructure === 'TREE' ? (
           <TreeUiConfig modelUiConfig={modelUiConfig} />

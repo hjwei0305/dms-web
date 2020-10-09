@@ -96,7 +96,7 @@ class ExportUiConfig extends Component {
   handleDelColItem = col => {
     const { exportUiConfig = {} } = this.state;
     const { colItems = [] } = exportUiConfig;
-    const tempColItems = colItems.filter(item => item[0].code !== col[0].code);
+    const tempColItems = colItems.filter(item => item.orgin.code !== col.orgin.code);
     Object.assign(exportUiConfig, { colItems: tempColItems });
     this.setState({
       exportUiConfig,
@@ -107,7 +107,7 @@ class ExportUiConfig extends Component {
     const { exportUiConfig = {} } = this.state;
     const { colItems = [] } = exportUiConfig;
     const tempColItems = colItems.map(it => {
-      if (item[0].code === it[0].code) {
+      if (item.orgin.code === it.orgin.code) {
         return item;
       }
       return it;

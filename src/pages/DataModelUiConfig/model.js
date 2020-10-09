@@ -27,6 +27,7 @@ export default modelExtend(model, {
     vTreeUiConfig: false,
     vExportUiConfig: false,
     vImportUiConfig: false,
+    vFilterFormConfig: false,
     modelUiConfig: null,
     modelUiIds: {},
   },

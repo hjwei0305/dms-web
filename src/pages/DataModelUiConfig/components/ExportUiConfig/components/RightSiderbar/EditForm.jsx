@@ -53,7 +53,7 @@ class EditForm extends Component {
         return;
       }
       if (onSave) {
-        Object.assign(editData[1], omit(formData, 'name'));
+        Object.assign(editData, omit(formData, 'name'));
         onSave(editData);
       }
     });
@@ -66,17 +66,17 @@ class EditForm extends Component {
       <Form {...formItemLayout}>
         <FormItem label="名称">
           {getFieldDecorator('name', {
-            initialValue: get(editData[0], 'name'),
+            initialValue: get(editData, 'orgin.name'),
           })(<Input disabled />)}
         </FormItem>
         <FormItem label="别名">
           {getFieldDecorator('title', {
-            initialValue: get(editData[1], 'title') || get(editData[0], 'name'),
+            initialValue: get(editData, 'title') || get(editData, 'orgin.name'),
           })(<Input />)}
         </FormItem>
         <FormItem label="格式化">
           {getFieldDecorator('formatter', {
-            initialValue: get(editData[1], 'formatter', 'text'),
+            initialValue: get(editData, 'formatter', 'text'),
           })(<Select>{this.getSelectOptions()}</Select>)}
         </FormItem>
         <FormItem {...tailFormItemLayout}>

@@ -1,39 +1,32 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
-// import { message, } from 'antd';
-import { get, cloneDeep, isEqual } from 'lodash';
+import { Tabs } from 'antd';
+import { get, isEqual, cloneDeep } from 'lodash';
+import ExtFormRender from '@/components/ExtFormRender';
 import PageWrapper from '@/components/PageWrapper';
-import { constants } from '@/utils';
 import Header from './components/Header';
-import Content from './components/Content';
 import LeftSiderbar from './components/LeftSiderbar';
 import RightSiderbar from './components/RightSiderbar';
 
 import styles from './index.less';
 
-const { MDMSCONTEXT } = constants;
+const { TabPane } = Tabs;
 
 @connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
-class TableUiConfig extends Component {
+class FilterFormUiConfig extends Component {
   constructor(props) {
     super(props);
     const { dataModelUiConfig } = this.props;
     const { modelUiConfig } = dataModelUiConfig;
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
-    const tableUiConfig = get(uiObj, 'showConfig', {
-      store: {
-        type: 'POST',
-        url: '',
-      },
-      showSearchTooltip: true,
-      allowCustomColumns: true,
-      remotePaging: true,
-      columns: [],
+    const formUiConfig = get(uiObj, 'filterFormConfig', {
+      showDescIcon: true,
+      formItems: [],
     });
     this.state = {
-      tableUiConfig,
-      oldTableUiConfig: cloneDeep(tableUiConfig),
+      formUiConfig,
+      oldFormUiConfig: cloneDeep(formUiConfig),
     };
   }
 
@@ -42,32 +35,32 @@ class TableUiConfig extends Component {
     dispatch({
       type: 'dataModelUiConfig/updatePageState',
       payload: {
-        vTableUiConfig: false,
+        vFilterFormConfig: false,
       },
     });
   };
 
-  handleColChange = columns => {
-    const { tableUiConfig = {} } = this.state;
-    Object.assign(tableUiConfig, { columns });
+  handleFormItemChange = formItems => {
+    const { formUiConfig = {} } = this.state;
+    Object.assign(formUiConfig, { formItems });
     this.setState({
-      tableUiConfig,
+      formUiConfig,
     });
   };
 
-  handleDelCol = col => {
-    const { tableUiConfig = {} } = this.state;
-    const { columns = [] } = tableUiConfig;
-    const tempColumns = columns.filter(item => item.dataIndex !== col.dataIndex);
-    Object.assign(tableUiConfig, { columns: tempColumns });
+  handleDelFormItem = col => {
+    const { formUiConfig = {} } = this.state;
+    const { formItems = [] } = formUiConfig;
+    const tempFormItems = formItems.filter(item => item[0] !== col[0]);
+    Object.assign(formUiConfig, { formItems: tempFormItems });
     this.setState({
-      tableUiConfig,
+      formUiConfig,
     });
   };
 
-  handleEditCol = col => {
-    const { tableUiConfig = {} } = this.state;
-    const { columns = [] } = tableUiConfig;
+  handleEditFormItem = col => {
+    const { formUiConfig = {} } = this.state;
+    const { columns = [] } = formUiConfig;
 
     const tempColumns = columns.map(item => {
       if (item.dataIndex !== col.dataIndex) {
@@ -75,34 +68,33 @@ class TableUiConfig extends Component {
       }
       return col;
     });
-    Object.assign(tableUiConfig, { columns: tempColumns });
+    Object.assign(formUiConfig, { columns: tempColumns });
     this.setState({
-      tableUiConfig,
+      formUiConfig,
     });
   };
 
   handleEditTable = props => {
-    const { tableUiConfig = {} } = this.state;
-
-    Object.assign(tableUiConfig, props);
+    const { formUiConfig = {} } = this.state;
+    Object.assign(formUiConfig, props);
     this.setState({
-      tableUiConfig,
+      formUiConfig,
     });
   };
 
   handleSave = () => {
     const { dispatch, dataModelUiConfig } = this.props;
-    const { modelUiConfig = {}, currPRowData } = dataModelUiConfig;
-    const { tableUiConfig = {} } = this.state;
+    const { modelUiConfig, currPRowData } = dataModelUiConfig;
+    const { formUiConfig } = this.state;
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
     const data = {
-      configData: JSON.stringify(Object.assign(uiObj, { showConfig: tableUiConfig })),
+      configData: JSON.stringify(Object.assign(uiObj, { filterFormConfig: formUiConfig })),
       configType: 'UI',
       dataDefinitionId: currPRowData.id,
     };
 
     this.setState({
-      oldTableUiConfig: cloneDeep(tableUiConfig),
+      oldFormUiConfig: cloneDeep(formUiConfig),
     });
 
     dispatch({
@@ -117,14 +109,15 @@ class TableUiConfig extends Component {
   render() {
     const { dataModelUiConfig, loading } = this.props;
     const { currPRowData } = dataModelUiConfig;
-    const { tableUiConfig, oldTableUiConfig } = this.state;
+    const { formUiConfig, oldFormUiConfig } = this.state;
+    // const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
 
     return (
       <PageWrapper loading={loading.global}>
         <div className={cls(styles['visual-page-config'])}>
           <div className={cls('config-header')}>
             <Header
-              hasUpdate={!isEqual(tableUiConfig, oldTableUiConfig)}
+              hasUpdate={!isEqual(formUiConfig, oldFormUiConfig)}
               onSave={this.handleSave}
               onBack={this.handleBack}
               dataModel={currPRowData}
@@ -132,30 +125,32 @@ class TableUiConfig extends Component {
           </div>
           <div className={cls('config-left-siderbar')}>
             <RightSiderbar
-              editData={tableUiConfig}
-              dataModel={currPRowData}
+              editData={formUiConfig}
               onEditTable={this.handleEditTable}
               onSave={this.handleSave}
+              dataModel={currPRowData}
             />
           </div>
           <div className={cls('config-content')}>
             <LeftSiderbar
-              onColChange={this.handleColChange}
+              onFormItemChange={this.handleFormItemChange}
               dataModel={currPRowData}
-              tableUiConfig={tableUiConfig}
-              onDelCol={this.handleDelCol}
-              onEditCol={this.handleEditCol}
+              uiConfig={formUiConfig}
+              onDelFormItem={this.handleDelFormItem}
+              onEditFormItem={this.handleEditFormItem}
             />
           </div>
           <div className={cls('config-right-siderbar')}>
-            <Content
-              key={JSON.stringify(tableUiConfig)}
-              tableUiConfig={tableUiConfig}
-              store={{
-                type: 'POST',
-                url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
-              }}
-            />
+            <Tabs>
+              <TabPane tab="过滤表单预览" key="1">
+                <ExtFormRender
+                  uiConfig={{
+                    ...formUiConfig,
+                    ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
+                  }}
+                />
+              </TabPane>
+            </Tabs>
           </div>
         </div>
       </PageWrapper>
@@ -163,4 +158,4 @@ class TableUiConfig extends Component {
   }
 }
 
-export default TableUiConfig;
+export default FilterFormUiConfig;
