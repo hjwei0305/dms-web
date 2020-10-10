@@ -9,6 +9,7 @@ import ExtTablePreview from '@/components/ExtTablePreview';
 import FormModal from './FormModal';
 import ImportModal from './ImportModal';
 import ExportModal from './ExportModal';
+import FilterDrawer from './FilterDrawer';
 import styles from '../../index.less';
 
 const { authAction } = utils;
@@ -20,6 +21,7 @@ class ChildTable extends Component {
     delRowId: null,
     importVisible: false,
     exportVisible: false,
+    drawerVisible: false,
   };
 
   reloadData = () => {
@@ -181,6 +183,10 @@ class ChildTable extends Component {
     });
   };
 
+  toggoleDrawerVisible = () => {
+    this.setState(({ drawerVisible }) => ({ drawerVisible: !drawerVisible }));
+  };
+
   getExtableProps = () => {
     const { masterDataMaintain } = this.props;
     const { modelUiConfig, currPRowData } = masterDataMaintain;
@@ -189,6 +195,7 @@ class ChildTable extends Component {
     const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
     const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const tableUiConfig = get(uiObj, 'showConfig', null);
+    const filterFormConfig = get(uiObj, 'filterFormConfig', null);
     const tableProps = tableUiConfig || {
       columns: [],
     };
@@ -263,6 +270,9 @@ class ChildTable extends Component {
           <Button onClick={this.reloadData}>刷新</Button>
         </Fragment>
       ),
+      extra: filterFormConfig ? (
+        <ExtIcon type="filter" theme="twoTone" antd onClick={this.toggoleDrawerVisible} />
+      ) : null,
     };
     tableProps.columns = columns.concat(tableProps.columns);
     tableProps.toolBar = toolBarProps;
@@ -271,6 +281,10 @@ class ChildTable extends Component {
       url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
     };
     return tableProps;
+  };
+
+  handleFilter = filterParams => {
+    console.log('ChildTable -> filterParams', filterParams);
   };
 
   getFormModalProps = () => {
@@ -286,6 +300,20 @@ class ChildTable extends Component {
       visible: cVisible,
       onCancel: this.closeFormModal,
       saving: loading.effects['masterDataMaintain/saveChild'],
+    };
+  };
+
+  getFilterDrawerProps = () => {
+    const { drawerVisible } = this.state;
+    const { masterDataMaintain } = this.props;
+    const { modelUiConfig } = masterDataMaintain;
+    const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
+    const uiConfig = get(uiObj, 'filterFormConfig', null);
+    return {
+      uiConfig,
+      onFilter: this.handleFilter,
+      visible: drawerVisible,
+      onCancel: this.toggoleDrawerVisible,
     };
   };
 
@@ -320,6 +348,7 @@ class ChildTable extends Component {
         />
         {/* <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} /> */}
         <FormModal {...this.getFormModalProps()} />
+        <FilterDrawer {...this.getFilterDrawerProps()} />
         {importVisible ? <ImportModal {...this.getImportModalProps()} /> : null}
         {exportVisible ? <ExportModal {...this.getExportModalProps()} /> : null}
       </div>

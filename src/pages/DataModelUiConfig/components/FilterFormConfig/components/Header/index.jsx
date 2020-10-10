@@ -43,7 +43,7 @@ class Header extends React.Component {
             <ExtIcon type="left" antd />
           </span>
         )}
-        {`主数据【${dataModel.name}】对应的UI表单配置`}
+        {`主数据【${dataModel.name}】对应的UI过滤表单配置`}
       </div>
     );
   }

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { cloneDeep, get } from 'lodash';
-import { Menu, Popconfirm } from 'antd';
+import { Popconfirm } from 'antd';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
-// import EditModal from './EditModal';
 import EditDrawer from './EditDrawer';
 
 import styles from './index.less';
@@ -53,14 +52,6 @@ class LeftSiderbar extends Component {
       {
         code,
         name,
-      },
-      {
-        title: name,
-        'ui:widget': 'ExtInput',
-      },
-      {
-        title: name,
-        'ui:widget': 'ExtInput',
       },
       {
         title: name,
@@ -128,35 +119,6 @@ class LeftSiderbar extends Component {
       onCancel: this.handleCancel,
       onSave: this.handleEditFormItem,
     };
-  };
-
-  getMenus = item => {
-    const { uiConfig } = this.props;
-    const canCreateRoot = get(uiConfig, 'canCreateRoot', false);
-    if (canCreateRoot) {
-      return (
-        <Menu
-          onClick={({ key }) => {
-            this.handleToggoleEditModal(key, item);
-          }}
-        >
-          <Menu.Item key="1">新建表单</Menu.Item>
-          <Menu.Item key="2">编辑表单</Menu.Item>
-          <Menu.Item key="3">新建根结点表单</Menu.Item>
-        </Menu>
-      );
-    }
-
-    return (
-      <Menu
-        onClick={({ key }) => {
-          this.handleToggoleEditModal(key, item);
-        }}
-      >
-        <Menu.Item key="1">新建表单</Menu.Item>
-        <Menu.Item key="2">编辑表单</Menu.Item>
-      </Menu>
-    );
   };
 
   render() {
@@ -230,14 +192,12 @@ class LeftSiderbar extends Component {
                             >
                               {title}
                               <span className={cls('list-item-extra')}>
-                                {/* <Dropdown trigger={['click']} overlay={this.getMenus(item)}> */}
                                 <span
                                   className={cls('icon-wrapper')}
                                   onClick={() => this.handleToggoleEditModal('1', item)}
                                 >
                                   <ExtIcon type="setting" tooltip={{ title: '表单项配置' }} antd />
                                 </span>
-                                {/* </Dropdown> */}
                                 <Popconfirm
                                   title="删除后不能恢复，确认删除吗？"
                                   placement="rightTop"
