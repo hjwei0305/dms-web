@@ -203,7 +203,7 @@ class UiConfigPreview extends Component {
           tabBarExtraContent={
             (activeKey === 'tableUi' && tableUiConfig) ||
             (activeKey === 'formUi' && formUiConfig) ||
-            (activeKey === 'filterFormUi' && formUiConfig) ? (
+            (activeKey === 'filterFormUi' && filterFormUiConfig) ? (
               // (activeKey === 'importUi' && importUiConfig) ||
               // (activeKey === 'exportUi' && exportUiConfig)
               <Button type="link" onClick={this.handleEdit}>
@@ -241,7 +241,7 @@ class UiConfigPreview extends Component {
             ) : null}
           </TabPane>
           {dataStructure === 'GENERAL' ? (
-            <TabPane tab={<span>过滤表单配置预览</span>} key="flterFormUi">
+            <TabPane tab={<span>过滤表单配置预览</span>} key="filterFormUi">
               {filterFormUiConfig ? (
                 <ExtFormRender uiConfig={filterFormUiConfig} />
               ) : (

@@ -285,7 +285,7 @@ class ChildTable extends Component {
         const value = filterParams[fieldName];
         if (value) {
           filters.push({
-            fieldName: fieldName,
+            fieldName,
             value: filterParams[fieldName],
             operator: 'EQ',
             fieldType: 'string',
