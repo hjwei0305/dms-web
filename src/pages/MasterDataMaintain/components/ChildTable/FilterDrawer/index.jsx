@@ -13,7 +13,6 @@ class FilterDrawer extends Component {
   onFormSubmit = () => {
     const { onFilter } = this.props;
     if (this.valids && !this.valids.length && onFilter) {
-      console.log('FilterDrawer -> onFormSubmit -> formValues', this.formValues);
       onFilter({ ...this.formValues });
     }
   };
@@ -27,9 +26,15 @@ class FilterDrawer extends Component {
   };
 
   handleReset = () => {
-    this.setState({
-      formKey: Math.random(),
-    });
+    this.setState(
+      {
+        formKey: Math.random(),
+      },
+      () => {
+        this.formValues = {};
+        this.onFormSubmit();
+      },
+    );
   };
 
   render() {
@@ -40,13 +45,11 @@ class FilterDrawer extends Component {
         visible={visible}
         title="过滤条件"
         placement="right"
-        onOk={this.onFormSubmit}
         bodyStyle={{
           height: 'calc(100% - 56px)',
           paddingBottom: 53,
         }}
         onClose={onCancel}
-        maskClosable={false}
       >
         <ScrollBar>
           <ExtFormRender

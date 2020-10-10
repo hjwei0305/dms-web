@@ -17,6 +17,12 @@ class ExtTablePreview extends React.Component {
     }
   };
 
+  getQueryParams = () => {
+    if (this.tableRef) {
+      return this.tableRef.getQueryParams();
+    }
+  };
+
   getExtTableProps = () => {
     const { tableUiConfig = { columns: [] }, store, tableProps } = this.props;
     if (!tableProps) {

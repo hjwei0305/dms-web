@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm } from 'antd';
-import { get } from 'lodash';
+import { get, isPlainObject } from 'lodash';
 import { utils, ExtIcon } from 'suid';
 import { constants } from '@/utils';
 import ExtTablePreview from '@/components/ExtTablePreview';
@@ -22,6 +22,7 @@ class ChildTable extends Component {
     importVisible: false,
     exportVisible: false,
     drawerVisible: false,
+    filterParams: null,
   };
 
   reloadData = () => {
@@ -30,6 +31,7 @@ class ChildTable extends Component {
     if (currPRowData && this.tableRef) {
       // this.tableRef.remoteDataRefresh();
       this.tableRef.reloadData();
+      console.log(this.tableRef.getQueryParams());
     }
   };
 
@@ -188,10 +190,10 @@ class ChildTable extends Component {
   };
 
   getExtableProps = () => {
+    const { filterParams } = this.state;
     const { masterDataMaintain } = this.props;
     const { modelUiConfig, currPRowData } = masterDataMaintain;
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
-    // const formUiConfig = get(uiObj, 'formConfig', null);
     const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
     const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const tableUiConfig = get(uiObj, 'showConfig', null);
@@ -276,6 +278,25 @@ class ChildTable extends Component {
     };
     tableProps.columns = columns.concat(tableProps.columns);
     tableProps.toolBar = toolBarProps;
+    tableProps.showSearch = !!tableProps.searchProperties.length;
+    if (isPlainObject(filterParams)) {
+      const filters = [];
+      Object.keys(filterParams).forEach(fieldName => {
+        const value = filterParams[fieldName];
+        if (value) {
+          filters.push({
+            fieldName: fieldName,
+            value: filterParams[fieldName],
+            operator: 'EQ',
+            fieldType: 'string',
+          });
+        }
+      });
+      tableProps.cascadeParams = {
+        filters,
+      };
+    }
+
     tableProps.store = {
       type: 'POST',
       url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
@@ -284,7 +305,14 @@ class ChildTable extends Component {
   };
 
   handleFilter = filterParams => {
-    console.log('ChildTable -> filterParams', filterParams);
+    this.setState(
+      {
+        filterParams,
+      },
+      () => {
+        this.toggoleDrawerVisible();
+      },
+    );
   };
 
   getFormModalProps = () => {
