@@ -273,7 +273,9 @@ class ChildTable extends Component {
         </Fragment>
       ),
       extra: filterFormConfig ? (
-        <ExtIcon type="filter" theme="twoTone" antd onClick={this.toggoleDrawerVisible} />
+        <span className={cls('icon-container')} onClick={this.toggoleDrawerVisible}>
+          <ExtIcon type="filter" theme="twoTone" antd />
+        </span>
       ) : null,
     };
     tableProps.columns = columns.concat(tableProps.columns);
