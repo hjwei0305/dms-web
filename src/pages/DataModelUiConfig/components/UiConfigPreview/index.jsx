@@ -243,7 +243,7 @@ class UiConfigPreview extends Component {
           {dataStructure === 'GENERAL' ? (
             <TabPane tab={<span>过滤表单配置预览</span>} key="flterFormUi">
               {filterFormUiConfig ? (
-                this.getFormPreview()
+                <ExtFormRender uiConfig={filterFormUiConfig} />
               ) : (
                 <span className={cls('ele-center')}>
                   暂无过滤表单配置{' '}
