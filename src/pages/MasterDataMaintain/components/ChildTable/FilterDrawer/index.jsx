@@ -6,9 +6,14 @@ import ExtFormRender from '@/components/ExtFormRender';
 
 @Form.create({})
 class FilterDrawer extends Component {
+  state = {
+    formKey: Math.random(),
+  };
+
   onFormSubmit = () => {
     const { onFilter } = this.props;
     if (this.valids && !this.valids.length && onFilter) {
+      console.log('FilterDrawer -> onFormSubmit -> formValues', this.formValues);
       onFilter({ ...this.formValues });
     }
   };
@@ -21,12 +26,18 @@ class FilterDrawer extends Component {
     this.valids = valids;
   };
 
+  handleReset = () => {
+    this.setState({
+      formKey: Math.random(),
+    });
+  };
+
   render() {
+    const { formKey } = this.state;
     const { visible, onCancel, uiConfig } = this.props;
     return (
       <Drawer
         visible={visible}
-        destroyOnClose
         title="过滤条件"
         placement="right"
         onOk={this.onFormSubmit}
@@ -39,6 +50,7 @@ class FilterDrawer extends Component {
       >
         <ScrollBar>
           <ExtFormRender
+            key={formKey}
             onValidate={this.handleValidate}
             onChange={this.handleFormValueChange}
             uiConfig={uiConfig}
@@ -57,10 +69,10 @@ class FilterDrawer extends Component {
             textAlign: 'right',
           }}
         >
-          <Button onClick={onCancel} style={{ marginRight: 8 }}>
+          <Button onClick={this.handleReset} style={{ marginRight: 8 }}>
             重置
           </Button>
-          <Button onClick={this.handleSave} type="primary">
+          <Button onClick={this.onFormSubmit} type="primary">
             过滤
           </Button>
         </div>
