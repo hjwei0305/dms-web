@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { get, omit, cloneDeep } from 'lodash';
+import { Empty } from 'antd';
+import { get, omit, cloneDeep, isEmpty } from 'lodash';
 import FormRender from 'form-render/lib/antd.js';
 import ExtComps from './components';
 
@@ -64,19 +65,23 @@ class ExtFormRender extends Component {
           height: '100%',
         }}
       >
-        <FormRender
-          {...uiConfig}
-          propsSchema={{
-            properties,
-            required,
-            type: 'object',
-          }}
-          uiSchema={uiSchema}
-          formData={formData}
-          onChange={this.onChange}
-          onValidate={this.onValidate}
-          widgets={{ ...ExtComps }}
-        />
+        {!isEmpty(tempProperties) ? (
+          <FormRender
+            {...uiConfig}
+            propsSchema={{
+              properties,
+              required,
+              type: 'object',
+            }}
+            uiSchema={uiSchema}
+            formData={formData}
+            onChange={this.onChange}
+            onValidate={this.onValidate}
+            widgets={{ ...ExtComps }}
+          />
+        ) : (
+          <Empty style={{ marginTop: 150 }} description={<span>暂无可预览表单</span>} />
+        )}
       </div>
     );
   }

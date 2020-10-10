@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { cloneDeep, get } from 'lodash';
-import { Popconfirm } from 'antd';
+import { Popconfirm, Empty, Button } from 'antd';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
@@ -171,55 +171,67 @@ class LeftSiderbar extends Component {
                   {...provided.droppableProps}
                 >
                   <ScrollBar>
-                    {formItems.map((item, index) => {
-                      const [{ code: fieldName, name: title }] = item;
-                      return (
-                        <Draggable
-                          draggableId={fieldName}
-                          index={index}
-                          key={fieldName}
-                          // isDragDisabled={isDragDisabled}
-                        >
-                          {(dragprovided, snapshot) => (
-                            <li
-                              className={cls('list-item')}
-                              {...dragprovided.draggableProps}
-                              {...dragprovided.dragHandleProps}
-                              ref={dragprovided.innerRef}
-                              isdragging={snapshot.isDragging}
-                              title={title}
-                              // isDragging={snapshot.isDragging}
-                            >
-                              {title}
-                              <span className={cls('list-item-extra')}>
-                                <span
-                                  className={cls('icon-wrapper')}
-                                  onClick={() => this.handleToggoleEditModal('1', item)}
-                                >
-                                  <ExtIcon type="setting" tooltip={{ title: '表单项配置' }} antd />
-                                </span>
-                                <Popconfirm
-                                  title="删除后不能恢复，确认删除吗？"
-                                  placement="rightTop"
-                                  cancelText="否"
-                                  okText="是"
-                                  onConfirm={() => this.handleDelFormItem(item)}
-                                >
-                                  <span className={cls('icon-wrapper')}>
+                    {formItems.length ? (
+                      formItems.map((item, index) => {
+                        const [{ code: fieldName, name: title }] = item;
+                        return (
+                          <Draggable
+                            draggableId={fieldName}
+                            index={index}
+                            key={fieldName}
+                            // isDragDisabled={isDragDisabled}
+                          >
+                            {(dragprovided, snapshot) => (
+                              <li
+                                className={cls('list-item')}
+                                {...dragprovided.draggableProps}
+                                {...dragprovided.dragHandleProps}
+                                ref={dragprovided.innerRef}
+                                isdragging={snapshot.isDragging}
+                                title={title}
+                                // isDragging={snapshot.isDragging}
+                              >
+                                {title}
+                                <span className={cls('list-item-extra')}>
+                                  <span
+                                    className={cls('icon-wrapper')}
+                                    onClick={() => this.handleToggoleEditModal('1', item)}
+                                  >
                                     <ExtIcon
-                                      type="delete"
-                                      className="del"
-                                      tooltip={{ title: '删除' }}
+                                      type="setting"
+                                      tooltip={{ title: '表单项配置' }}
                                       antd
                                     />
                                   </span>
-                                </Popconfirm>
-                              </span>
-                            </li>
-                          )}
-                        </Draggable>
-                      );
-                    })}
+                                  <Popconfirm
+                                    title="删除后不能恢复，确认删除吗？"
+                                    placement="rightTop"
+                                    cancelText="否"
+                                    okText="是"
+                                    onConfirm={() => this.handleDelFormItem(item)}
+                                  >
+                                    <span className={cls('icon-wrapper')}>
+                                      <ExtIcon
+                                        type="delete"
+                                        className="del"
+                                        tooltip={{ title: '删除' }}
+                                        antd
+                                      />
+                                    </span>
+                                  </Popconfirm>
+                                </span>
+                              </li>
+                            )}
+                          </Draggable>
+                        );
+                      })
+                    ) : (
+                      <Empty style={{ marginTop: 150 }} description={<span>暂无配置表单元素</span>}>
+                        <Button type="primary" onClick={this.toggoleShowUnAssign}>
+                          去配置
+                        </Button>
+                      </Empty>
+                    )}
                   </ScrollBar>
                 </ul>
               )}

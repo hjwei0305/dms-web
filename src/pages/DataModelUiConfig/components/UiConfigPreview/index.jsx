@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
-import { Tabs, Button } from 'antd';
+import { Tabs, Button, Empty } from 'antd';
 import { get } from 'lodash';
 import { constants } from '@/utils';
 import ColumnLayout from '@/components/Layout/ColumnLayout';
@@ -233,10 +233,11 @@ class UiConfigPreview extends Component {
             ) : null}
             {!tableUiConfig ? (
               <span className={cls('ele-center')}>
-                暂无列表配置{' '}
-                <Button size="large" type="link" onClick={this.handleConfigListUI}>
-                  去配置
-                </Button>
+                <Empty description={<span>暂无列表配置</span>}>
+                  <Button type="primary" onClick={this.handleConfigListUI}>
+                    去配置
+                  </Button>
+                </Empty>
               </span>
             ) : null}
           </TabPane>
@@ -246,10 +247,11 @@ class UiConfigPreview extends Component {
                 <ExtFormRender uiConfig={filterFormUiConfig} />
               ) : (
                 <span className={cls('ele-center')}>
-                  暂无过滤表单配置{' '}
-                  <Button size="large" type="link" onClick={this.handleConfigFilterFormUI}>
-                    去配置
-                  </Button>
+                  <Empty description={<span>暂无过滤表单配置</span>}>
+                    <Button type="primary" onClick={this.handleConfigFilterFormUI}>
+                      去配置
+                    </Button>
+                  </Empty>
                 </span>
               )}
             </TabPane>
@@ -268,10 +270,11 @@ class UiConfigPreview extends Component {
               this.getFormPreview()
             ) : (
               <span className={cls('ele-center')}>
-                暂无表单配置{' '}
-                <Button size="large" type="link" onClick={this.handleConfigFormUI}>
-                  去配置
-                </Button>
+                <Empty description={<span>暂无表单配置</span>}>
+                  <Button type="primary" onClick={this.handleConfigFormUI}>
+                    去配置
+                  </Button>
+                </Empty>
               </span>
             )}
           </TabPane>
