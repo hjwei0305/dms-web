@@ -14,7 +14,7 @@ const contextPath = '/dataSource';
 
 /** 保存 */
 export async function save(data) {
-  const url = `${MockServerPath}${contextPath}/save`;
+  const url = `${MockServerPath}${contextPath}/saveRequest`;
 
   return request.post(url, data);
 }
