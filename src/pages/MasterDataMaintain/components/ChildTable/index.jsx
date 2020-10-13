@@ -25,13 +25,26 @@ class ChildTable extends Component {
     filterParams: null,
   };
 
+  componentDidMount() {
+    this.imExStatus();
+  }
+
+  imExStatus = () => {
+    const { masterDataMaintain, dispatch } = this.props;
+    const { currPRowData } = masterDataMaintain;
+    return dispatch({
+      type: 'masterDataMaintain/imExStatus',
+      payload: {
+        contextPath: currPRowData.code,
+      },
+    });
+  };
+
   reloadData = () => {
     const { masterDataMaintain } = this.props;
     const { currPRowData } = masterDataMaintain;
     if (currPRowData && this.tableRef) {
-      // this.tableRef.remoteDataRefresh();
       this.tableRef.reloadData();
-      console.log(this.tableRef.getQueryParams());
     }
   };
 
@@ -174,8 +187,14 @@ class ChildTable extends Component {
   };
 
   handleExport = () => {
-    this.setState({
-      exportVisible: true,
+    const { masterDataMaintain, dispatch } = this.props;
+    const { currPRowData } = masterDataMaintain;
+    return dispatch({
+      type: 'masterDataMaintain/exportData',
+      payload: {
+        contextPath: currPRowData.code,
+        data: this.tableRef.getQueryParams(),
+      },
     });
   };
 
@@ -347,13 +366,38 @@ class ChildTable extends Component {
     };
   };
 
+  handleImportTplData = () => {
+    const { masterDataMaintain, dispatch } = this.props;
+    const { currPRowData } = masterDataMaintain;
+    return dispatch({
+      type: 'masterDataMaintain/importTemplateData',
+      payload: {
+        contextPath: currPRowData.code,
+      },
+    });
+  };
+
+  handleUpload = data => {
+    const { masterDataMaintain, dispatch } = this.props;
+    const { currPRowData } = masterDataMaintain;
+    return dispatch({
+      type: 'masterDataMaintain/importDataExcel',
+      payload: {
+        contextPath: currPRowData.code,
+        data,
+      },
+    });
+  };
+
   getImportModalProps = () => {
     const { masterDataMaintain } = this.props;
     const { currPRowData, modelUiConfig } = masterDataMaintain;
     return {
+      getExportData: this.handleImportTplData,
       editData: currPRowData,
       uiConfig: modelUiConfig,
       onCancel: this.closeImportModal,
+      onUpload: this.handleUpload,
     };
   };
 

@@ -59,3 +59,41 @@ export async function getConfigById({ id }) {
     method: 'GET',
   });
 }
+
+/** 获取模型的导入模版数据 */
+export async function importTemplateData({ contextPath }) {
+  const url = `${MockServerPath}/${contextPath}/importTemplateData`;
+  return request({
+    url,
+    method: 'GET',
+  });
+}
+
+/** 根据条件导出数据 */
+export async function exportData({ data, contextPath }) {
+  const url = `${MockServerPath}/${contextPath}/exportData`;
+  return request({
+    url,
+    method: 'POST',
+    data,
+  });
+}
+
+/** 检查导入和导出的状态 */
+export async function imExStatus({ contextPath }) {
+  const url = `${MockServerPath}/${contextPath}/imExStatus`;
+  return request({
+    url,
+    method: 'GET',
+  });
+}
+
+/** 获取模型的导入模版数据 */
+export async function importDataExcel({ data, contextPath }) {
+  const url = `${MockServerPath}/${contextPath}/importDataExcel`;
+  return request({
+    url,
+    method: 'POST',
+    data,
+  });
+}

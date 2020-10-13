@@ -6,7 +6,17 @@
  */
 import { message } from 'antd';
 import { utils } from 'suid';
-import { delParentRow, saveParent, saveChild, delChildRow, getConfigById } from './service';
+import {
+  delParentRow,
+  saveParent,
+  saveChild,
+  delChildRow,
+  getConfigById,
+  importTemplateData,
+  importDataExcel,
+  exportData,
+  imExStatus,
+} from './service';
 
 const { dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
@@ -23,6 +33,7 @@ export default modelExtend(model, {
     pVisible: false,
     cVisible: false,
     modelUiConfig: null,
+    importXlsData: null,
   },
   effects: {
     *updatePageState({ payload }, { put }) {
@@ -94,6 +105,59 @@ export default modelExtend(model, {
     },
     *delCRow({ payload }, { call }) {
       const result = yield call(delChildRow, payload);
+      const { message: msg, success } = result || {};
+      message.destroy();
+      if (success) {
+        message.success(msg);
+      } else {
+        message.error(msg);
+      }
+
+      return result;
+    },
+    *importTemplateData({ payload }, { call, put }) {
+      const result = yield call(importTemplateData, payload);
+      const { message: msg, success, data: importXlsData } = result || {};
+      message.destroy();
+      if (success) {
+        yield put({
+          type: 'updateState',
+          payload: {
+            importXlsData,
+          },
+        });
+      } else {
+        message.error(msg);
+      }
+
+      return result;
+    },
+    *importDataExcel({ payload }, { call }) {
+      const result = yield call(importDataExcel, payload);
+      const { message: msg, success } = result || {};
+      message.destroy();
+      if (success) {
+        message.success(msg);
+      } else {
+        message.error(msg);
+      }
+
+      return result;
+    },
+    *exportData({ payload }, { call }) {
+      const result = yield call(exportData, payload);
+      const { message: msg, success } = result || {};
+      message.destroy();
+      if (success) {
+        message.success(msg);
+      } else {
+        message.error(msg);
+      }
+
+      return result;
+    },
+    *imExStatus({ payload }, { call }) {
+      const result = yield call(imExStatus, payload);
       const { message: msg, success } = result || {};
       message.destroy();
       if (success) {

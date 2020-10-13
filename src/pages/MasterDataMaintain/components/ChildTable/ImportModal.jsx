@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { ExtModal, utils } from 'suid';
 import { Button, Upload, Icon } from 'antd';
-import { get } from 'lodash';
+// import { get } from 'lodash';
 
 const { dataExport } = utils;
 const { exportJsonToXlsx } = dataExport;
@@ -13,53 +13,55 @@ class ExportModal extends PureComponent {
   };
 
   handleDownload = () => {
-    const { editData, uiConfig } = this.props;
+    const { editData, getExportData } = this.props;
     const { name, categoryName } = editData;
-    const importUiConfig = JSON.parse(get(uiConfig, 'Import', JSON.stringify({})));
-    const { colItems } = importUiConfig;
-    const columns = colItems.map(item => {
-      const [{ code: dataIndex }, { title }] = item;
+    // const importUiConfig = JSON.parse(get(uiConfig, 'Import', JSON.stringify({})));
+    // const { colItems } = importUiConfig;
 
-      return {
-        title,
-        dataIndex,
-      };
-    });
-
-    exportJsonToXlsx({
-      columns,
-      data: [],
-      fileName: `${categoryName}-${name}主数据导入模版`,
-      sheetName: '模版',
-      beforeExport: () => {
-        console.log('ExportModal -> handleDownload -> beforeExport');
-        // this.setState({
-        //   loading: true,
-        // });
-        return true;
-      },
-      afterExport: () => {
-        console.log('ExportModal -> handleDownload -> afterExport');
-        // this.setState({
-        //   loading: false,
-        // });
-      },
-    });
+    if (getExportData) {
+      getExportData().then(result => {
+        const { data, success } = result || {};
+        if (success) {
+          const { title: titles, example } = data;
+          const columns = example.map((title, index) => {
+            return {
+              title,
+              dataIndex: titles[index],
+            };
+          });
+          exportJsonToXlsx({
+            columns,
+            data: [],
+            fileName: `${categoryName}-${name}主数据导入模版`,
+            sheetName: '模版',
+            firstRowHidden: false,
+            beforeExport: () => {
+              console.log('ExportModal -> handleDownload -> beforeExport');
+              // this.setState({
+              //   loading: true,
+              // });
+              return true;
+            },
+            afterExport: () => {
+              console.log('ExportModal -> handleDownload -> afterExport');
+              // this.setState({
+              //   loading: false,
+              // });
+            },
+          });
+        }
+      });
+    }
   };
 
   handleUpload = () => {
+    const { onUpload } = this.props;
     const { fileList } = this.state;
     const formData = new FormData();
     fileList.forEach(file => {
-      console.log('ExportModal -> handleUpload -> file', file);
       formData.append('files[]', file);
+      onUpload(formData);
     });
-
-    console.log(formData);
-
-    // this.setState({
-    //   uploading: true,
-    // });
   };
 
   getUploadProps = () => {
@@ -67,7 +69,7 @@ class ExportModal extends PureComponent {
       name: 'file',
       accept: '.xls,.xlsx',
       // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-      showUploadList: false,
+      showUploadList: true,
       // headers: {
       //   authorization: 'authorization-text',
       // },
