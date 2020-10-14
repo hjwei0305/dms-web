@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Popconfirm, Descriptions, Collapse, Tag } from 'antd';
+import { Button, Popconfirm, Descriptions, Collapse, Tag, Badge } from 'antd';
 import { get, isPlainObject } from 'lodash';
 import { utils, ExtIcon } from 'suid';
 import { constants } from '@/utils';
@@ -19,7 +19,7 @@ const { Panel } = Collapse;
 const customPanelStyle = {
   background: '#f7f7f7',
   borderRadius: 4,
-  marginBottom: 24,
+  marginBottom: 5,
   border: 0,
   overflow: 'hidden',
 };
@@ -473,6 +473,26 @@ class ChildTable extends Component {
                           <Tag color="red">失败</Tag>
                         </>
                       )}
+                      <Badge
+                        status={importStatus.finished ? 'success' : 'processing'}
+                        color="blue"
+                        text="已导入"
+                      />
+                      <span className={cls('show-number')}>{importStatus.current}</span>
+                      <Badge
+                        status={importStatus.finished ? 'success' : 'processing'}
+                        color="green"
+                        text="未导入"
+                      />
+                      <span className={cls('show-number')}>
+                        {importStatus.total - importStatus.current}
+                      </span>
+                      <Badge
+                        status={importStatus.finished ? 'success' : 'processing'}
+                        color="red"
+                        text="错误"
+                      />
+                      <span className={cls('show-number')}>0</span>
                     </span>
                   </div>
                 }
@@ -494,7 +514,7 @@ class ChildTable extends Component {
                   <div>
                     导出状态
                     <span style={{ marginLeft: 10 }}>
-                      {!importStatus.finished ? (
+                      {!exportStatus.finished ? (
                         <Tag color="blue">
                           <ExtIcon type="loading" size="small" antd />
                           导出中...
@@ -505,6 +525,20 @@ class ChildTable extends Component {
                           <Tag color="red">失败</Tag>
                         </>
                       )}
+                      <Badge
+                        status={exportStatus.finished ? 'success' : 'processing'}
+                        color="blue"
+                        text="已导出"
+                      />
+                      <span className={cls('show-number')}>{exportStatus.current}</span>
+                      <Badge
+                        status={exportStatus.finished ? 'success' : 'processing'}
+                        color="green"
+                        text="未导出"
+                      />
+                      <span className={cls('show-number')}>
+                        {exportStatus.total - exportStatus.current}
+                      </span>
                     </span>
                   </div>
                 }
