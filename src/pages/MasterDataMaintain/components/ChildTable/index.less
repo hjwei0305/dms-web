@@ -1,0 +1,43 @@
+.container-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  :global {
+    .content {
+      flex: 1;
+      overflow: hidden;
+    }
+    .ant-card {
+      .ant-card-body {
+        padding: 0 !important;
+      }
+    }
+    .suid-tool-bar {
+      button {
+        margin-right: 8px;
+      }
+    }
+    .empty-wrapper {
+      margin-top: 200px;
+    }
+    .ele-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    .icon-container {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      margin-top: -1px;
+      line-height: 32px;
+      text-align: center;
+      vertical-align: middle;
+      border-radius: 2px;
+      &:hover {
+        background-color: #efeaea;
+      }
+    }
+  }
+}

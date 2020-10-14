@@ -58,11 +58,11 @@ class MasterDataMaintain extends Component {
   };
 
   render() {
-    const { masterDataMaintain, loading } = this.props;
+    const { masterDataMaintain } = this.props;
     const { currPRowData } = masterDataMaintain;
 
     return (
-      <PageWrapper loading={loading.global} className={cls(styles['container-box'])}>
+      <PageWrapper className={cls(styles['container-box'])}>
         <CascadeLayout
           title={['主数据', `${currPRowData ? `${currPRowData.name}的数据` : ''}`]}
           layout={[8, 16]}

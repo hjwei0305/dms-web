@@ -62,7 +62,7 @@ export async function getConfigById({ id }) {
 
 /** 获取模型的导入模版数据 */
 export async function importTemplateData({ contextPath }) {
-  const url = `${MockServerPath}/${contextPath}/importTemplateData`;
+  const url = `${MockServerPath}/excel/${contextPath}/importTemplateData`;
   return request({
     url,
     method: 'GET',
@@ -71,7 +71,7 @@ export async function importTemplateData({ contextPath }) {
 
 /** 根据条件导出数据 */
 export async function exportData({ data, contextPath }) {
-  const url = `${MockServerPath}/${contextPath}/exportData`;
+  const url = `${MockServerPath}/excel/${contextPath}/exportData`;
   return request({
     url,
     method: 'POST',
@@ -81,7 +81,7 @@ export async function exportData({ data, contextPath }) {
 
 /** 检查导入和导出的状态 */
 export async function imExStatus({ contextPath }) {
-  const url = `${MockServerPath}/${contextPath}/imExStatus`;
+  const url = `${MockServerPath}/excel/${contextPath}/imExStatus`;
   return request({
     url,
     method: 'GET',
@@ -90,7 +90,7 @@ export async function imExStatus({ contextPath }) {
 
 /** 获取模型的导入模版数据 */
 export async function importDataExcel({ data, contextPath }) {
-  const url = `${MockServerPath}/${contextPath}/importDataExcel`;
+  const url = `${MockServerPath}/excel/${contextPath}/importDataExcel`;
   return request({
     url,
     method: 'POST',

@@ -160,9 +160,7 @@ export default modelExtend(model, {
       const result = yield call(imExStatus, payload);
       const { message: msg, success } = result || {};
       message.destroy();
-      if (success) {
-        message.success(msg);
-      } else {
+      if (!success) {
         message.error(msg);
       }
 

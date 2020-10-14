@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Descriptions, Collapse } from 'antd';
 import { get, isPlainObject } from 'lodash';
 import { utils, ExtIcon } from 'suid';
 import { constants } from '@/utils';
@@ -10,10 +10,19 @@ import FormModal from './FormModal';
 import ImportModal from './ImportModal';
 import ExportModal from './ExportModal';
 import FilterDrawer from './FilterDrawer';
-import styles from '../../index.less';
+import styles from './index.less';
 
 const { authAction } = utils;
 const { MDMSCONTEXT } = constants;
+const { Panel } = Collapse;
+
+const customPanelStyle = {
+  background: '#f7f7f7',
+  borderRadius: 4,
+  marginBottom: 24,
+  border: 0,
+  overflow: 'hidden',
+};
 
 @connect(({ masterDataMaintain, loading }) => ({ masterDataMaintain, loading }))
 class ChildTable extends Component {
@@ -23,10 +32,16 @@ class ChildTable extends Component {
     exportVisible: false,
     drawerVisible: false,
     filterParams: null,
+    checkStatus: null,
   };
 
   componentDidMount() {
     this.imExStatus();
+    this.checkInterval = window.setInterval(this.imExStatus, 8000);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.checkInterval);
   }
 
   imExStatus = () => {
@@ -37,6 +52,13 @@ class ChildTable extends Component {
       payload: {
         contextPath: currPRowData.code,
       },
+    }).then(result => {
+      const { success, data: checkStatus } = result || {};
+      if (success) {
+        this.setState({
+          checkStatus,
+        });
+      }
     });
   };
 
@@ -195,6 +217,13 @@ class ChildTable extends Component {
         contextPath: currPRowData.code,
         data: this.tableRef.getQueryParams(),
       },
+    }).then(result => {
+      const { success, data: checkStatus } = result || {};
+      if (success) {
+        this.setState({
+          checkStatus,
+        });
+      }
     });
   };
 
@@ -386,6 +415,13 @@ class ChildTable extends Component {
         contextPath: currPRowData.code,
         data,
       },
+    }).then(result => {
+      const { success, data: checkStatus } = result || {};
+      if (success) {
+        this.setState({
+          checkStatus,
+        });
+      }
     });
   };
 
@@ -413,13 +449,43 @@ class ChildTable extends Component {
   };
 
   render() {
-    const { importVisible, exportVisible } = this.state;
+    const { importVisible, exportVisible, checkStatus } = this.state;
+    const [importStatus, exportStatus] = checkStatus || [];
     return (
       <div className={cls(styles['container-box'])}>
-        <ExtTablePreview
-          onRef={inst => (this.tableRef = inst)}
-          tableProps={this.getExtableProps()}
-        />
+        <div className={cls('header')}>
+          <Collapse bordered={false}>
+            {importStatus ? (
+              <Panel header="导入状态" style={customPanelStyle}>
+                <Descriptions size="small">
+                  <Descriptions.Item label="总导入数量">{importStatus.total}</Descriptions.Item>
+                  <Descriptions.Item label="已导入数量">{importStatus.current}</Descriptions.Item>
+                  <Descriptions.Item label="状态信息">
+                    {importStatus.progressNote}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="错误记录文件">无</Descriptions.Item>
+                </Descriptions>
+              </Panel>
+            ) : null}
+            {exportStatus ? (
+              <Panel header="导出状态" style={customPanelStyle}>
+                <Descriptions size="small">
+                  <Descriptions.Item label="导出数量">{exportStatus.total}</Descriptions.Item>
+                  <Descriptions.Item label="状态信息">
+                    {exportStatus.progressNote}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="导出文件">无</Descriptions.Item>
+                </Descriptions>
+              </Panel>
+            ) : null}
+          </Collapse>
+        </div>
+        <div className={cls('content')}>
+          <ExtTablePreview
+            onRef={inst => (this.tableRef = inst)}
+            tableProps={this.getExtableProps()}
+          />
+        </div>
         {/* <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} /> */}
         <FormModal {...this.getFormModalProps()} />
         <FilterDrawer {...this.getFilterDrawerProps()} />
