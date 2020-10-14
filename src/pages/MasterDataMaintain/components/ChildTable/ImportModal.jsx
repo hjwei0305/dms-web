@@ -93,7 +93,7 @@ class ExportModal extends PureComponent {
   };
 
   render() {
-    const { editData, onCancel } = this.props;
+    const { editData, onCancel, loading } = this.props;
 
     return (
       <ExtModal
@@ -101,6 +101,7 @@ class ExportModal extends PureComponent {
         visible
         onCancel={onCancel}
         onOk={this.handleUpload}
+        confirmLoading={loading}
       >
         1、下载{`${editData.name}主数据`}导入模版进行填写，
         <Button style={{ padding: 0 }} type="link" onClick={this.handleDownload}>

@@ -239,7 +239,7 @@ class ChildTable extends Component {
 
   getExtableProps = () => {
     const { filterParams } = this.state;
-    const { masterDataMaintain } = this.props;
+    const { masterDataMaintain, loading } = this.props;
     const { modelUiConfig, currPRowData } = masterDataMaintain;
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
     const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
@@ -305,14 +305,19 @@ class ChildTable extends Component {
 
           {importUiConfig
             ? authAction(
-                <Button key="add" onClick={this.handleImport} ignore="true">
+                <Button key="import" onClick={this.handleImport} ignore="true">
                   导入
                 </Button>,
               )
             : null}
           {exportUiConfig
             ? authAction(
-                <Button key="add" onClick={this.handleExport} ignore="true">
+                <Button
+                  key="export"
+                  loading={loading.effects['masterDataMaintain/exportData']}
+                  onClick={this.handleExport}
+                  ignore="true"
+                >
                   导出
                 </Button>,
               )
@@ -418,6 +423,7 @@ class ChildTable extends Component {
     }).then(result => {
       const { success, data: checkStatus } = result || {};
       if (success) {
+        this.closeImportModal();
         this.setState({
           checkStatus,
         });
@@ -426,11 +432,12 @@ class ChildTable extends Component {
   };
 
   getImportModalProps = () => {
-    const { masterDataMaintain } = this.props;
+    const { masterDataMaintain, loading } = this.props;
     const { currPRowData, modelUiConfig } = masterDataMaintain;
     return {
       getExportData: this.handleImportTplData,
       editData: currPRowData,
+      loading: loading.effects['masterDataMaintain/importDataExcel'],
       uiConfig: modelUiConfig,
       onCancel: this.closeImportModal,
       onUpload: this.handleUpload,
