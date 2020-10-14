@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Popconfirm, Descriptions, Collapse } from 'antd';
+import { Button, Popconfirm, Descriptions, Collapse, Tag } from 'antd';
 import { get, isPlainObject } from 'lodash';
 import { utils, ExtIcon } from 'suid';
 import { constants } from '@/utils';
@@ -456,7 +456,28 @@ class ChildTable extends Component {
         <div className={cls('header')}>
           <Collapse bordered={false}>
             {importStatus ? (
-              <Panel header="导入状态" style={customPanelStyle}>
+              <Panel
+                header={
+                  <div>
+                    导入状态
+                    <span style={{ marginLeft: 10 }}>
+                      {!importStatus.finished ? (
+                        <Tag color="blue">
+                          <ExtIcon type="loading" size="small" antd />
+                          导入中...
+                        </Tag>
+                      ) : (
+                        <>
+                          <Tag color="green">成功</Tag>
+                          <Tag color="orange">部分导入成功</Tag>
+                          <Tag color="red">失败</Tag>
+                        </>
+                      )}
+                    </span>
+                  </div>
+                }
+                style={customPanelStyle}
+              >
                 <Descriptions size="small">
                   <Descriptions.Item label="总导入数量">{importStatus.total}</Descriptions.Item>
                   <Descriptions.Item label="已导入数量">{importStatus.current}</Descriptions.Item>
@@ -468,7 +489,27 @@ class ChildTable extends Component {
               </Panel>
             ) : null}
             {exportStatus ? (
-              <Panel header="导出状态" style={customPanelStyle}>
+              <Panel
+                header={
+                  <div>
+                    导出状态
+                    <span style={{ marginLeft: 10 }}>
+                      {!importStatus.finished ? (
+                        <Tag color="blue">
+                          <ExtIcon type="loading" size="small" antd />
+                          导出中...
+                        </Tag>
+                      ) : (
+                        <>
+                          <Tag color="green">成功</Tag>
+                          <Tag color="red">失败</Tag>
+                        </>
+                      )}
+                    </span>
+                  </div>
+                }
+                style={customPanelStyle}
+              >
                 <Descriptions size="small">
                   <Descriptions.Item label="导出数量">{exportStatus.total}</Descriptions.Item>
                   <Descriptions.Item label="状态信息">
