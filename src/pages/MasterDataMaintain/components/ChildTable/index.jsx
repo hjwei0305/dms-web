@@ -457,7 +457,7 @@ class ChildTable extends Component {
 
   render() {
     const { importVisible, exportVisible, checkStatus } = this.state;
-    const [importStatus, exportStatus] = checkStatus || [];
+    const { import: importStatus, export: exportStatus } = checkStatus || [];
     return (
       <div className={cls(styles['container-box'])}>
         <div className={cls('header')}>
@@ -473,13 +473,7 @@ class ChildTable extends Component {
                           <ExtIcon type="loading" size="small" antd />
                           导入中...
                         </Tag>
-                      ) : (
-                        <>
-                          <Tag color="green">成功</Tag>
-                          <Tag color="orange">部分导入成功</Tag>
-                          <Tag color="red">失败</Tag>
-                        </>
-                      )}
+                      ) : null}
                       <Badge
                         status={importStatus.finished ? 'success' : 'processing'}
                         color="blue"
@@ -526,12 +520,7 @@ class ChildTable extends Component {
                           <ExtIcon type="loading" size="small" antd />
                           导出中...
                         </Tag>
-                      ) : (
-                        <>
-                          <Tag color="green">成功</Tag>
-                          <Tag color="red">失败</Tag>
-                        </>
-                      )}
+                      ) : null}
                       <Badge
                         status={exportStatus.finished ? 'success' : 'processing'}
                         color="blue"

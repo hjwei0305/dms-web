@@ -59,7 +59,7 @@ class ExportModal extends PureComponent {
     const { fileList } = this.state;
     const formData = new FormData();
     fileList.forEach(file => {
-      formData.append('files[]', file);
+      formData.append('file', file);
       onUpload(formData);
     });
   };
