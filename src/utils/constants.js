@@ -38,6 +38,7 @@ const SERVER_PATH = getServerPath();
 
 const MDMSCONTEXT = `${SERVER_PATH}/mdms/`;
 const BASICCONTEXT = `${SERVER_PATH}/sei-basic`;
+const EdmContext = `${SERVER_PATH}/edm-service`;
 
 const LOGIN_STATUS = {
   SUCCESS: 'success',
@@ -63,4 +64,5 @@ export default {
   LOGIN_STATUS,
   MDMSCONTEXT,
   BASICCONTEXT,
+  EdmContext,
 };

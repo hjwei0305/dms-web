@@ -13,7 +13,7 @@ import FilterDrawer from './FilterDrawer';
 import styles from './index.less';
 
 const { authAction } = utils;
-const { MDMSCONTEXT } = constants;
+const { MDMSCONTEXT, EdmContext } = constants;
 const { Panel } = Collapse;
 
 const customPanelStyle = {
@@ -474,38 +474,39 @@ class ChildTable extends Component {
                           导入中...
                         </Tag>
                       ) : null}
-                      <Badge
-                        status={importStatus.finished ? 'success' : 'processing'}
-                        color="blue"
-                        text="已导入"
-                      />
-                      <span className={cls('show-number')}>{importStatus.current}</span>
+                      <Badge status="success" text="总数" color="blue" />
+                      <span className={cls('show-number')}>{importStatus.total}</span>
                       <Badge
                         status={importStatus.finished ? 'success' : 'processing'}
                         color="green"
-                        text="未导入"
+                        text="已导入"
                       />
-                      <span className={cls('show-number')}>
-                        {importStatus.total - importStatus.current}
-                      </span>
-                      <Badge
-                        status={importStatus.finished ? 'success' : 'processing'}
-                        color="red"
-                        text="错误"
-                      />
-                      <span className={cls('show-number')}>0</span>
+                      <span className={cls('show-number')}>{importStatus.current}</span>
+                      {importStatus.finished ? (
+                        <>
+                          <Badge status="success" color="red" text="错误" />
+                          <span className={cls('show-number')}>
+                            {importStatus.total - importStatus.current}
+                          </span>
+                        </>
+                      ) : null}
+                      {importStatus.date ? (
+                        <span className={cls('horizontal-space')}>{importStatus.date}</span>
+                      ) : null}
+                      {importStatus.failedItems && importStatus.failedItems.length ? (
+                        <a href={`${EdmContext}/file/download?docIds=${importStatus.docId}`}>
+                          错误列表
+                        </a>
+                      ) : null}
                     </span>
                   </div>
                 }
                 style={customPanelStyle}
               >
                 <Descriptions size="small">
-                  <Descriptions.Item label="总导入数量">{importStatus.total}</Descriptions.Item>
-                  <Descriptions.Item label="已导入数量">{importStatus.current}</Descriptions.Item>
                   <Descriptions.Item label="状态信息">
                     {importStatus.progressNote}
                   </Descriptions.Item>
-                  <Descriptions.Item label="错误记录文件">无</Descriptions.Item>
                 </Descriptions>
               </Panel>
             ) : null}
@@ -521,31 +522,31 @@ class ChildTable extends Component {
                           导出中...
                         </Tag>
                       ) : null}
+                      <Badge status="success" color="blue" text="总数" />
+                      <span className={cls('show-number')}>{exportStatus.total}</span>
                       <Badge
                         status={exportStatus.finished ? 'success' : 'processing'}
-                        color="blue"
                         text="已导出"
+                        color="green"
                       />
                       <span className={cls('show-number')}>{exportStatus.current}</span>
-                      <Badge
-                        status={exportStatus.finished ? 'success' : 'processing'}
-                        color="green"
-                        text="未导出"
-                      />
-                      <span className={cls('show-number')}>
-                        {exportStatus.total - exportStatus.current}
-                      </span>
+                      {exportStatus.date ? (
+                        <span className={cls('horizontal-space')}>{exportStatus.date}</span>
+                      ) : null}
+                      {exportStatus.docId ? (
+                        <a href={`${EdmContext}/file/download?docIds=${exportStatus.docId}`}>
+                          下载
+                        </a>
+                      ) : null}
                     </span>
                   </div>
                 }
                 style={customPanelStyle}
               >
                 <Descriptions size="small">
-                  <Descriptions.Item label="导出数量">{exportStatus.total}</Descriptions.Item>
                   <Descriptions.Item label="状态信息">
                     {exportStatus.progressNote}
                   </Descriptions.Item>
-                  <Descriptions.Item label="导出文件">无</Descriptions.Item>
                 </Descriptions>
               </Panel>
             ) : null}
