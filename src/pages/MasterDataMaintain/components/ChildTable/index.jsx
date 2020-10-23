@@ -12,7 +12,8 @@ import ExportModal from './ExportModal';
 import FilterDrawer from './FilterDrawer';
 import styles from './index.less';
 
-const { authAction } = utils;
+const { authAction, dataExport } = utils;
+const { dataToXlsx } = dataExport;
 const { MDMSCONTEXT, EdmContext } = constants;
 const { Panel } = Collapse;
 
@@ -37,6 +38,7 @@ class ChildTable extends Component {
 
   componentDidMount() {
     this.imExStatus();
+    this.handleImportTplData();
     this.checkInterval = window.setInterval(this.imExStatus, 8000);
   }
 
@@ -455,6 +457,54 @@ class ChildTable extends Component {
     };
   };
 
+  transformData = (data, columns) => {
+    if (columns && columns.length) {
+      const headers = [];
+      columns.forEach(item => {
+        headers.push(item.title || item.dataIndex);
+      });
+
+      const rows = data.map(item => {
+        if (isPlainObject(item)) {
+          const temp = [];
+          columns.forEach(col => {
+            const { dataIndex, formatter } = col;
+            const pathValue = get(item, dataIndex);
+            const tempValue = formatter ? formatter(pathValue, item) : pathValue;
+            temp.push(tempValue);
+          });
+          return temp;
+        }
+        return item;
+      });
+      return [headers].concat(rows);
+    }
+    return data;
+  };
+
+  handleDownloadErrorXlsx = errList => {
+    const { masterDataMaintain } = this.props;
+    const { importTemplateTitles, currPRowData } = masterDataMaintain;
+    const { categoryName, name: modelName } = currPRowData;
+    const columns = importTemplateTitles.map(({ code, name }) => {
+      return {
+        title: name,
+        dataIndex: code,
+      };
+    });
+    columns.push({
+      title: '错误信息',
+      dataIndex: 'validateMessage',
+    });
+    dataToXlsx({
+      dataType: 'aoa',
+      data: this.transformData(errList, columns),
+      fileName: `${categoryName}-${modelName}主数据导入数据错误列表`,
+      sheetName: '错误列表',
+      firstRowHidden: false,
+    });
+  };
+
   render() {
     const { importVisible, exportVisible, checkStatus } = this.state;
     const { import: importStatus, export: exportStatus } = checkStatus || [];
@@ -494,9 +544,15 @@ class ChildTable extends Component {
                         <span className={cls('horizontal-space')}>{importStatus.date}</span>
                       ) : null}
                       {importStatus.failedItems && importStatus.failedItems.length ? (
-                        <a href={`${EdmContext}/file/download?docIds=${importStatus.docId}`}>
+                        <Button
+                          type="link"
+                          onClick={e => {
+                            e.stopPropagation();
+                            this.handleDownloadErrorXlsx(importStatus.failedItems);
+                          }}
+                        >
                           错误列表
-                        </a>
+                        </Button>
                       ) : null}
                     </span>
                   </div>

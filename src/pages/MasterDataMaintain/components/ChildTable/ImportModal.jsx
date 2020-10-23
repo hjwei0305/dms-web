@@ -9,14 +9,11 @@ const { exportJsonToXlsx } = dataExport;
 class ExportModal extends PureComponent {
   state = {
     fileList: [],
-    // uploading: false,
   };
 
   handleDownload = () => {
     const { editData, getExportData } = this.props;
     const { name, categoryName } = editData;
-    // const importUiConfig = JSON.parse(get(uiConfig, 'Import', JSON.stringify({})));
-    // const { colItems } = importUiConfig;
 
     if (getExportData) {
       getExportData().then(result => {
@@ -26,7 +23,7 @@ class ExportModal extends PureComponent {
           const columns = example.map((title, index) => {
             return {
               title,
-              dataIndex: titles[index],
+              dataIndex: titles[index].name,
             };
           });
           exportJsonToXlsx({

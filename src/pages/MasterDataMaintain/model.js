@@ -34,6 +34,7 @@ export default modelExtend(model, {
     cVisible: false,
     modelUiConfig: null,
     importXlsData: null,
+    importTemplateTitles: null,
   },
   effects: {
     *updatePageState({ payload }, { put }) {
@@ -117,13 +118,13 @@ export default modelExtend(model, {
     },
     *importTemplateData({ payload }, { call, put }) {
       const result = yield call(importTemplateData, payload);
-      const { message: msg, success, data: importXlsData } = result || {};
+      const { message: msg, success, data } = result || {};
       message.destroy();
       if (success) {
         yield put({
           type: 'updateState',
           payload: {
-            importXlsData,
+            importTemplateTitles: data.title,
           },
         });
       } else {
