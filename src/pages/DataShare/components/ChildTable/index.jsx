@@ -174,20 +174,18 @@ class ChildTable extends Component {
                     antd
                   />,
                 )}
-                {record.frozen ? null : (
-                  <Popconfirm
-                    key="delete"
-                    placement="topLeft"
-                    title="确定要取消订阅吗？"
-                    onCancel={e => e.stopPropagation()}
-                    onConfirm={e => {
-                      this.del(record);
-                      e.stopPropagation();
-                    }}
-                  >
-                    {this.renderDelBtn(record)}
-                  </Popconfirm>
-                )}
+                <Popconfirm
+                  key="delete"
+                  placement="topLeft"
+                  title="确定要取消订阅吗？"
+                  onCancel={e => e.stopPropagation()}
+                  onConfirm={e => {
+                    this.del(record);
+                    e.stopPropagation();
+                  }}
+                >
+                  {this.renderDelBtn(record)}
+                </Popconfirm>
               </div>
             </>
           );
