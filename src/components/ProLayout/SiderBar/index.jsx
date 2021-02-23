@@ -55,6 +55,7 @@ class SiderBar extends Component {
         onMouseLeave={() => this.toggleVisible(false)}
         style={style}
       >
+        <div className={cls('content')}>{children}</div>
         {allowCollapse && (collapseVisible || collapsed) ? (
           <div
             onClick={this.handleCollapse}
@@ -67,7 +68,6 @@ class SiderBar extends Component {
             {this.getCollapseIcon()}
           </div>
         ) : null}
-        <div className={cls('content')}>{children}</div>
       </div>
     );
   }

@@ -4,7 +4,6 @@ import { connect } from 'dva';
 import cls from 'classnames';
 import { Empty, PageHeader } from 'antd';
 import PageWrapper from '@/components/PageWrapper';
-// import CascadeLayout from '@/components/Layout/CascadeLayout';
 import ProLayout, { Header, Center, SiderBar } from '@/components/ProLayout';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
@@ -43,7 +42,10 @@ class DataShare extends Component {
           <Center>
             <ProLayout layout="column">
               <Header height={60}>
-                <PageHeader title={`${currPRowData ? `${currPRowData.name}的订阅数据` : ''}`} />
+                <PageHeader
+                  title={`${currPRowData ? `订阅数据` : ''}`}
+                  subTitle={currPRowData.name}
+                />
               </Header>
               <Center>
                 {this.getRightCmp() || (

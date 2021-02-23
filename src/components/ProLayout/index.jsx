@@ -13,7 +13,6 @@ class Layout extends Component {
     let cmps = [];
     if (layout === 'row') {
       cmps = React.Children.map(children, child => {
-        console.log('Layout -> renderChildren -> child.type', child.type.displayName);
         if (child.type && ['Center', 'SiderBar'].includes(child.type.displayName)) {
           return React.cloneElement(child);
         }

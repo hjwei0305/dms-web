@@ -140,7 +140,7 @@ class ChildTable extends Component {
         onClick={e => e.stopPropagation()}
         tooltip={{ title: '取消订阅' }}
         className="del"
-        type="delete"
+        type="undo"
         antd
       />
     );
@@ -194,10 +194,11 @@ class ChildTable extends Component {
       {
         title: '订阅主数据名称',
         dataIndex: 'dataName',
+        width: 180,
         render: (dataName, { frozen }) => {
           return (
             <>
-              {dataName}
+              {`${dataName} `}
               {frozen ? <Tag color="red">冻结</Tag> : null}
             </>
           );
@@ -213,10 +214,12 @@ class ChildTable extends Component {
       },
       {
         title: '订阅者邮箱',
+        width: 180,
         dataIndex: 'ownerEmail',
       },
       {
         title: '备注',
+        width: 200,
         dataIndex: 'remark',
       },
     ];
@@ -237,7 +240,7 @@ class ChildTable extends Component {
       toolBar,
       columns,
       searchProperties: ['dataCode', 'dataName'],
-      searchPlaceHolder: '输入代码或名称进行快速查询',
+      searchPlaceHolder: '请输入代码或名称进行快速查询',
       store: {
         type: 'GET',
         url: `${MDMSCONTEXT}/appSubscription/getDataFromAppCode?appCode=${currPRowData.code}`,
