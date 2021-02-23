@@ -57,7 +57,7 @@ class CascadeTableMaster extends Component {
         </FormPopover>
         <div>
           <Search
-            placeholder="可输入名称关键字查询"
+            placeholder="请输入名称或代码关键字进行查询"
             onChange={e => this.handlerSearchChange(e.target.value)}
             onSearch={this.handlerSearch}
             onPressEnter={this.handlerPressEnter}
@@ -79,7 +79,6 @@ class CascadeTableMaster extends Component {
         url: `${MDMSCONTEXT}/appSubscription/findAppByPage`,
       },
       remotePaging: true,
-      searchPlaceHolder: '请输入名称或代码关键字进行查询',
       onSelectChange: (_, [selectedItem]) => {
         dispatch({
           type: 'dataShare/updatePageState',

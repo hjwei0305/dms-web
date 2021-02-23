@@ -30,7 +30,7 @@ class DataShare extends Component {
       <PageWrapper loading={loading.global} className={cls(styles['container-box'])}>
         <CascadeLayout
           title={['应用模块', `${currPRowData ? `${currPRowData.name}的订阅数据` : ''}`]}
-          layout={[8, 16]}
+          layout={[6, 18]}
           canShrink
         >
           <ParentTable slot="left" />
