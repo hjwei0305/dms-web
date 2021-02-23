@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Badge, Tag } from 'antd';
 import { utils, ExtIcon, ExtTable } from 'suid';
 import { constants } from '@/utils';
 import FormModal from './FormModal';
@@ -64,7 +64,7 @@ class ChildTable extends Component {
 
   del = record => {
     const { dispatch, dataShare } = this.props;
-    const { currCRowData, currPRowData } = dataShare;
+    const { currCRowData } = dataShare;
     this.setState(
       {
         delRowId: record.id,
@@ -73,7 +73,6 @@ class ChildTable extends Component {
         dispatch({
           type: 'dataShare/delCRow',
           payload: {
-            contextPath: currPRowData.code,
             id: record.id,
           },
         }).then(res => {
@@ -102,15 +101,11 @@ class ChildTable extends Component {
   };
 
   save = data => {
-    const { dispatch, dataShare } = this.props;
-    const { currPRowData } = dataShare;
+    const { dispatch } = this.props;
 
     dispatch({
       type: 'dataShare/saveChild',
-      payload: {
-        contextPath: currPRowData.code,
-        data,
-      },
+      payload: data,
     }).then(res => {
       if (res.success) {
         dispatch({
@@ -143,7 +138,7 @@ class ChildTable extends Component {
     return (
       <ExtIcon
         onClick={e => e.stopPropagation()}
-        tooltip={{ title: '删除' }}
+        tooltip={{ title: '取消订阅' }}
         className="del"
         type="delete"
         antd
@@ -183,7 +178,7 @@ class ChildTable extends Component {
                   <Popconfirm
                     key="delete"
                     placement="topLeft"
-                    title="确定要删除吗？"
+                    title="确定要取消订阅吗？"
                     onCancel={e => e.stopPropagation()}
                     onConfirm={e => {
                       this.del(record);
@@ -199,12 +194,32 @@ class ChildTable extends Component {
         },
       },
       {
-        title: '模块代码',
-        dataIndex: 'code',
+        title: '订阅主数据名称',
+        dataIndex: 'dataName',
+        render: (dataName, { frozen }) => {
+          return (
+            <>
+              {dataName}
+              {frozen ? <Tag color="red">冻结</Tag> : null}
+            </>
+          );
+        },
       },
       {
-        title: '模块名称',
-        dataIndex: 'name',
+        title: '订阅主数据代码',
+        dataIndex: 'dataCode',
+      },
+      {
+        title: '订阅者名称',
+        dataIndex: 'ownerName',
+      },
+      {
+        title: '订阅者邮箱',
+        dataIndex: 'ownerEmail',
+      },
+      {
+        title: '备注',
+        dataIndex: 'remark',
       },
     ];
     const toolBar = {
@@ -212,7 +227,7 @@ class ChildTable extends Component {
         <Fragment>
           {authAction(
             <Button key="add" type="primary" onClick={this.add} ignore="true">
-              新建
+              订阅
             </Button>,
           )}
           <Button onClick={this.reloadData}>刷新</Button>
@@ -223,11 +238,11 @@ class ChildTable extends Component {
     return {
       toolBar,
       columns,
-      searchProperties: ['code', 'name'],
-      searchPlaceHolder: '输入代码或名称进行搜索',
+      searchProperties: ['dataCode', 'dataName'],
+      searchPlaceHolder: '输入代码或名称进行快速查询',
       store: {
-        type: 'POST',
-        url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
+        type: 'GET',
+        url: `${MDMSCONTEXT}/appSubscription/getDataFromAppCode?appCode=${currPRowData.code}`,
       },
     };
   };

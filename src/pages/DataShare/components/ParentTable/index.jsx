@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Input } from 'antd';
-import { ListCard, ComboTree } from 'suid';
+import { Input, Button, Tag } from 'antd';
+import { get } from 'lodash';
+import { ListCard, ExtIcon } from 'suid';
 import { constants } from '@/utils';
+import FormPopover from './FormPopover';
 import styles from './index.less';
 
 // const { authAction } = utils;
@@ -12,79 +14,53 @@ const { MDMSCONTEXT } = constants;
 
 @connect(({ dataShare, loading }) => ({ dataShare, loading }))
 class CascadeTableMaster extends Component {
-  state = {
-    selectedNode: null,
-  };
-
   reloadData = () => {
     if (this.listCardRef) {
       this.listCardRef.remoteDataRefresh();
     }
   };
 
+  handlerPressEnter = () => {
+    this.listCardRef.handlerPressEnter();
+  };
+
   handlerSearchChange = v => {
     this.listCardRef.handlerSearchChange(v);
   };
 
-  handlerSearch = () => {
-    this.listCardRef.handlerSearch();
+  handlerSearch = v => {
+    this.listCardRef.handlerSearch(v);
   };
 
-  getComboTreeProps = () => {
-    const { selectedNode: selNode } = this.state;
-
-    let value = '';
-    if (selNode) {
-      value = selNode.name;
-    }
-
-    return {
-      value,
-      placeholder: '选择主数据分类',
-      style: {
-        width: 150,
-      },
-      store: {
-        url: `${MDMSCONTEXT}/dataCategory/getTypeTree`,
-        autoLoad: true,
-      },
-      reader: {
-        name: 'name',
-      },
-      afterLoaded: data => {
-        const [selectedNode] = data || [];
-        if (selectedNode) {
-          this.handleAfterSelect(selectedNode);
-        }
-      },
-    };
-  };
-
-  handleAfterSelect = selectedNode => {
-    this.setState(
-      {
-        selectedNode,
-      },
-      () => {
+  handleSave = (data, cb) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'dataShare/saveParent',
+      payload: data,
+    }).then(result => {
+      const success = get(result, 'success');
+      if (success) {
+        cb(false);
         this.reloadData();
-      },
-    );
+      }
+    });
   };
 
   getCustomTool = () => {
+    const { loading } = this.props;
     return (
       <>
-        <ComboTree width={200} afterSelect={this.handleAfterSelect} {...this.getComboTreeProps()} />
-        <div
-          style={{
-            paddingLeft: 20,
-          }}
-        >
+        <FormPopover onSave={this.handleSave} isSaving={loading.effects['dataShare/saveParent']}>
+          <Button type="link">
+            <ExtIcon type="plus" antd /> 新增
+          </Button>
+        </FormPopover>
+        <div>
           <Search
             placeholder="可输入名称关键字查询"
             onChange={e => this.handlerSearchChange(e.target.value)}
             onSearch={this.handlerSearch}
-            onPressEnter={this.handlerSearch}
+            onPressEnter={this.handlerPressEnter}
             style={{ width: 172 }}
           />
         </div>
@@ -93,19 +69,17 @@ class CascadeTableMaster extends Component {
   };
 
   getListCardProps = () => {
-    const { dispatch } = this.props;
-    const { selectedNode } = this.state;
-    let store = null;
-    if (selectedNode) {
-      store = {
-        type: 'Get',
-        url: `${MDMSCONTEXT}/dataDefinition/getRegisterDataByCategoryId?categoryId=${selectedNode.id}`,
-      };
-    }
+    const { dispatch, loading } = this.props;
 
     return {
+      // title: this.getCustomTool(),
       showSearch: false,
-      store,
+      store: {
+        type: 'POST',
+        url: `${MDMSCONTEXT}/appSubscription/findAppByPage`,
+      },
+      remotePaging: true,
+      searchPlaceHolder: '请输入名称或代码关键字进行查询',
       onSelectChange: (_, [selectedItem]) => {
         dispatch({
           type: 'dataShare/updatePageState',
@@ -123,8 +97,26 @@ class CascadeTableMaster extends Component {
       },
       searchProperties: ['code', 'name'],
       itemField: {
-        title: item => `${item.name}【${item.code}】`,
-        description: item => item.dataStructureEnumRemark,
+        title: item => (
+          <>
+            {`${item.name} `}
+            {item.frozen ? <Tag color="red">冻结</Tag> : null}
+          </>
+        ),
+        description: item => item.code,
+        extra: item => {
+          return (
+            <FormPopover
+              onSave={this.handleSave}
+              isSaving={loading.effects['dataShare/saveParent']}
+              editData={item}
+            >
+              <span className={cls('icon-wrapper')}>
+                <ExtIcon type="edit" tooltip={{ title: '编辑' }} antd />
+              </span>
+            </FormPopover>
+          );
+        },
       },
       onListCardRef: ref => (this.listCardRef = ref),
       customTool: this.getCustomTool,

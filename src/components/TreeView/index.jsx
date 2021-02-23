@@ -218,7 +218,7 @@ class TreeView extends Component {
 
   getToolTar = () => {
     const { toolBar } = this.props;
-    const colStyle = { marginBottom: 6 };
+    const colStyle = { margin: '7px 0' };
     const { type = 'inline', layout: customLayout, left } = toolBar || {};
 
     if (type === 'inline') {
@@ -275,7 +275,7 @@ class TreeView extends Component {
     } = this.state;
     const { height = '100%', toolBar } = this.props;
     const { type } = toolBar || {};
-    const toolBarHeight = type === 'vertical' ? 76 : 38;
+    const toolBarHeight = type === 'vertical' ? 76 : 46;
 
     return (
       <div className={cls(styles['tree-veiw'])} style={{ height }}>

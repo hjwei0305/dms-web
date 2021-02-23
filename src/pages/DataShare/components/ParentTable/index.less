@@ -5,4 +5,38 @@
   padding: 0;
   overflow: hidden;
   background-color: @page-background-color;
+  :global {
+    .icon-wrapper {
+      display: none;
+      width: 30px;
+      height: 30px;
+      margin-right: 8px;
+      line-height: 30px;
+      text-align: center;
+      vertical-align: middle;
+      border-radius: 4px;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        > i {
+          color: #1890ff;
+        }
+      }
+      &.ant-popover-open {
+        background-color: rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        > i {
+          color: #1890ff;
+        }
+      }
+    }
+    .ant-list-item {
+      &:hover {
+        .icon-wrapper {
+          display: inline-block;
+          margin-bottom: -50px;
+        }
+      }
+    }
+  }
 }

@@ -29,13 +29,17 @@ class DataShare extends Component {
     return (
       <PageWrapper loading={loading.global} className={cls(styles['container-box'])}>
         <CascadeLayout
-          title={['主数据', `${currPRowData ? `${currPRowData.name}数据订阅模块` : ''}`]}
+          title={['应用模块', `${currPRowData ? `${currPRowData.name}的订阅数据` : ''}`]}
           layout={[8, 16]}
           canShrink
         >
           <ParentTable slot="left" />
           {this.getRightCmp() || (
-            <Empty slot="right" className={cls('empty-wrapper')} description="请选择左边的数据" />
+            <Empty
+              slot="right"
+              className={cls('empty-wrapper')}
+              description="请选择应用模块进行订阅数据"
+            />
           )}
         </CascadeLayout>
       </PageWrapper>

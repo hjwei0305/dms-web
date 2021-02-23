@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Form, Input, Switch } from 'antd';
-import { omit } from 'lodash';
+import { omit, get } from 'lodash';
 import { ExtModal, ComboGrid } from 'suid';
 import { constants } from '@/utils';
-import ExtTransfer from '../ExtTransfer';
-import { getPropertiesByCode } from '../../service.js';
 
-const { BASICCONTEXT } = constants;
+const { MDMSCONTEXT } = constants;
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
@@ -19,14 +17,6 @@ const formItemLayout = {
 
 @Form.create()
 class FormModal extends PureComponent {
-  state = {
-    fieldLists: [],
-  };
-
-  componentDidMount() {
-    this.getPropertiesByCode();
-  }
-
   handleSave = () => {
     const { form, onSave, editData } = this.props;
     form.validateFields((err, formData) => {
@@ -35,35 +25,20 @@ class FormModal extends PureComponent {
       }
       const params = {};
       Object.assign(params, editData, formData);
-      onSave(omit(params, 'register'));
-    });
-  };
-
-  getPropertiesByCode = () => {
-    const { parentData } = this.props;
-
-    return getPropertiesByCode({
-      code: parentData.code,
-    }).then(result => {
-      const { success, data } = result;
-      if (success) {
-        this.setState({
-          fieldLists: data || [],
-        });
-      }
+      onSave(params);
     });
   };
 
   getDsComboGridProps = () => {
-    const { form } = this.props;
+    const { form, parentData } = this.props;
 
     return {
       form,
-      name: 'register',
+      name: 'dataName',
       store: {
         type: 'GET',
         autoLoad: false,
-        url: `${BASICCONTEXT}/appModule/findAll`,
+        url: `${MDMSCONTEXT}/appSubscription/getUnassigned?appCode=${parentData.code}`,
       },
       columns: [
         {
@@ -85,14 +60,13 @@ class FormModal extends PureComponent {
       rowKey: 'code',
       reader: {
         name: 'name',
-        field: ['code', 'name', 'remark'],
+        field: ['code'],
       },
-      field: ['code', 'name', 'remark'],
+      field: ['dataCode'],
     };
   };
 
   render() {
-    const { fieldLists } = this.state;
     const { form, editData, onCancel, saving, visible, parentData } = this.props;
     const { getFieldDecorator } = form;
     const title = editData ? '编辑' : '新建';
@@ -107,29 +81,55 @@ class FormModal extends PureComponent {
         confirmLoading={saving}
         maskClosable={false}
         title={title}
-        okText="保存"
         onOk={this.handleSave}
       >
         <Form {...formItemLayout} layout="horizontal">
-          <FormItem label="主数据代码" style={{ display: 'none' }}>
-            {getFieldDecorator('masterCode', {
+          <FormItem label="" hidden>
+            {getFieldDecorator('appCode', {
               initialValue: parentData && parentData.code,
             })(<Input disabled={!!parentData} />)}
           </FormItem>
-          <FormItem label="业务模块">
-            {getFieldDecorator('businessModule', {
-              initialValue: '',
-            })(<ComboGrid {...this.getDsComboGridProps()} />)}
+          <FormItem label="订阅主数据代码" hidden>
+            {getFieldDecorator('dataCode', {
+              initialValue: get(editData, 'dataCode', ''),
+            })(<Input />)}
           </FormItem>
-          <FormItem label="分享字段">
-            {getFieldDecorator('shareFields', {
-              initialValue: [],
-            })(<ExtTransfer itemList={fieldLists} />)}
+          <FormItem label="订阅主数据">
+            {getFieldDecorator('dataName', {
+              initialValue: get(editData, 'dataName', ''),
+              rules: [
+                {
+                  required: true,
+                  message: '请选择订阅数据',
+                },
+              ],
+            })(<ComboGrid disabled={!!editData} {...this.getDsComboGridProps()} />)}
+          </FormItem>
+          <FormItem label="拥有者名称">
+            {getFieldDecorator('ownerName', {
+              initialValue: get(editData, 'ownerName', ''),
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="拥有者邮箱">
+            {getFieldDecorator('ownerEmail', {
+              initialValue: get(editData, 'ownerEmail', ''),
+              rules: [
+                {
+                  type: 'email',
+                  message: '请输入正确的邮箱',
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="备注">
+            {getFieldDecorator('remark', {
+              initialValue: get(editData, 'remark'),
+            })(<Input.TextArea />)}
           </FormItem>
           <FormItem label="冻结">
             {getFieldDecorator('frozen', {
               valuePropName: 'checked',
-              initialValue: editData ? editData.frozen : false,
+              initialValue: get(editData, 'frozen'),
             })(<Switch />)}
           </FormItem>
         </Form>
