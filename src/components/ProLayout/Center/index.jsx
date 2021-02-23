@@ -8,8 +8,12 @@ class Center extends Component {
   handleCollapse = () => {};
 
   render() {
-    const { children } = this.props;
-    return <div className={cls(styles['layout-center'])}>{children}</div>;
+    const { children, style } = this.props;
+    return (
+      <div className={cls(styles['layout-center'])} style={style}>
+        {children}
+      </div>
+    );
   }
 }
 

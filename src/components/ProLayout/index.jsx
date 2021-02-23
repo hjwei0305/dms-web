@@ -22,7 +22,7 @@ class Layout extends Component {
     if (layout === 'column') {
       cmps = React.Children.map(children, child => {
         if (child.type && ['Header', 'Center', 'Footer'].includes(child.type.displayName)) {
-          return child;
+          return React.cloneElement(child);
         }
       });
     }
