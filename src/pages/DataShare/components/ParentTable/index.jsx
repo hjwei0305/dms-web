@@ -72,7 +72,7 @@ class CascadeTableMaster extends Component {
     const { dispatch, loading } = this.props;
 
     return {
-      // title: this.getCustomTool(),
+      showArrow: false,
       showSearch: false,
       store: {
         type: 'POST',
