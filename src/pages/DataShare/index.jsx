@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Empty } from 'antd';
+import { Empty, PageHeader } from 'antd';
 import PageWrapper from '@/components/PageWrapper';
-import CascadeLayout from '@/components/Layout/CascadeLayout';
+// import CascadeLayout from '@/components/Layout/CascadeLayout';
+import ProLayout, { Header, Center, SiderBar } from '@/components/ProLayout';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
 import styles from './index.less';
@@ -28,20 +29,34 @@ class DataShare extends Component {
 
     return (
       <PageWrapper loading={loading.global} className={cls(styles['container-box'])}>
-        <CascadeLayout
-          title={['应用模块', `${currPRowData ? `${currPRowData.name}的订阅数据` : ''}`]}
-          layout={[6, 18]}
-          canShrink
-        >
-          <ParentTable slot="left" />
-          {this.getRightCmp() || (
-            <Empty
-              slot="right"
-              className={cls('empty-wrapper')}
-              description="请选择应用模块进行订阅数据"
-            />
-          )}
-        </CascadeLayout>
+        <ProLayout>
+          <SiderBar allowCollapse gutter={[0, 8]}>
+            <ProLayout layout="column">
+              <Header height={60}>
+                <PageHeader title="应用模块" />
+              </Header>
+              <Center>
+                <ParentTable />
+              </Center>
+            </ProLayout>
+          </SiderBar>
+          <Center>
+            <ProLayout layout="column">
+              <Header height={60}>
+                <PageHeader title={`${currPRowData ? `${currPRowData.name}的订阅数据` : ''}`} />
+              </Header>
+              <Center>
+                {this.getRightCmp() || (
+                  <Empty
+                    slot="right"
+                    className={cls('empty-wrapper')}
+                    description="请选择应用模块进行订阅数据"
+                  />
+                )}
+              </Center>
+            </ProLayout>
+          </Center>
+        </ProLayout>
       </PageWrapper>
     );
   }
