@@ -11,7 +11,7 @@
     "start:mock": "cross-env MOCK=yes umi dev",
     "initpage": "sei-tools initPage",
     "update:pt": "sei-tools pt",
-    "build": "umi build",
+    "build": "cross-env ESLINT=none umi build",
     "test": "umi test",
     "lint": "npm run lint:script && npm run lint:style",
     "lint-fix": "npm run lint-fix:script && npm run lint-fix:style",
