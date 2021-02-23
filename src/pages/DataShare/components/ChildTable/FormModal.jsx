@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Form, Input, Switch } from 'antd';
-import { omit, get } from 'lodash';
+import { get } from 'lodash';
 import { ExtModal, ComboGrid } from 'suid';
 import { constants } from '@/utils';
 

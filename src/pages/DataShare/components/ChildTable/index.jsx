@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Popconfirm, Badge, Tag } from 'antd';
+import { Button, Popconfirm, Tag } from 'antd';
 import { utils, ExtIcon, ExtTable } from 'suid';
 import { constants } from '@/utils';
 import FormModal from './FormModal';
