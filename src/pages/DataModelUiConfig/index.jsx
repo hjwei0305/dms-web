@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Empty } from 'antd';
+import { Empty, PageHeader } from 'antd';
 import PageWrapper from '@/components/PageWrapper';
-import CascadeLayout from '@/components/Layout/CascadeLayout';
+import ProLayout, { Header, Center, SiderBar } from '@/components/ProLayout';
+// import CascadeLayout from '@/components/Layout/CascadeLayout';
 import ParentTable from './components/ParentTable';
 import UiConfigPreview from './components/UiConfigPreview';
 import TableUiConfig from './components/TableUiConfig';
@@ -44,7 +45,35 @@ class DataModelUiConfig extends Component {
               vFilterFormConfig,
           })}
         >
-          <CascadeLayout
+          <ProLayout>
+            <SiderBar allowCollapse gutter={[0, 8]}>
+              <ProLayout layout="column">
+                <Header height={60}>
+                  <PageHeader title="主数据" />
+                </Header>
+                <Center>
+                  <ParentTable />
+                </Center>
+              </ProLayout>
+            </SiderBar>
+            <Center>
+              <ProLayout layout="column">
+                <Header height={60}>
+                  <PageHeader
+                    title={`${currPRowData ? `主数据【${currPRowData.name}】的UI配置预览` : ''}`}
+                  />
+                </Header>
+                <Center>
+                  {currPRowData && modelUiConfig ? (
+                    <UiConfigPreview modelUiConfig={modelUiConfig} />
+                  ) : (
+                    <Empty className={cls('empty-wrapper')} description="请选择左边的数据" />
+                  )}
+                </Center>
+              </ProLayout>
+            </Center>
+          </ProLayout>
+          {/* <CascadeLayout
             title={[
               '主数据',
               `${currPRowData ? `主数据【${currPRowData.name}】的UI配置预览` : ''}`,
@@ -58,7 +87,7 @@ class DataModelUiConfig extends Component {
             ) : (
               <Empty slot="right" className={cls('empty-wrapper')} description="请选择左边的数据" />
             )}
-          </CascadeLayout>
+          </CascadeLayout> */}
         </PageWrapper>
         {vTableUiConfig && currPRowData.dataStructure === 'GENERAL' ? (
           <TableUiConfig modelUiConfig={modelUiConfig} />

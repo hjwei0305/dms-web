@@ -3,9 +3,10 @@ import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
 import { get } from 'lodash';
 import cls from 'classnames';
-import { Empty, Button } from 'antd';
+import { Empty, Button, PageHeader } from 'antd';
 import PageWrapper from '@/components/PageWrapper';
-import CascadeLayout from '@/components/Layout/CascadeLayout';
+// import CascadeLayout from '@/components/Layout/CascadeLayout';
+import ProLayout, { Header, Center, SiderBar } from '@/components/ProLayout';
 import ExtTreePreview from '@/components/ExtTreePreview';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
@@ -63,7 +64,35 @@ class MasterDataMaintain extends Component {
 
     return (
       <PageWrapper className={cls(styles['container-box'])}>
-        <CascadeLayout
+        <ProLayout>
+          <SiderBar allowCollapse gutter={[0, 8]}>
+            <ProLayout layout="column">
+              <Header height={60}>
+                <PageHeader title="主数据" />
+              </Header>
+              <Center>
+                <ParentTable />
+              </Center>
+            </ProLayout>
+          </SiderBar>
+          <Center>
+            <ProLayout layout="column">
+              <Header height={60}>
+                <PageHeader title={`${currPRowData ? `${currPRowData.name}的数据` : ''}`} />
+              </Header>
+              <Center>
+                {this.getRightCmp() || (
+                  <Empty
+                    slot="right"
+                    className={cls('empty-wrapper')}
+                    description="请选择左边的数据"
+                  />
+                )}
+              </Center>
+            </ProLayout>
+          </Center>
+        </ProLayout>
+        {/* <CascadeLayout
           title={['主数据', `${currPRowData ? `${currPRowData.name}的数据` : ''}`]}
           layout={[8, 16]}
           canShrink
@@ -72,7 +101,7 @@ class MasterDataMaintain extends Component {
           {this.getRightCmp() || (
             <Empty slot="right" className={cls('empty-wrapper')} description="请选择左边的数据" />
           )}
-        </CascadeLayout>
+        </CascadeLayout> */}
       </PageWrapper>
     );
   }
