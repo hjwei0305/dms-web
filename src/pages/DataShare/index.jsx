@@ -44,7 +44,7 @@ class DataShare extends Component {
               <Header height={60}>
                 <PageHeader
                   title={`${currPRowData ? `订阅数据` : ''}`}
-                  subTitle={currPRowData.name}
+                  subTitle={currPRowData && currPRowData.name}
                 />
               </Header>
               <Center>
