@@ -13,7 +13,15 @@ class SiderBar extends Component {
   };
 
   handleCollapse = () => {
-    this.setState(({ collapsed }) => ({ collapsed: !collapsed }));
+    this.setState(
+      ({ collapsed }) => ({ collapsed: !collapsed }),
+      () => {
+        const { onCollapse } = this.props;
+        if (onCollapse) {
+          onCollapse();
+        }
+      },
+    );
   };
 
   toggleVisible = collapseVisible => {
