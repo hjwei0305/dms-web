@@ -104,6 +104,7 @@ class CascadeTableMaster extends Component {
     }
 
     return {
+      showArrow: false,
       showSearch: false,
       store,
       onSelectChange: (_, [selectedItem]) => {
