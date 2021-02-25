@@ -7,14 +7,16 @@
   background-color: @page-background-color;
   :global {
     .icon-wrapper {
-      display: none;
+      display: inline-block;
       width: 30px;
       height: 30px;
       margin-right: 8px;
+      margin-bottom: -50px;
       line-height: 30px;
       text-align: center;
       vertical-align: middle;
       border-radius: 4px;
+      visibility: hidden;
       &:hover {
         background-color: rgba(0, 0, 0, 0.05);
         cursor: pointer;
@@ -23,9 +25,8 @@
         }
       }
       &.ant-popover-open {
-        display: inline-block;
-        margin-bottom: -50px;
         background-color: rgba(0, 0, 0, 0.05);
+        visibility: visible;
         cursor: pointer;
         > i {
           color: #1890ff;
@@ -35,8 +36,7 @@
     .ant-list-item {
       &:hover {
         .icon-wrapper {
-          display: inline-block;
-          margin-bottom: -50px;
+          visibility: visible;
         }
       }
     }
