@@ -4,7 +4,7 @@ import cls from 'classnames';
 import { Button, Popconfirm, Tag } from 'antd';
 import { utils, ExtIcon, ExtTable } from 'suid';
 import { constants } from '@/utils';
-import FormModal from './FormModal';
+import FormPopover from './FormPopover';
 
 import styles from '../../index.less';
 
@@ -23,19 +23,6 @@ class ChildTable extends Component {
     if (currPRowData && this.tableRef) {
       this.tableRef.remoteDataRefresh();
     }
-  };
-
-  handleSave = rowData => {
-    const { dispatch } = this.props;
-
-    dispatch({
-      type: 'dataShare/save',
-      payload: rowData,
-    }).then(res => {
-      if (res.success) {
-        this.reloadData();
-      }
-    });
   };
 
   add = () => {
@@ -100,7 +87,7 @@ class ChildTable extends Component {
     );
   };
 
-  save = data => {
+  save = (data, cb) => {
     const { dispatch } = this.props;
 
     dispatch({
@@ -108,13 +95,8 @@ class ChildTable extends Component {
       payload: data,
     }).then(res => {
       if (res.success) {
-        dispatch({
-          type: 'dataShare/updatePageState',
-          payload: {
-            cVisible: false,
-          },
-        });
         this.reloadData();
+        cb(false);
       }
     });
   };
@@ -147,8 +129,8 @@ class ChildTable extends Component {
   };
 
   getExtableProps = () => {
-    const { dataShare } = this.props;
-    const { currPRowData } = dataShare;
+    const { dataShare, loading } = this.props;
+    const { currPRowData, currCRowData } = dataShare;
 
     const columns = [
       {
@@ -164,15 +146,23 @@ class ChildTable extends Component {
             <>
               <div className="action-box" onClick={e => e.stopPropagation()}>
                 {authAction(
-                  <ExtIcon
+                  <FormPopover
                     key="edit"
-                    className="edit"
-                    onClick={e => this.edit(record, e)}
-                    type="edit"
-                    ignore="true"
-                    tooltip={{ title: '编辑' }}
-                    antd
-                  />,
+                    onSave={this.save}
+                    editData={currCRowData}
+                    isSaving={loading.effects['dataShare/saveChild']}
+                    parentData={currPRowData}
+                  >
+                    <ExtIcon
+                      key="edit"
+                      className="edit"
+                      onClick={e => this.edit(record, e)}
+                      type="edit"
+                      ignore="true"
+                      tooltip={{ title: '编辑' }}
+                      antd
+                    />
+                  </FormPopover>,
                 )}
                 <Popconfirm
                   key="delete"
@@ -227,9 +217,16 @@ class ChildTable extends Component {
       left: (
         <Fragment>
           {authAction(
-            <Button key="add" type="primary" onClick={this.add} ignore="true">
-              订阅
-            </Button>,
+            <FormPopover
+              key="add"
+              onSave={this.save}
+              isSaving={loading.effects['dataShare/saveChild']}
+              parentData={currPRowData}
+            >
+              <Button key="add" type="primary" onClick={this.add} ignore="true">
+                订阅
+              </Button>
+            </FormPopover>,
           )}
           <Button onClick={this.reloadData}>刷新</Button>
         </Fragment>
@@ -262,12 +259,9 @@ class ChildTable extends Component {
   };
 
   render() {
-    const { dataShare } = this.props;
-    const { cVisible } = dataShare;
     return (
       <div className={cls(styles['container-box'])}>
         <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
-        {cVisible ? <FormModal {...this.getFormModalProps()} /> : null}
       </div>
     );
   }

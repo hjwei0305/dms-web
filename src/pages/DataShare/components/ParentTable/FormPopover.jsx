@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Form, Input, Switch, Popover, Button, Row, PageHeader } from 'antd';
-import { omit, get } from 'lodash';
+import { get } from 'lodash';
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -26,7 +26,7 @@ class FormModal extends PureComponent {
       }
       const params = {};
       Object.assign(params, editData, formData);
-      onSave(omit(params, 'register'), this.handleShowChange);
+      onSave(params, this.handleShowChange);
     });
   };
 

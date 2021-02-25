@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Switch } from 'antd';
+import { Form, Input, Switch, Popover, Button, Row, PageHeader } from 'antd';
+import { ComboGrid } from 'suid';
 import { get } from 'lodash';
-import { ExtModal, ComboGrid } from 'suid';
 import { constants } from '@/utils';
 
 const { MDMSCONTEXT } = constants;
@@ -16,7 +16,11 @@ const formItemLayout = {
 };
 
 @Form.create()
-class FormModal extends PureComponent {
+class FormPopover extends PureComponent {
+  state = {
+    visible: false,
+  };
+
   handleSave = () => {
     const { form, onSave, editData } = this.props;
     form.validateFields((err, formData) => {
@@ -25,7 +29,13 @@ class FormModal extends PureComponent {
       }
       const params = {};
       Object.assign(params, editData, formData);
-      onSave(params);
+      onSave(params, this.handleShowChange);
+    });
+  };
+
+  handleShowChange = visible => {
+    this.setState({
+      visible,
     });
   };
 
@@ -66,27 +76,23 @@ class FormModal extends PureComponent {
     };
   };
 
-  render() {
-    const { form, editData, onCancel, saving, visible, parentData } = this.props;
+  getPopoverContent = () => {
+    const { form, editData, isSaving, parentData } = this.props;
     const { getFieldDecorator } = form;
-    const title = editData ? '编辑' : '新建';
+    const title = editData ? '编辑' : '订阅';
 
     return (
-      <ExtModal
-        destroyOnClose
-        onCancel={onCancel}
-        visible={visible}
-        centered
-        width={600}
-        confirmLoading={saving}
-        maskClosable={false}
-        title={title}
-        onOk={this.handleSave}
+      <div
+        style={{
+          width: 400,
+          overflow: 'hidden',
+        }}
       >
+        <PageHeader title="主数据" subTitle={title} />
         <Form {...formItemLayout} layout="horizontal">
           <FormItem label="" hidden>
             {getFieldDecorator('appCode', {
-              initialValue: parentData && parentData.code,
+              initialValue: get(parentData, 'code'),
             })(<Input disabled={!!parentData} />)}
           </FormItem>
           <FormItem label="订阅主数据代码" hidden>
@@ -132,10 +138,37 @@ class FormModal extends PureComponent {
               initialValue: get(editData, 'frozen'),
             })(<Switch />)}
           </FormItem>
+          <Row
+            style={{
+              float: 'right',
+            }}
+          >
+            <Button onClick={this.handleSave} loading={isSaving} type="primary">
+              保存
+            </Button>
+          </Row>
         </Form>
-      </ExtModal>
+      </div>
+    );
+  };
+
+  render() {
+    const { children } = this.props;
+    const { visible } = this.state;
+
+    return (
+      <Popover
+        placement="rightTop"
+        content={this.getPopoverContent()}
+        onVisibleChange={v => this.handleShowChange(v)}
+        trigger="click"
+        destroyTooltipOnHide
+        visible={visible}
+      >
+        {children}
+      </Popover>
     );
   }
 }
 
-export default FormModal;
+export default FormPopover;
