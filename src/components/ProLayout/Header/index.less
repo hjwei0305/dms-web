@@ -5,4 +5,46 @@
   padding: 0 8px;
   overflow: hidden;
   background-color: white;
+  :global {
+    .ant-page-header {
+      width: 100%;
+      padding: 0 8px;
+      .ant-page-header-heading-title {
+        font-size: 16px;
+      }
+      .ant-page-header-content {
+        padding-top: 0;
+      }
+    }
+  }
+}
+
+.layout-header-small {
+  :global {
+    .ant-page-header {
+      .ant-page-header-heading-title {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.layout-header-middle {
+  :global {
+    .ant-page-header {
+      .ant-page-header-heading-title {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.layout-header-large {
+  :global {
+    .ant-page-header {
+      .ant-page-header-heading-title {
+        font-size: 19px;
+      }
+    }
+  }
 }

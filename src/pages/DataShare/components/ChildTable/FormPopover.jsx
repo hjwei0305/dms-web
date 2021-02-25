@@ -93,7 +93,12 @@ class FormPopover extends PureComponent {
           <FormItem label="" hidden>
             {getFieldDecorator('appCode', {
               initialValue: get(parentData, 'code'),
-            })(<Input disabled={!!parentData} />)}
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="" hidden>
+            {getFieldDecorator('appName', {
+              initialValue: get(parentData, 'name'),
+            })(<Input />)}
           </FormItem>
           <FormItem label="订阅主数据代码" hidden>
             {getFieldDecorator('dataCode', {

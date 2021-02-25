@@ -9,7 +9,7 @@ class Footer extends Component {
   handleCollapse = () => {};
 
   render() {
-    const { children, height = 20, gutter = [] } = this.props;
+    const { children, height = 20, gutter = [], className } = this.props;
     const [marginTop = 0, marginBottom = 0] = gutter;
 
     const style = {
@@ -19,7 +19,7 @@ class Footer extends Component {
     };
 
     return (
-      <div className={cls(styles['layout-footer'])} style={style}>
+      <div className={cls(styles['layout-footer'], className)} style={style}>
         {children}
       </div>
     );

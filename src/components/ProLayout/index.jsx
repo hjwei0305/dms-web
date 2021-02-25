@@ -31,9 +31,9 @@ class Layout extends Component {
   };
 
   render() {
-    const { layout = 'row' } = this.props;
+    const { layout = 'row', className } = this.props;
     return (
-      <div className={cls(styles['layout-wrapper'])} style={{ flexDirection: layout }}>
+      <div className={cls(styles['layout-wrapper'], className)} style={{ flexDirection: layout }}>
         {this.renderChildren()}
       </div>
     );

@@ -35,7 +35,7 @@ class SiderBar extends Component {
   };
 
   render() {
-    const { children, gutter = [], collapseMode = 'lr', allowCollapse } = this.props;
+    const { children, gutter = [], collapseMode = 'lr', allowCollapse, className } = this.props;
     const { collapseVisible, collapsed } = this.state;
     const [marginLeft = 0, marginRight = 0] = gutter;
     let style = {
@@ -55,7 +55,7 @@ class SiderBar extends Component {
         onMouseLeave={() => this.toggleVisible(false)}
         style={style}
       >
-        <div className={cls('content')}>{children}</div>
+        <div className={cls('content', className)}>{children}</div>
         {allowCollapse && (collapseVisible || collapsed) ? (
           <div
             onClick={this.handleCollapse}
