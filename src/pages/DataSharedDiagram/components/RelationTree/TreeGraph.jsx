@@ -21,7 +21,7 @@ const registerFn = () => {
         const circle = group.addShape('circle', {
           attrs: {
             r: isRoot ? 30 : 20,
-            stroke: frozen ? 'red' : 'rgba(0, 0, 0, 0.25)',
+            stroke: isRoot && frozen ? 'red' : 'rgba(0, 0, 0, 0.25)',
             cursor: 'pointer',
             fill: '#fff',
           },
