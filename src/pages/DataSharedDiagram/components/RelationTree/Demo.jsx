@@ -273,11 +273,11 @@ class Demo1 extends Component {
         modes: {
           default: [
             {
-              type: 'collapse-expand',
+              // type: 'collapse-expand',
               onChange: (item, collapsed) => {
                 const tdata = item.get('model');
                 tdata.collapsed = collapsed;
-                return true;
+                return false;
               },
             },
             'drag-canvas',
