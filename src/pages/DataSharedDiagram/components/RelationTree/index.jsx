@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ProLayout, { Header, Center } from '@/components/ProLayout';
 import { Empty } from 'antd';
 import { connect } from 'dva';
-import Demo from './Demo';
+import TreeGraph from './TreeGraph';
 
 @connect(({ dataShareDiagram, loading }) => ({ dataShareDiagram, loading }))
 class RelationTree extends Component {
@@ -11,7 +11,7 @@ class RelationTree extends Component {
     const { subList, currSelectedItem } = dataShareDiagram;
     if (subList && subList.length) {
       return (
-        <Demo
+        <TreeGraph
           key={currSelectedItem.id}
           data={{
             ...currSelectedItem,

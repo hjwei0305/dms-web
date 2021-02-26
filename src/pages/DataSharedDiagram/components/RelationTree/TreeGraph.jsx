@@ -293,15 +293,6 @@ class Demo1 extends Component {
         layout: {
           type: 'compactBox',
           direction: 'RL',
-          // getId: function getId(d) {
-          //   return d.id;
-          // },
-          // getHeight: () => {
-          //   return 26;
-          // },
-          // getWidth: () => {
-          //   return 26;
-          // },
           getVGap: () => {
             return 20;
           },
