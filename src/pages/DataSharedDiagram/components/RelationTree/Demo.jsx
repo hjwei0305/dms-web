@@ -11,19 +11,17 @@ const registerFn = () => {
     {
       shapeType: 'custom-circle',
       draw(cfg, group) {
-        const { name = '', appName, isRoot } = cfg;
+        const { name = '', appName, isRoot, frozen } = cfg;
 
         const textConfig = {
-          textAlign: 'left',
-          textBaseline: 'bottom',
+          textAlign: 'center',
+          textBaseline: 'middle',
         };
 
         const circle = group.addShape('circle', {
           attrs: {
-            x: 0,
-            y: 0,
             r: isRoot ? 30 : 20,
-            stroke: 'rgba(0, 0, 0, 0.25)',
+            stroke: isRoot && frozen ? 'red' : 'rgba(0, 0, 0, 0.25)',
             cursor: 'pointer',
             fill: '#fff',
           },
@@ -35,8 +33,8 @@ const registerFn = () => {
         group.addShape('text', {
           attrs: {
             ...textConfig,
-            x: circleBBox.maxX - (isRoot ? 45 : 28),
-            y: circleBBox.maxY - (isRoot ? 25 : 15),
+            x: 0,
+            y: 0,
             text: isRoot ? name : appName,
             fontSize: 8,
             fill: '#000',
@@ -44,8 +42,105 @@ const registerFn = () => {
           },
         });
 
+        group.addShape('text', {
+          attrs: {
+            ...textConfig,
+            x: 0,
+            y: circleBBox.maxY / 2,
+            text: isRoot ? '主数据' : '应用',
+            fontSize: 6,
+            fill: '#000',
+            opacity: 0.5,
+          },
+        });
+
         this.drawLinkPoints(cfg, group);
         return circle;
+      },
+      afterDraw(cfg, group) {
+        const { isRoot, frozen } = cfg;
+        if (isRoot && !frozen) {
+          const r = isRoot ? 30 : 20;
+          // 第一个背景圆
+          const back1 = group.addShape('circle', {
+            zIndex: -3,
+            attrs: {
+              x: 0,
+              y: 0,
+              r,
+              fill: cfg.color,
+              opacity: 0.6,
+            },
+            name: 'circle-shape1',
+          });
+          // 第二个背景圆
+          const back2 = group.addShape('circle', {
+            zIndex: -2,
+            attrs: {
+              x: 0,
+              y: 0,
+              r,
+              fill: 'blue', // 为了显示清晰，随意设置了颜色
+              opacity: 0.6,
+            },
+            name: 'circle-shape2',
+          });
+          // 第三个背景圆
+          const back3 = group.addShape('circle', {
+            zIndex: -1,
+            attrs: {
+              x: 0,
+              y: 0,
+              r,
+              fill: 'green',
+              opacity: 0.6,
+            },
+            name: 'circle-shape3',
+          });
+          group.sort(); // 排序，根据 zIndex 排序
+
+          // 第一个背景圆逐渐放大，并消失
+          back1.animate(
+            {
+              r: r + 10,
+              opacity: 0.1,
+            },
+            {
+              repeat: true, // 循环
+              duration: 3000,
+              easing: 'easeCubic',
+              delay: 0, // 无延迟
+            },
+          );
+
+          // 第二个背景圆逐渐放大，并消失
+          back2.animate(
+            {
+              r: r + 10,
+              opacity: 0.1,
+            },
+            {
+              repeat: true, // 循环
+              duration: 3000,
+              easing: 'easeCubic',
+              delay: 1000, // 1 秒延迟
+            },
+          ); // 1 秒延迟
+
+          // 第三个背景圆逐渐放大，并消失
+          back3.animate(
+            {
+              r: r + 10,
+              opacity: 0.1,
+            },
+            {
+              repeat: true, // 循环
+              duration: 3000,
+              easing: 'easeCubic',
+              delay: 2000, // 2 秒延迟
+            },
+          );
+        }
       },
       update(cfg, item) {
         const group = item.getContainer();
@@ -115,31 +210,16 @@ const registerFn = () => {
             stroke: frozen ? 'red' : 'lightblue',
             lineWidth: 2,
             // lineAppendWidth: 5,
-            // startArrow: {
-            //   // 自定义箭头指向(0, 0)，尾部朝向 x 轴正方向的 path
-            //   path: G6.Arrow.triangle(5, 5, 15),
-            //   // 箭头的偏移量，负值代表向 x 轴正方向移动
-            //   // d: -20,
-            //   // v3.4.1 后支持各样式属性
-            //   fill: 'lightblue',
-            //   stroke: 'lightblue',
-            //   opacity: 0.8,
-            //   // ...
-            // },
             lineDash: frozen && [2, 2, 2],
             endArrow: !frozen && {
               // 自定义箭头指向(0, 0)，尾部朝向 x 轴正方向的 path
               path: G6.Arrow.triangle(5, 5, 10),
               // 箭头的偏移量，负值代表向 x 轴正方向移动
-              // d: -10,
-              // v3.4.1 后支持各样式属性
               fill: 'lightblue',
               stroke: 'lightblue',
               opacity: 0.8,
-              // ...
             },
           },
-          // must be assigned in G6 3.3 and later versions. it can be any value you want
           name: 'path-shape',
         });
         if (!frozen) {
