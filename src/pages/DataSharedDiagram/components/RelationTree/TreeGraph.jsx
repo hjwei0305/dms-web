@@ -256,7 +256,7 @@ const registerFn = () => {
   );
 };
 
-class Demo1 extends Component {
+class TreeGraph extends Component {
   componentDidMount() {
     registerFn();
     const { data } = this.props;
@@ -269,6 +269,7 @@ class Demo1 extends Component {
         height, // Number，必须，图的高度
         linkCenter: true,
         fitView: true,
+        fitCenter: true,
         fitViewPadding: 80,
         modes: {
           default: [
@@ -304,21 +305,25 @@ class Demo1 extends Component {
       });
       this.graph.data(data); // 读取 Step 2 中的数据源到图上
       this.graph.render(); // 渲染图
-      this.graph.fitCenter();
-      this.graph.fitView();
     }
     window.onresize = () => {
       if (!this.graph || this.graph.get('destroyed')) return;
       if (!this.container || !this.container.scrollWidth || !this.container.scrollHeight) return;
       this.graph.changeSize(this.container.scrollWidth, this.container.scrollHeight);
-      this.graph.fitCenter();
-      this.graph.fitView();
+      this.fitView();
     };
   }
+
+  fitView = () => {
+    if (this.graph) {
+      this.graph.fitCenter();
+      this.graph.fitView();
+    }
+  };
 
   render() {
     return <div style={{ height: '100%' }} ref={ref => (this.container = ref)} />;
   }
 }
 
-export default Demo1;
+export default TreeGraph;
