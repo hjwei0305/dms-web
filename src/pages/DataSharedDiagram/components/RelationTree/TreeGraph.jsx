@@ -21,7 +21,7 @@ const registerFn = () => {
         const circle = group.addShape('circle', {
           attrs: {
             r: isRoot ? 30 : 20,
-            stroke: isRoot && frozen ? 'red' : 'rgba(0, 0, 0, 0.25)',
+            stroke: frozen ? 'red' : 'rgba(0, 0, 0, 0.25)',
             cursor: 'pointer',
             fill: '#fff',
           },
@@ -199,8 +199,9 @@ const registerFn = () => {
     'line-arrow',
     {
       draw(cfg, group) {
-        const { startPoint, endPoint, target } = cfg;
+        const { startPoint, endPoint, target, source } = cfg;
         const { frozen } = target._cfg.model;
+        const { frozen: sourceFrozen } = source._cfg.model;
         const keyShape = group.addShape('path', {
           attrs: {
             path: [
@@ -222,7 +223,7 @@ const registerFn = () => {
           },
           name: 'path-shape',
         });
-        if (!frozen) {
+        if (!frozen && !sourceFrozen) {
           const circle = group.addShape('circle', {
             attrs: {
               x: startPoint.x,
