@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import G6 from '@antv/g6';
+import ResizeObserver from 'resize-observer-polyfill';
 
 // 自定义节点、边
 const registerFn = () => {
@@ -258,6 +259,8 @@ const registerFn = () => {
 };
 
 class TreeGraph extends Component {
+  resizeNum = 0;
+
   componentDidMount() {
     registerFn();
     const { data } = this.props;
@@ -307,12 +310,25 @@ class TreeGraph extends Component {
       this.graph.data(data); // 读取 Step 2 中的数据源到图上
       this.graph.render(); // 渲染图
     }
-    window.onresize = () => {
-      if (!this.graph || this.graph.get('destroyed')) return;
-      if (!this.container || !this.container.scrollWidth || !this.container.scrollHeight) return;
-      this.graph.changeSize(this.container.scrollWidth, this.container.scrollHeight);
-      this.fitView();
-    };
+
+    this.ro = new ResizeObserver(([entry]) => {
+      if (this.resizeNum >= 1) {
+        const { width, height } = entry.contentRect;
+        if (!this.graph || this.graph.get('destroyed')) return;
+        if (!this.container || !this.container.scrollWidth || !this.container.scrollHeight) return;
+        this.graph.changeSize(width, height);
+        this.fitView();
+      } else {
+        this.resizeNum += 1;
+      }
+    });
+    this.ro.observe(this.container);
+    // window.onresize = () => {
+    //   if (!this.graph || this.graph.get('destroyed')) return;
+    //   if (!this.container || !this.container.scrollWidth || !this.container.scrollHeight) return;
+    //   this.graph.changeSize(this.container.scrollWidth, this.container.scrollHeight);
+    //   this.fitView();
+    // };
   }
 
   fitView = () => {

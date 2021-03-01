@@ -7,7 +7,7 @@ export class DataSharedDiagram extends Component {
   render() {
     return (
       <ProLayout>
-        <SiderBar gutter={[0, 8]}>
+        <SiderBar allowCollapse gutter={[0, 8]}>
           <ParentTable />
         </SiderBar>
         <Center>
