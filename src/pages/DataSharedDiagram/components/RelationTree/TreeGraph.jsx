@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import G6 from '@antv/g6';
 import ResizeObserver from 'resize-observer-polyfill';
+import cls from 'classnames';
 
+import styles from './TreeGraph.less';
+
+const toolbar = new G6.ToolBar({
+  position: { x: 10, y: 10 },
+});
 // 自定义节点、边
 const registerFn = () => {
   /**
@@ -275,6 +281,7 @@ class TreeGraph extends Component {
         fitView: true,
         fitCenter: true,
         fitViewPadding: 80,
+        plugins: [toolbar],
         modes: {
           default: [
             {
@@ -339,7 +346,7 @@ class TreeGraph extends Component {
   };
 
   render() {
-    return <div style={{ height: '100%' }} ref={ref => (this.container = ref)} />;
+    return <div className={cls(styles['tree-graph'])} ref={ref => (this.container = ref)} />;
   }
 }
 
