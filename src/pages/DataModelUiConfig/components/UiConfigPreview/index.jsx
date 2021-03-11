@@ -88,6 +88,10 @@ class UiConfigPreview extends Component {
       this.handleConfigFormUI();
     }
 
+    if (activeKey === 'filterFormUi') {
+      this.handleConfigFilterFormUI();
+    }
+
     if (activeKey === 'exportUi') {
       this.handleConfigExportUI();
     }
