@@ -1,37 +1,23 @@
-import React from 'react';
-import { Form, Switch, InputNumber, Select } from 'antd';
-import { ExtModal } from 'suid';
+import React, { PureComponent } from 'react';
+import { Switch, InputNumber, Select } from 'antd';
+import FormPopover from '@/components/FormPopover';
 
-const FormItem = Form.Item;
-const formItemLayout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-
-@Form.create()
-class EditModal extends React.Component {
-  handleSave = () => {
-    const { form, onSave, editData } = this.props;
-    form.validateFields((err, formData) => {
-      if (err) {
-        return;
-      }
-      if (onSave) {
-        onSave({ ...editData, ...formData });
-      }
+class FormModal extends PureComponent {
+  handleSave = (values, cb) => {
+    const { onSave, editData } = this.props;
+    const params = {};
+    Object.assign(params, editData, values);
+    onSave(params, () => {
+      cb(false);
     });
   };
 
-  getContent = () => {
-    const { form, editData } = this.props;
+  handleRenderFormItems = (form, FormItem) => {
+    const { editData } = this.props;
     const { getFieldDecorator } = form;
 
     return (
-      <Form {...formItemLayout}>
+      <>
         <FormItem label="列宽">
           {getFieldDecorator('width', {
             initialValue: editData && editData.width,
@@ -77,25 +63,25 @@ class EditModal extends React.Component {
             initialValue: editData && editData.isFormatter,
           })(<Switch />)}
         </FormItem> */}
-      </Form>
+      </>
     );
   };
 
   render() {
-    const { editData, onCancel } = this.props;
+    const { children, editData } = this.props;
     const { title } = editData;
-
+    const subTitle = editData ? '编辑' : '新增';
     return (
-      <ExtModal
-        visible={!!editData}
-        title={`编辑列【${title}】`}
-        onCancel={onCancel}
+      <FormPopover
+        title={title}
+        subTitle={subTitle}
+        renderFormItems={this.handleRenderFormItems}
         onOk={this.handleSave}
       >
-        {this.getContent()}
-      </ExtModal>
+        {children}
+      </FormPopover>
     );
   }
 }
 
-export default EditModal;
+export default FormModal;

@@ -5,7 +5,7 @@ import { Popconfirm, Empty, Button } from 'antd';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
-import EditModal from './EditModal';
+import FormPopover from './FormPopover';
 
 import styles from './index.less';
 
@@ -13,7 +13,6 @@ class TableColCfg extends Component {
   state = {
     fieldLists: [],
     showUnAssign: false,
-    editData: null,
   };
 
   componentDidMount() {
@@ -65,19 +64,11 @@ class TableColCfg extends Component {
     }
   };
 
-  handleToggoleEditModal = editData => {
-    this.setState({
-      editData,
-    });
-  };
-
-  handleEditCol = item => {
+  handleEditCol = (item, cb) => {
     const { onEditCol } = this.props;
     if (onEditCol) {
       onEditCol(cloneDeep(item));
-      this.setState({
-        editData: null,
-      });
+      cb();
     }
   };
 
@@ -96,24 +87,8 @@ class TableColCfg extends Component {
     }
   };
 
-  handleCancel = () => {
-    this.setState({
-      editData: null,
-    });
-  };
-
-  getEditModalProps = () => {
-    const { editData } = this.state;
-
-    return {
-      editData,
-      onCancel: this.handleCancel,
-      onSave: this.handleEditCol,
-    };
-  };
-
   render() {
-    const { fieldLists, showUnAssign, editData } = this.state;
+    const { fieldLists, showUnAssign } = this.state;
     const { tableUiConfig } = this.props;
     const { columns = [] } = tableUiConfig || {};
 
@@ -185,14 +160,11 @@ class TableColCfg extends Component {
                               >
                                 {title}
                                 <span className={cls('list-item-extra')}>
-                                  <span className={cls('icon-wrapper')}>
-                                    <ExtIcon
-                                      type="edit"
-                                      tooltip={{ title: '编辑' }}
-                                      onClick={() => this.handleToggoleEditModal(item)}
-                                      antd
-                                    />
-                                  </span>
+                                  <FormPopover editData={item} onSave={this.handleEditCol}>
+                                    <span className={cls('icon-wrapper')}>
+                                      <ExtIcon type="edit" tooltip={{ title: '编辑' }} antd />
+                                    </span>
+                                  </FormPopover>
                                   <Popconfirm
                                     title="删除后不能恢复，确认删除吗？"
                                     placement="rightTop"
@@ -257,7 +229,6 @@ class TableColCfg extends Component {
               </ul>
             </div>
           </div>
-          {editData ? <EditModal {...this.getEditModalProps()} /> : null}
         </div>
       </DragDropContext>
     );
