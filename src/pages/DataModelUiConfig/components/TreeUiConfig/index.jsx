@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import cls from 'classnames';
 import { connect } from 'dva';
 import { get, cloneDeep, isEqual } from 'lodash';
+import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
+import ExtTreePreview from '@/components/ExtTreePreview';
 import Header from './components/Header';
-import Content from './components/Content';
-import LeftSiderbar from './components/LeftSiderbar';
-import RightSiderbar from './components/RightSiderbar';
+import TreeDetailFieldCfg from './components/TreeDetailFieldCfg';
+import TreeCfg from './components/TreeCfg';
 
-import styles from './index.less';
+const { Header: ProHeader, Content, SiderBar } = ProLayout;
 
 @connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
 class TreeUiConfig extends Component {
@@ -113,35 +113,37 @@ class TreeUiConfig extends Component {
 
     return (
       <PageWrapper loading={loading.global}>
-        <div className={cls(styles['visual-page-config'])}>
-          <div className={cls('config-header')}>
+        <ProLayout>
+          <ProHeader gutter={[0, 4]}>
             <Header
               hasUpdate={!isEqual(treeUiConfig, oldTreeUiConfig)}
               onSave={this.handleSave}
               onBack={this.handleBack}
               dataModel={currPRowData}
             />
-          </div>
-          <div className={cls('config-left-siderbar')}>
-            <RightSiderbar
-              editData={treeUiConfig}
-              onEditTable={this.handleEditTable}
-              onSave={this.handleSave}
-            />
-          </div>
-          <div className={cls('config-content')}>
-            <LeftSiderbar
-              onFieldChange={this.handleFieldChange}
-              dataModel={currPRowData}
-              treeUiConfig={treeUiConfig}
-              onDelField={this.handleDelField}
-              onEditField={this.handleEditField}
-            />
-          </div>
-          <div className={cls('config-right-siderbar')}>
-            <Content treeUiConfig={treeUiConfig} dataModelCode={currPRowData.code} />
-          </div>
-        </div>
+          </ProHeader>
+          <ProLayout>
+            <SiderBar gutter={[0, 4]} width={250} allowCollapse>
+              <TreeCfg
+                editData={treeUiConfig}
+                onEditTable={this.handleEditTable}
+                onSave={this.handleSave}
+              />
+            </SiderBar>
+            <SiderBar gutter={[0, 4]} width={200}>
+              <TreeDetailFieldCfg
+                onFieldChange={this.handleFieldChange}
+                dataModel={currPRowData}
+                treeUiConfig={treeUiConfig}
+                onDelField={this.handleDelField}
+                onEditField={this.handleEditField}
+              />
+            </SiderBar>
+            <Content>
+              <ExtTreePreview treeUiConfig={treeUiConfig} dataModelCode={currPRowData.code} />
+            </Content>
+          </ProLayout>
+        </ProLayout>
       </PageWrapper>
     );
   }

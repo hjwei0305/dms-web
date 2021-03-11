@@ -9,7 +9,7 @@ import EditModal from './EditModal';
 
 import styles from './index.less';
 
-class LeftSiderbar extends Component {
+class TreeDetailFieldCfg extends Component {
   state = {
     fieldLists: [],
     showUnAssign: false,
@@ -249,4 +249,4 @@ class LeftSiderbar extends Component {
   }
 }
 
-export default LeftSiderbar;
+export default TreeDetailFieldCfg;

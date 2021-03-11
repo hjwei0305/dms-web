@@ -18,15 +18,15 @@ const formItemLayout = {
 };
 const colFormItemLayout = {
   labelCol: {
-    span: 10,
+    span: 12,
   },
   wrapperCol: {
-    span: 14,
+    span: 12,
   },
 };
 
 @Form.create()
-class RightSiderbar extends React.Component {
+class TreeCfg extends React.Component {
   handleSave = () => {
     const { form, onSave, editData } = this.props;
     form.validateFields((err, formData) => {
@@ -133,4 +133,4 @@ class RightSiderbar extends React.Component {
   }
 }
 
-export default RightSiderbar;
+export default TreeCfg;
