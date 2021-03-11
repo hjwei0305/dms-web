@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Button, message, Descriptions, Dropdown, Menu } from 'antd';
 import cls from 'classnames';
-import { utils, ExtIcon } from 'suid';
+import { utils, ExtIcon, ProLayout } from 'suid';
 import { isPlainObject, isArray, get } from 'lodash';
 import TreeView from '@/components/TreeView';
-import ColumnLayout from '@/components/Layout/ColumnLayout';
 import { constants } from '@/utils';
 import ImportModal from './ImportModal';
 import ExportModal from './ExportModal';
@@ -12,6 +11,7 @@ import FormModal from './FormModal';
 
 import styles from './index.less';
 
+const { SiderBar, Content } = ProLayout;
 const { request } = utils;
 const { MDMSCONTEXT } = constants;
 const { Item: DescriptionItem } = Descriptions;
@@ -279,51 +279,56 @@ class ExtTreePreview extends Component {
 
     return (
       <div className={cls(styles['ext-tree-preview'])}>
-        <ColumnLayout className={cls('culumn-layout')} title={[null, null]} gutter={4}>
-          <TreeView
-            slot="left"
-            slotClassName={cls('slot-col-wrapper')}
-            toolBar={canCreateRoot ? this.getToolBarProps() : null}
-            treeData={treeData}
-            onSelect={this.handleSelect}
-            iconOpts={[
-              {
-                icon: 'plus',
-                title: '新增子节点',
-                onClick: this.handleCreateChildNode,
-              },
-              {
-                icon: 'edit',
-                title: '编辑',
-                onClick: this.handleEditTreeNode,
-              },
-              {
-                icon: 'delete',
-                title: '删除',
-                onClick: this.handleDel,
-                isDel: true,
-              },
-            ]}
-          />
-          <div slot="right" className={cls('detail-wrapper')}>
-            {selectedNode ? (
-              <Descriptions column={column} title={`${selectedNode.name}详情`}>
-                {detailFields.map(item => {
-                  const { code, name } = item;
-                  return (
-                    <DescriptionItem key={code} label={name}>
-                      {!isArray(selectedNode[code]) && !isPlainObject(selectedNode[code])
-                        ? selectedNode[code]
-                        : JSON.stringify(selectedNode[code])}
-                    </DescriptionItem>
-                  );
-                })}
-              </Descriptions>
-            ) : (
-              <div className={cls('hor-ver-center')}>请选择结点查看更详细的信息</div>
+        <ProLayout>
+          <SiderBar width={300} gutter={[0, 4]}>
+            <TreeView
+              slotClassName={cls('slot-col-wrapper')}
+              toolBar={canCreateRoot ? this.getToolBarProps() : null}
+              treeData={treeData}
+              onSelect={this.handleSelect}
+              iconOpts={[
+                {
+                  icon: 'plus',
+                  title: '新增子节点',
+                  onClick: this.handleCreateChildNode,
+                },
+                {
+                  icon: 'edit',
+                  title: '编辑',
+                  onClick: this.handleEditTreeNode,
+                },
+                {
+                  icon: 'delete',
+                  title: '删除',
+                  onClick: this.handleDel,
+                  isDel: true,
+                },
+              ]}
+            />
+          </SiderBar>
+          <Content
+            empty={{
+              description: '请选择结点查看更详细的信息',
+            }}
+          >
+            {selectedNode && (
+              <div className={cls('detail-wrapper')}>
+                <Descriptions column={column} title={`${selectedNode.name}详情`}>
+                  {detailFields.map(item => {
+                    const { code, name } = item;
+                    return (
+                      <DescriptionItem key={code} label={name}>
+                        {!isArray(selectedNode[code]) && !isPlainObject(selectedNode[code])
+                          ? selectedNode[code]
+                          : JSON.stringify(selectedNode[code])}
+                      </DescriptionItem>
+                    );
+                  })}
+                </Descriptions>
+              </div>
             )}
-          </div>
-        </ColumnLayout>
+          </Content>
+        </ProLayout>
         {showCreateModal ? <FormModal {...this.getModalProps()} /> : null}
         {importVisible ? <ImportModal {...this.getImportModalProps()} /> : null}
         {exportVisible ? <ExportModal {...this.getExportModalProps()} /> : null}
