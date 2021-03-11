@@ -9,7 +9,7 @@ import EditModal from './EditModal';
 
 import styles from './index.less';
 
-class LeftSiderbar extends Component {
+class TableColCfg extends Component {
   state = {
     fieldLists: [],
     showUnAssign: false,
@@ -264,4 +264,4 @@ class LeftSiderbar extends Component {
   }
 }
 
-export default LeftSiderbar;
+export default TableColCfg;

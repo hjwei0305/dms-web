@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
 // import { message, } from 'antd';
+import { ProLayout } from 'suid';
 import { get, cloneDeep, isEqual } from 'lodash';
 import PageWrapper from '@/components/PageWrapper';
 import { constants } from '@/utils';
+import ExtTablePreview from '@/components/ExtTablePreview';
 import Header from './components/Header';
-import Content from './components/Content';
-import LeftSiderbar from './components/LeftSiderbar';
-import RightSiderbar from './components/RightSiderbar';
-
-import styles from './index.less';
+import TableColCfg from './components/TableColCfg';
+import TableCfg from './components/TableCfg';
 
 const { MDMSCONTEXT } = constants;
+const { Header: ProHeader, Content, SiderBar } = ProLayout;
 
 @connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
 class TableUiConfig extends Component {
@@ -121,43 +121,45 @@ class TableUiConfig extends Component {
 
     return (
       <PageWrapper loading={loading.global}>
-        <div className={cls(styles['visual-page-config'])}>
-          <div className={cls('config-header')}>
+        <ProLayout>
+          <ProHeader gutter={[0, 4]}>
             <Header
               hasUpdate={!isEqual(tableUiConfig, oldTableUiConfig)}
               onSave={this.handleSave}
               onBack={this.handleBack}
               dataModel={currPRowData}
             />
-          </div>
-          <div className={cls('config-left-siderbar')}>
-            <RightSiderbar
-              editData={tableUiConfig}
-              dataModel={currPRowData}
-              onEditTable={this.handleEditTable}
-              onSave={this.handleSave}
-            />
-          </div>
-          <div className={cls('config-content')}>
-            <LeftSiderbar
-              onColChange={this.handleColChange}
-              dataModel={currPRowData}
-              tableUiConfig={tableUiConfig}
-              onDelCol={this.handleDelCol}
-              onEditCol={this.handleEditCol}
-            />
-          </div>
-          <div className={cls('config-right-siderbar')}>
-            <Content
-              key={JSON.stringify(tableUiConfig)}
-              tableUiConfig={tableUiConfig}
-              store={{
-                type: 'POST',
-                url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
-              }}
-            />
-          </div>
-        </div>
+          </ProHeader>
+          <ProLayout>
+            <SiderBar allowCollapse width={250} gutter={[0, 4]}>
+              <TableCfg
+                editData={tableUiConfig}
+                dataModel={currPRowData}
+                onEditTable={this.handleEditTable}
+                onSave={this.handleSave}
+              />
+            </SiderBar>
+            <SiderBar width={200} gutter={[0, 4]}>
+              <TableColCfg
+                onColChange={this.handleColChange}
+                dataModel={currPRowData}
+                tableUiConfig={tableUiConfig}
+                onDelCol={this.handleDelCol}
+                onEditCol={this.handleEditCol}
+              />
+            </SiderBar>
+            <Content>
+              <ExtTablePreview
+                key={JSON.stringify(tableUiConfig)}
+                tableUiConfig={tableUiConfig}
+                store={{
+                  type: 'POST',
+                  url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
+                }}
+              />
+            </Content>
+          </ProLayout>
+        </ProLayout>
       </PageWrapper>
     );
   }
