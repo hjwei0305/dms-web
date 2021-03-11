@@ -18,7 +18,7 @@ const formItemLayout = {
 };
 
 @Form.create()
-class RightSiderbar extends React.Component {
+class FormCfg extends React.Component {
   handleSave = () => {
     const { form, editData, onSave } = this.props;
     form.validateFields((err, formData) => {
@@ -157,4 +157,4 @@ class RightSiderbar extends React.Component {
   }
 }
 
-export default RightSiderbar;
+export default FormCfg;

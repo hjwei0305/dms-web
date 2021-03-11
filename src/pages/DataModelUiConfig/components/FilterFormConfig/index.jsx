@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import cls from 'classnames';
 import { connect } from 'dva';
 import { Tabs } from 'antd';
 import { get, isEqual, cloneDeep } from 'lodash';
+import { ProLayout } from 'suid';
 import ExtFormRender from '@/components/ExtFormRender';
 import PageWrapper from '@/components/PageWrapper';
 import Header from './components/Header';
-import LeftSiderbar from './components/LeftSiderbar';
-import RightSiderbar from './components/RightSiderbar';
+import FormEleCfg from './components/FormEleCfg';
+import FormCfg from './components/FormCfg';
 
-import styles from './index.less';
+const { Header: ProHeader, Content, SiderBar } = ProLayout;
 
 const { TabPane } = Tabs;
 
@@ -114,45 +114,47 @@ class FilterFormUiConfig extends Component {
 
     return (
       <PageWrapper loading={loading.global}>
-        <div className={cls(styles['visual-page-config'])}>
-          <div className={cls('config-header')}>
+        <ProLayout>
+          <ProHeader gutter={[0, 4]}>
             <Header
               hasUpdate={!isEqual(formUiConfig, oldFormUiConfig)}
               onSave={this.handleSave}
               onBack={this.handleBack}
               dataModel={currPRowData}
             />
-          </div>
-          <div className={cls('config-left-siderbar')}>
-            <RightSiderbar
-              editData={formUiConfig}
-              onEditTable={this.handleEditTable}
-              onSave={this.handleSave}
-              dataModel={currPRowData}
-            />
-          </div>
-          <div className={cls('config-content')}>
-            <LeftSiderbar
-              onFormItemChange={this.handleFormItemChange}
-              dataModel={currPRowData}
-              uiConfig={formUiConfig}
-              onDelFormItem={this.handleDelFormItem}
-              onEditFormItem={this.handleEditFormItem}
-            />
-          </div>
-          <div className={cls('config-right-siderbar')}>
-            <Tabs>
-              <TabPane tab="过滤表单预览" key="1">
-                <ExtFormRender
-                  uiConfig={{
-                    ...formUiConfig,
-                    ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
-                  }}
-                />
-              </TabPane>
-            </Tabs>
-          </div>
-        </div>
+          </ProHeader>
+          <ProLayout>
+            <SiderBar width={280} gutter={[0, 4]}>
+              <FormCfg
+                editData={formUiConfig}
+                onEditTable={this.handleEditTable}
+                onSave={this.handleSave}
+                dataModel={currPRowData}
+              />
+            </SiderBar>
+            <SiderBar width={200} gutter={[0, 4]}>
+              <FormEleCfg
+                onFormItemChange={this.handleFormItemChange}
+                dataModel={currPRowData}
+                uiConfig={formUiConfig}
+                onDelFormItem={this.handleDelFormItem}
+                onEditFormItem={this.handleEditFormItem}
+              />
+            </SiderBar>
+            <Content>
+              <Tabs>
+                <TabPane tab="过滤表单预览" key="1">
+                  <ExtFormRender
+                    uiConfig={{
+                      ...formUiConfig,
+                      ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
+                    }}
+                  />
+                </TabPane>
+              </Tabs>
+            </Content>
+          </ProLayout>
+        </ProLayout>
       </PageWrapper>
     );
   }
