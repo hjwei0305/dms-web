@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Input, Tree, Empty, Row, Col, Popconfirm } from 'antd';
-import { ScrollBar, ExtIcon } from 'suid';
+import { ScrollBar, ExtIcon, ProLayout } from 'suid';
+
 import { cloneDeep, isEqual } from 'lodash';
 import cls from 'classnames';
 
 import styles from './index.less';
 
 const { TreeNode } = Tree;
-
+const { Header, Content, SiderBar } = ProLayout;
 const { Search } = Input;
 
 class TreeView extends Component {
@@ -218,7 +219,7 @@ class TreeView extends Component {
 
   getToolTar = () => {
     const { toolBar } = this.props;
-    const colStyle = { margin: '7px 0' };
+    const colStyle = { margin: '7px 0', flex: 1 };
     const { type = 'inline', layout: customLayout, left } = toolBar || {};
 
     if (type === 'inline') {
@@ -273,14 +274,11 @@ class TreeView extends Component {
       selectedKeys,
       filterTreeData,
     } = this.state;
-    const { height = '100%', toolBar } = this.props;
-    const { type } = toolBar || {};
-    const toolBarHeight = type === 'vertical' ? 76 : 46;
 
     return (
-      <div className={cls(styles['tree-veiw'])} style={{ height }}>
-        {this.getToolTar()}
-        <div style={{ height: `calc(100% - ${toolBarHeight}px)` }}>
+      <ProLayout className={cls(styles['tree-veiw'])}>
+        <Header height="auto">{this.getToolTar()}</Header>
+        <Content>
           <ScrollBar>
             {filterTreeData && filterTreeData.length ? (
               <Tree
@@ -301,8 +299,33 @@ class TreeView extends Component {
               <Empty className={cls('empty-wrapper')} description="暂无数据" />
             )}
           </ScrollBar>
-        </div>
-      </div>
+        </Content>
+      </ProLayout>
+      // <div className={cls(styles['tree-veiw'])} style={{ height }}>
+      //   {this.getToolTar()}
+      //   <div style={{ height: `calc(100% - ${toolBarHeight}px)` }}>
+      //     <ScrollBar>
+      //       {filterTreeData && filterTreeData.length ? (
+      //         <Tree
+      //           onCheck={this.handleCheck}
+      //           onSelect={this.handleSelect}
+      //           checkable={false}
+      //           blockNode
+      //           onExpand={this.onExpand}
+      //           expandedKeys={expandedKeys}
+      //           checkedKeys={checkedKeys}
+      //           autoExpandParent={autoExpandParent}
+      //           selectedKeys={selectedKeys}
+      //           switcherIcon={<ExtIcon type="down" antd />}
+      //         >
+      //           {this.getTreeNodes(filterTreeData)}
+      //         </Tree>
+      //       ) : (
+      //         <Empty className={cls('empty-wrapper')} description="暂无数据" />
+      //       )}
+      //     </ScrollBar>
+      //   </div>
+      // </div>
     );
   }
 }

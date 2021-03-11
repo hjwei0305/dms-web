@@ -286,24 +286,28 @@ class ExtTreePreview extends Component {
               toolBar={canCreateRoot ? this.getToolBarProps() : null}
               treeData={treeData}
               onSelect={this.handleSelect}
-              iconOpts={[
-                {
-                  icon: 'plus',
-                  title: '新增子节点',
-                  onClick: this.handleCreateChildNode,
-                },
-                {
-                  icon: 'edit',
-                  title: '编辑',
-                  onClick: this.handleEditTreeNode,
-                },
-                {
-                  icon: 'delete',
-                  title: '删除',
-                  onClick: this.handleDel,
-                  isDel: true,
-                },
-              ]}
+              iconOpts={
+                formUiConfig
+                  ? [
+                      {
+                        icon: 'plus',
+                        title: '新增子节点',
+                        onClick: this.handleCreateChildNode,
+                      },
+                      {
+                        icon: 'edit',
+                        title: '编辑',
+                        onClick: this.handleEditTreeNode,
+                      },
+                      {
+                        icon: 'delete',
+                        title: '删除',
+                        onClick: this.handleDel,
+                        isDel: true,
+                      },
+                    ]
+                  : []
+              }
             />
           </SiderBar>
           <Content
