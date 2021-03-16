@@ -1,0 +1,27 @@
+@import '../../../themes/vars.less';
+.container-box {
+  height: 100%;
+  overflow: hidden;
+
+  :global {
+    .empty-wrapper {
+      margin-top: 200px;
+    }
+    .ant-card {
+      .ant-card-body {
+        padding: 0 !important;
+      }
+    }
+    .suid-tool-bar {
+      button {
+        margin-right: 8px;
+      }
+    }
+    .spin-wrapper {
+      height: 100%;
+      .ant-spin-container {
+        height: 100%;
+      }
+    }
+  }
+}

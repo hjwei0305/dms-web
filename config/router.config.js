@@ -26,6 +26,7 @@ export default [
       { title: '主数据分享', path: '/dataShare', component: './DataShare' },
       { title: '主数据分享关系图', path: '/dataSharedDiagram', component: './DataSharedDiagram' },
       { title: '大文件上传', path: '/largeFileUpload', component: './LargeFileUpload' },
+      { title: '数据字典', path: '/dataDict', component: './PageWidget/DataDict' },
     ],
   },
 ];
