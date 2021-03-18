@@ -2,25 +2,18 @@ import React, { Component } from 'react';
 import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Empty, PageHeader } from 'antd';
+import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
-// import CascadeLayout from '@/components/Layout/CascadeLayout';
-import ProLayout, { Header, Center, SiderBar } from '@/components/ProLayout';
 import TablePanel from './components/TablePanel';
 import TreePanel from './components/TreePanel';
 import ConfigModelFields from './components/ConfigModelFields';
 import styles from './index.less';
 
+const { Header, Content, SiderBar } = ProLayout;
+
 @withRouter
 @connect(({ masterDataRegister, loading }) => ({ masterDataRegister, loading }))
 class MasterDataRegister extends Component {
-  // componentDidMount() {
-  //   const { dispatch, } = this.props;
-  //   dispatch({
-  //     type: "masterDataRegister/queryTree"
-  //   });
-  // }
-
   handleBack = () => {
     const { dispatch } = this.props;
     dispatch({
@@ -47,56 +40,22 @@ class MasterDataRegister extends Component {
           <ProLayout>
             <SiderBar allowCollapse gutter={[0, 8]}>
               <ProLayout layout="column">
-                <Header height={60}>
-                  <PageHeader title="主数据类型" />
-                </Header>
-                <Center style={{ padding: 8 }}>
+                <Header title="主数据类型" />
+                <Content style={{ padding: 8 }}>
                   <TreePanel
-                    slot="left"
                     slotClassName={cls('left-slot-wrapper')}
                     onSelect={this.handleSelect}
                   />
-                </Center>
+                </Content>
               </ProLayout>
             </SiderBar>
-            <Center>
-              <ProLayout layout="column">
-                <Header height={60}>
-                  <PageHeader
-                    title={currNode && currNode.name}
-                    // subTitle="注册"
-                  />
-                </Header>
-                <Center>
-                  {currNode ? (
-                    <TablePanel slot="right" slotClassName={cls('right-slot-wrapper')} />
-                  ) : (
-                    <Empty
-                      slot="right"
-                      className={cls('empty-wrapper')}
-                      description="请选择左边的树节点进行操作"
-                    />
-                  )}
-                </Center>
-              </ProLayout>
-            </Center>
+            <ProLayout layout="column">
+              <Header title="注册主数据" subTitle={currNode && currNode.name} />
+              <Content empty={{ description: '请选择左边的树节点进行操作' }}>
+                {currNode && <TablePanel slot="right" slotClassName={cls('right-slot-wrapper')} />}
+              </Content>
+            </ProLayout>
           </ProLayout>
-          {/* <CascadeLayout title={['主数据类型', currNode && currNode.name]} layout={[6, 18]}>
-            <TreePanel
-              slot="left"
-              slotClassName={cls('left-slot-wrapper')}
-              onSelect={this.handleSelect}
-            />
-            {currNode ? (
-              <TablePanel slot="right" slotClassName={cls('right-slot-wrapper')} />
-            ) : (
-              <Empty
-                slot="right"
-                className={cls('empty-wrapper')}
-                description="请选择左边的树节点进行操作"
-              />
-            )}
-          </CascadeLayout> */}
         </PageWrapper>
         {configModelData ? (
           <ConfigModelFields goBack={this.handleBack} dataModel={configModelData} />

@@ -2,7 +2,10 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, message, Tag } from 'antd';
-import { ExtTable, ExtIcon } from 'suid';
+import { ExtTable } from 'suid';
+
+import PopoverIcon from '@/components/PopoverIcon';
+import Space from '@/components/Space';
 
 import FormModal from './FormModal';
 import styles from '../../index.less';
@@ -105,20 +108,9 @@ class TablePanel extends Component {
         dataIndex: 'id',
         className: 'action',
         required: true,
-        render: (text, record) => (
+        render: (_, record) => (
           <span className={cls('action-box')}>
-            {/* <ExtIcon
-              key="setting"
-              className="setting"
-              onClick={e => this.editFields(record, e)}
-              type="setting"
-              tooltip={{
-                title: '配置模型字段',
-              }}
-              ignore="true"
-              antd
-            /> */}
-            <ExtIcon
+            <PopoverIcon
               key="edit"
               className="edit"
               onClick={e => this.edit(record, e)}
@@ -150,12 +142,6 @@ class TablePanel extends Component {
         width: 80,
         required: true,
       },
-      // {
-      //   title: '数据分类代码',
-      //   dataIndex: 'typeCode',
-      //   width: 120,
-      //   required: true,
-      // },
       {
         title: '数据分类名称',
         dataIndex: 'categoryName',
@@ -178,12 +164,12 @@ class TablePanel extends Component {
     ];
     const toolBarProps = {
       left: (
-        <Fragment>
+        <Space>
           <Button key="add" type="primary" onClick={this.add} ignore="true">
             新建
           </Button>
           <Button onClick={this.reloadData}>刷新</Button>
-        </Fragment>
+        </Space>
       ),
     };
     return {
