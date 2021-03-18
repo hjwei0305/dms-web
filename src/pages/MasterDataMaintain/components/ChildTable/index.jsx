@@ -6,6 +6,7 @@ import { get, isPlainObject } from 'lodash';
 import { utils, ExtIcon } from 'suid';
 import { constants } from '@/utils';
 import ExtTablePreview from '@/components/ExtTablePreview';
+import PopoverIcon from '@/components/PopoverIcon';
 import FormModal from './FormModal';
 import ImportModal from './ImportModal';
 import ExportModal from './ExportModal';
@@ -188,7 +189,7 @@ class ChildTable extends Component {
       return <ExtIcon className="del-loading" type="loading" antd />;
     }
     return (
-      <ExtIcon
+      <PopoverIcon
         onClick={e => e.stopPropagation()}
         tooltip={{ title: '删除' }}
         className="del"
@@ -266,7 +267,7 @@ class ChildTable extends Component {
             <>
               <div className="action-box" onClick={e => e.stopPropagation()}>
                 {authAction(
-                  <ExtIcon
+                  <PopoverIcon
                     key="edit"
                     className="edit"
                     onClick={e => this.edit(record, e)}
@@ -329,7 +330,7 @@ class ChildTable extends Component {
       ),
       extra: filterFormConfig ? (
         <span className={cls('icon-container')} onClick={this.toggoleDrawerVisible}>
-          <ExtIcon type="filter" theme="twoTone" antd />
+          <PopoverIcon type="filter" theme="twoTone" antd />
         </span>
       ) : null,
     };

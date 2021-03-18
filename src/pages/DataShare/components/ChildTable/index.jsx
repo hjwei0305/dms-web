@@ -2,8 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm, Tag } from 'antd';
-import { utils, ExtIcon, ExtTable } from 'suid';
+import { utils, ExtTable } from 'suid';
 import { constants } from '@/utils';
+import PopoverIcon from '@/components/PopoverIcon';
 import FormPopover from './FormPopover';
 
 import styles from '../../index.less';
@@ -115,10 +116,10 @@ class ChildTable extends Component {
     const { loading } = this.props;
     const { delRowId } = this.state;
     if (loading.effects['dataShare/delCRow'] && delRowId === row.id) {
-      return <ExtIcon className="del-loading" type="loading" antd />;
+      return <PopoverIcon className="del-loading" type="loading" antd />;
     }
     return (
-      <ExtIcon
+      <PopoverIcon
         onClick={e => e.stopPropagation()}
         tooltip={{ title: '取消订阅' }}
         className="del"
@@ -153,7 +154,7 @@ class ChildTable extends Component {
                     isSaving={loading.effects['dataShare/saveChild']}
                     parentData={currPRowData}
                   >
-                    <ExtIcon
+                    <PopoverIcon
                       key="edit"
                       className="edit"
                       onClick={e => this.edit(record, e)}

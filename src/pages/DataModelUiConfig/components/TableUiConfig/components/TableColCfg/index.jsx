@@ -5,6 +5,7 @@ import { Popconfirm, Empty, Button } from 'antd';
 import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
+import PopoverIcon from '@/components/PopoverIcon';
 import FormPopover from './FormPopover';
 
 import styles from './index.less';
@@ -162,7 +163,7 @@ class TableColCfg extends Component {
                                 <span className={cls('list-item-extra')}>
                                   <FormPopover editData={item} onSave={this.handleEditCol}>
                                     <span className={cls('icon-wrapper')}>
-                                      <ExtIcon type="edit" tooltip={{ title: '编辑' }} antd />
+                                      <PopoverIcon type="edit" tooltip={{ title: '编辑' }} antd />
                                     </span>
                                   </FormPopover>
                                   <Popconfirm
@@ -173,7 +174,7 @@ class TableColCfg extends Component {
                                     onConfirm={() => this.handleDelCol(item)}
                                   >
                                     <span className={cls('icon-wrapper')}>
-                                      <ExtIcon
+                                      <PopoverIcon
                                         type="delete"
                                         className="del"
                                         tooltip={{ title: '删除' }}

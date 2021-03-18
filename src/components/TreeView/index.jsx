@@ -5,6 +5,8 @@ import { ScrollBar, ExtIcon, ProLayout } from 'suid';
 import { cloneDeep, isEqual } from 'lodash';
 import cls from 'classnames';
 
+import PopoverIcon from '../PopoverIcon';
+
 import styles from './index.less';
 
 const { TreeNode } = Tree;
@@ -165,8 +167,11 @@ class TreeView extends Component {
                       }}
                       onCancel={e => e.stopPropagation()}
                     >
-                      <ExtIcon
+                      <PopoverIcon
                         tooltip={{ title }}
+                        style={{
+                          padding: 4,
+                        }}
                         className={cls({
                           del: isDel,
                         })}
@@ -180,7 +185,10 @@ class TreeView extends Component {
                   );
                 }
                 return (
-                  <ExtIcon
+                  <PopoverIcon
+                    style={{
+                      padding: 4,
+                    }}
                     key={index}
                     tooltip={{ title }}
                     type={icon}
