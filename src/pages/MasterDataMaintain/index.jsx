@@ -4,13 +4,14 @@ import { connect } from 'dva';
 import { get } from 'lodash';
 import cls from 'classnames';
 import { Empty, Button, PageHeader } from 'antd';
+import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
-// import CascadeLayout from '@/components/Layout/CascadeLayout';
-import ProLayout, { Header, Center, SiderBar } from '@/components/ProLayout';
 import ExtTreePreview from '@/components/ExtTreePreview';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
 import styles from './index.less';
+
+const { Header, Content, SiderBar } = ProLayout;
 
 @withRouter
 @connect(({ masterDataMaintain, loading }) => ({ masterDataMaintain, loading }))
@@ -66,42 +67,24 @@ class MasterDataMaintain extends Component {
       <PageWrapper className={cls(styles['container-box'])}>
         <ProLayout>
           <SiderBar allowCollapse gutter={[0, 8]}>
-            <ProLayout layout="column">
-              <Header height={60}>
-                <PageHeader title="主数据" />
-              </Header>
-              <Center>
+            <ProLayout>
+              <Header title="主数据" />
+              <Content>
                 <ParentTable />
-              </Center>
+              </Content>
             </ProLayout>
           </SiderBar>
-          <Center>
-            <ProLayout layout="column">
-              <Header height={60}>
-                <PageHeader title={`${currPRowData ? `${currPRowData.name}的数据` : ''}`} />
-              </Header>
-              <Center>
-                {this.getRightCmp() || (
-                  <Empty
-                    slot="right"
-                    className={cls('empty-wrapper')}
-                    description="请选择左边的数据"
-                  />
-                )}
-              </Center>
-            </ProLayout>
-          </Center>
+          <ProLayout>
+            <Header title={`${currPRowData ? `${currPRowData.name}的数据` : ''}`} />
+            <Content
+              empty={{
+                description: '请选择左边的数据',
+              }}
+            >
+              {this.getRightCmp()}
+            </Content>
+          </ProLayout>
         </ProLayout>
-        {/* <CascadeLayout
-          title={['主数据', `${currPRowData ? `${currPRowData.name}的数据` : ''}`]}
-          layout={[8, 16]}
-          canShrink
-        >
-          <ParentTable slot="left" />
-          {this.getRightCmp() || (
-            <Empty slot="right" className={cls('empty-wrapper')} description="请选择左边的数据" />
-          )}
-        </CascadeLayout> */}
       </PageWrapper>
     );
   }
