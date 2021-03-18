@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Input } from 'antd';
-import cls from 'classnames';
 import { ComboTree, ListCard, ProLayout } from 'suid';
 import { constants } from '@/utils';
-
-import styles from './index.less';
 
 const { Search } = Input;
 const { MDMSCONTEXT } = constants;
@@ -133,7 +130,7 @@ class CascadeTableMaster extends Component {
 
   render() {
     return (
-      <ProLayout layout="column" className={cls(styles['container-box'])}>
+      <ProLayout>
         <Header title="主数据" />
         <Content>
           <ListCard {...this.getListCardProps()} />

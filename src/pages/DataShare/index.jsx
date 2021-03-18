@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
-import cls from 'classnames';
 import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
-import styles from './index.less';
 
 const { Header, Content, SiderBar } = ProLayout;
 
@@ -28,7 +26,7 @@ class DataShare extends Component {
     const { currPRowData } = dataShare;
 
     return (
-      <PageWrapper loading={loading.global} className={cls(styles['container-box'])}>
+      <PageWrapper loading={loading.global}>
         <ProLayout>
           <SiderBar allowCollapse gutter={[0, 8]}>
             <ProLayout layout="column">

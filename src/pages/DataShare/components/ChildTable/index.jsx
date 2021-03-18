@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import cls from 'classnames';
 import { Button, Popconfirm, Tag } from 'antd';
 import { utils, ExtTable } from 'suid';
 import { constants } from '@/utils';
 import PopoverIcon from '@/components/PopoverIcon';
 import Space from '@/components/Space';
 import FormPopover from './FormPopover';
-
-import styles from '../../index.less';
 
 const { authAction } = utils;
 const { MDMSCONTEXT } = constants;
@@ -261,11 +258,7 @@ class ChildTable extends Component {
   };
 
   render() {
-    return (
-      <div className={cls(styles['container-box'])}>
-        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
-      </div>
-    );
+    return <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />;
   }
 }
 
