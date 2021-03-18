@@ -122,7 +122,7 @@ class TableUiConfig extends Component {
     return (
       <PageWrapper loading={loading.global}>
         <ProLayout>
-          <ProHeader gutter={[0, 4]}>
+          <ProHeader style={{ paddingLeft: 0 }} gutter={[0, 4]}>
             <Header
               hasUpdate={!isEqual(tableUiConfig, oldTableUiConfig)}
               onSave={this.handleSave}
