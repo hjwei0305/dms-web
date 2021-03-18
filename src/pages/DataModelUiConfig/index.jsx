@@ -10,8 +10,8 @@ import TableUiConfig from './components/TableUiConfig';
 import FormConfig from './components/FormConfig';
 import FilterFormConfig from './components/FilterFormConfig';
 import TreeUiConfig from './components/TreeUiConfig';
-import ExportUiConfig from './components/ExportUiConfig';
-import ImportUiConfig from './components/ImportUiConfig';
+// import ExportUiConfig from './components/ExportUiConfig';
+// import ImportUiConfig from './components/ImportUiConfig';
 
 const { Header, Content, SiderBar } = ProLayout;
 
@@ -74,9 +74,9 @@ class DataModelUiConfig extends Component {
         ) : null}
         {vFormUiConfig ? <FormConfig modelUiConfig={modelUiConfig} /> : null}
 
-        {vExportUiConfig ? <ExportUiConfig modelUiConfig={modelUiConfig} /> : null}
+        {/* {vExportUiConfig ? <ExportUiConfig modelUiConfig={modelUiConfig} /> : null}
 
-        {vImportUiConfig ? <ImportUiConfig modelUiConfig={modelUiConfig} /> : null}
+        {vImportUiConfig ? <ImportUiConfig modelUiConfig={modelUiConfig} /> : null} */}
       </>
     );
   }

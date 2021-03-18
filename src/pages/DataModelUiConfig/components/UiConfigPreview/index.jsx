@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import cls from 'classnames';
 import { connect } from 'dva';
 import { Tabs, Button, Empty } from 'antd';
+import { ProLayout } from 'suid';
 import { get } from 'lodash';
 import { constants } from '@/utils';
-import ColumnLayout from '@/components/Layout/ColumnLayout';
-import ThreeColumnLayout from '@/components/Layout/ThreeColumnLayout';
+// import ColumnLayout from '@/components/Layout/ColumnLayout';
+// import ThreeColumnLayout from '@/components/Layout/ThreeColumnLayout';
 import ExtFormRender from '@/components/ExtFormRender';
 import ExtTablePreview from '@/components/ExtTablePreview';
 import ExtTreePreview from '@/components/ExtTreePreview';
@@ -15,6 +16,7 @@ import styles from './index.less';
 
 const { TabPane } = Tabs;
 const { MDMSCONTEXT } = constants;
+const { Header, Content, SiderBar } = ProLayout;
 
 @connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
 class UiConfigPreview extends Component {
@@ -109,57 +111,69 @@ class UiConfigPreview extends Component {
     const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
     if (canCreateRoot) {
       return (
-        <ThreeColumnLayout
-          gutter={4}
-          title={['新建子结点表单', '编辑子结点表单', '创建根结点表单']}
-        >
-          <ExtFormRender
-            slot="left"
-            slotClassName={cls('slot-col-wrapper')}
-            uiConfig={{
-              ...formUiConfig,
-              ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
-            }}
-          />
-          <ExtFormRender
-            slotClassName={cls('slot-col-wrapper')}
-            slot="center"
-            uiConfig={{
-              ...formUiConfig,
-              ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[2]]) },
-            }}
-          />
-          <ExtFormRender
-            slot="right"
-            slotClassName={cls('slot-col-wrapper')}
-            uiConfig={{
-              ...formUiConfig,
-              ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[3]]) },
-            }}
-          />
-        </ThreeColumnLayout>
+        <ProLayout>
+          <ProLayout style={{ marginRight: 4 }}>
+            <Header size="small" title="新建子结点表单" />
+            <Content>
+              <ExtFormRender
+                uiConfig={{
+                  ...formUiConfig,
+                  ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
+                }}
+              />
+            </Content>
+          </ProLayout>
+          <ProLayout style={{ marginRight: 4 }}>
+            <Header size="small" title="编辑子结点表单" />
+            <Content>
+              <ExtFormRender
+                uiConfig={{
+                  ...formUiConfig,
+                  ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[2]]) },
+                }}
+              />
+            </Content>
+          </ProLayout>
+          <ProLayout>
+            <Header size="small" title="创建根结点表单" />
+            <Content>
+              <ExtFormRender
+                uiConfig={{
+                  ...formUiConfig,
+                  ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[3]]) },
+                }}
+              />
+            </Content>
+          </ProLayout>
+        </ProLayout>
       );
     }
 
     return (
-      <ColumnLayout gutter={4} layout={[12, 12]} title={['新建表单', '编辑表单']}>
-        <ExtFormRender
-          slot="left"
-          slotClassName={cls('slot-col-wrapper')}
-          uiConfig={{
-            ...formUiConfig,
-            ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
-          }}
-        />
-        <ExtFormRender
-          slot="right"
-          slotClassName={cls('slot-col-wrapper')}
-          uiConfig={{
-            ...formUiConfig,
-            ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[2]]) },
-          }}
-        />
-      </ColumnLayout>
+      <ProLayout>
+        <ProLayout style={{ marginRight: 4 }}>
+          <Header size="small" title="新建子结点表单" />
+          <Content>
+            <ExtFormRender
+              uiConfig={{
+                ...formUiConfig,
+                ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
+              }}
+            />
+          </Content>
+        </ProLayout>
+        <ProLayout>
+          <Header size="small" title="新建子结点表单" />
+          <Content>
+            <ExtFormRender
+              uiConfig={{
+                ...formUiConfig,
+                ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[2]]) },
+              }}
+            />
+          </Content>
+        </ProLayout>
+      </ProLayout>
     );
   };
 
