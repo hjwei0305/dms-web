@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import ProLayout, { Header, Center } from '@/components/ProLayout';
-import { Empty } from 'antd';
+import { ProLayout } from 'suid';
 import { connect } from 'dva';
 import TreeGraph from './TreeGraph';
+
+const { Header, Content } = ProLayout;
 
 @connect(({ dataShareDiagram, loading }) => ({ dataShareDiagram, loading }))
 class RelationTree extends Component {
@@ -22,18 +23,7 @@ class RelationTree extends Component {
       );
     }
 
-    return (
-      <Empty
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100%',
-        }}
-        description={currSelectedItem ? '暂无订阅关系图' : '选择主数据查看订阅关系图'}
-      />
-    );
+    return null;
   };
 
   render() {
@@ -41,12 +31,14 @@ class RelationTree extends Component {
     const { currSelectedItem } = dataShareDiagram;
     return (
       <ProLayout layout="column">
-        <Header
-          title="订阅关系图"
-          subTitle={currSelectedItem && currSelectedItem.name}
-          gutter={[0, 2]}
-        />
-        <Center>{this.getDrawer()}</Center>
+        <Header title="订阅关系图" subTitle={currSelectedItem && currSelectedItem.name} />
+        <Content
+          empty={{
+            description: currSelectedItem ? '暂无订阅关系图' : '选择主数据查看订阅关系图',
+          }}
+        >
+          {this.getDrawer()}
+        </Content>
       </ProLayout>
     );
   }

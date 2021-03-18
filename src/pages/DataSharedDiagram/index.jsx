@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import ProLayout, { Center, SiderBar } from '@/components/ProLayout';
+import { ProLayout } from 'suid';
 import ParentTable from './components/ParentTable';
 import RelationTree from './components/RelationTree';
+
+const { Content, SiderBar } = ProLayout;
 
 export class DataSharedDiagram extends Component {
   render() {
@@ -10,9 +12,9 @@ export class DataSharedDiagram extends Component {
         <SiderBar allowCollapse gutter={[0, 8]}>
           <ParentTable />
         </SiderBar>
-        <Center>
+        <Content>
           <RelationTree />
-        </Center>
+        </Content>
       </ProLayout>
     );
   }

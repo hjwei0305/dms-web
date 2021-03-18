@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Input } from 'antd';
 import cls from 'classnames';
-import { ComboTree, ListCard } from 'suid';
-import ProLayout, { Header, Center } from '@/components/ProLayout';
+import { ComboTree, ListCard, ProLayout } from 'suid';
 import { constants } from '@/utils';
 
 import styles from './index.less';
 
 const { Search } = Input;
 const { MDMSCONTEXT } = constants;
+const { Header, Content } = ProLayout;
 
 @connect(({ dataShareDiagram, loading }) => ({ dataShareDiagram, loading }))
 class CascadeTableMaster extends Component {
@@ -134,10 +134,10 @@ class CascadeTableMaster extends Component {
   render() {
     return (
       <ProLayout layout="column" className={cls(styles['container-box'])}>
-        <Header title="主数据" gutter={[0, 2]} />
-        <Center>
+        <Header title="主数据" />
+        <Content>
           <ListCard {...this.getListCardProps()} />
-        </Center>
+        </Content>
       </ProLayout>
     );
   }
