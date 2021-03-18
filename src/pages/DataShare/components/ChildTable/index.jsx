@@ -1,10 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm, Tag } from 'antd';
 import { utils, ExtTable } from 'suid';
 import { constants } from '@/utils';
 import PopoverIcon from '@/components/PopoverIcon';
+import Space from '@/components/Space';
 import FormPopover from './FormPopover';
 
 import styles from '../../index.less';
@@ -216,7 +217,7 @@ class ChildTable extends Component {
     ];
     const toolBar = {
       left: (
-        <Fragment>
+        <Space>
           {authAction(
             <FormPopover
               key="add"
@@ -230,7 +231,7 @@ class ChildTable extends Component {
             </FormPopover>,
           )}
           <Button onClick={this.reloadData}>刷新</Button>
-        </Fragment>
+        </Space>
       ),
     };
 
