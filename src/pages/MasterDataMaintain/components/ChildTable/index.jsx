@@ -329,9 +329,7 @@ class ChildTable extends Component {
         </Fragment>
       ),
       extra: filterFormConfig ? (
-        <span className={cls('icon-container')} onClick={this.toggoleDrawerVisible}>
-          <PopoverIcon type="filter" theme="twoTone" antd />
-        </span>
+        <PopoverIcon type="filter" theme="twoTone" antd onClick={this.toggoleDrawerVisible} />
       ) : null,
     };
     tableProps.columns = columns.concat(tableProps.columns);

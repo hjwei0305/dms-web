@@ -30,7 +30,6 @@ class MasterDataMaintain extends Component {
       return (
         <ExtTreePreview
           key={currPRowData.id}
-          slot="right"
           treeUiConfig={tableUiConfig}
           importUiConfig={importUiConfig}
           exportUiConfig={exportUiConfig}
@@ -42,12 +41,12 @@ class MasterDataMaintain extends Component {
     }
 
     if (currPRowData && tableUiConfig && dataStructure === 'GENERAL') {
-      return <ChildTable key={currPRowData.id} slot="right" modelUiConfig={modelUiConfig} />;
+      return <ChildTable key={currPRowData.id} modelUiConfig={modelUiConfig} />;
     }
 
     if (currPRowData && !loading.effects['masterDataMaintain/getConfigById']) {
       return (
-        <span className={cls('ele-center')} slot="right">
+        <span className={cls('ele-center')}>
           暂无维护主数据【{currPRowData.name}】相关的可视化配置{' '}
           <Button size="large" type="link" onClick={() => {}}>
             去配置
