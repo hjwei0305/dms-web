@@ -3,67 +3,42 @@ import { Drawer, Form, Button } from 'antd';
 import { ScrollBar, ProLayout } from 'suid';
 import Space from '@/components/Space';
 
-import ExtFormRender from '@/components/ExtFormRender';
-
 const { Content, Footer } = ProLayout;
+const { Item: FormItem } = Form;
 
 @Form.create({})
 class FilterDrawer extends Component {
-  state = {
-    formKey: Math.random(),
-  };
-
   onFormSubmit = () => {
-    const { onFilter } = this.props;
-    if (this.valids && !this.valids.length && onFilter) {
-      onFilter({ ...this.formValues });
-    }
-  };
-
-  handleFormValueChange = values => {
-    this.formValues = values;
-  };
-
-  handleValidate = valids => {
-    this.valids = valids;
+    const { form, onOk } = this.props;
+    form.validateFields((err, formData) => {
+      if (!err && onOk) {
+        onOk(formData);
+      }
+    });
   };
 
   handleReset = () => {
-    this.setState(
-      {
-        formKey: Math.random(),
-      },
-      () => {
-        this.formValues = {};
-        this.onFormSubmit();
-      },
-    );
+    const { form } = this.props;
+    form.reset();
   };
 
   render() {
-    const { formKey } = this.state;
-    const { visible, onCancel, uiConfig } = this.props;
+    const { title, placement = 'right', visible, onClose, renderFormItems, form } = this.props;
     return (
       <Drawer
         visible={visible}
-        title="过滤条件"
-        placement="right"
+        title={title}
+        placement={placement}
         bodyStyle={{
           height: 'calc(100% - 55px)',
           padding: 0,
         }}
-        onClose={onCancel}
+        onClose={onClose}
       >
         <ProLayout>
           <Content style={{ padding: 16 }}>
             <ScrollBar>
-              <ExtFormRender
-                key={formKey}
-                onValidate={this.handleValidate}
-                onChange={this.handleFormValueChange}
-                uiConfig={uiConfig}
-                formData={{}}
-              />
+              <Form>{renderFormItems && renderFormItems(form, FormItem)}</Form>
             </ScrollBar>
           </Content>
           <Footer style={{ justifyContent: 'flex-end' }}>
