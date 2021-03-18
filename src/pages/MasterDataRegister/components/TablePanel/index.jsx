@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import cls from 'classnames';
 import { Button, message, Tag } from 'antd';
 import { ExtTable } from 'suid';
 
@@ -8,7 +7,6 @@ import PopoverIcon from '@/components/PopoverIcon';
 import Space from '@/components/Space';
 
 import FormModal from './FormModal';
-import styles from '../../index.less';
 
 @connect(({ masterDataRegister, loading }) => ({ masterDataRegister, loading }))
 class TablePanel extends Component {
@@ -109,19 +107,17 @@ class TablePanel extends Component {
         className: 'action',
         required: true,
         render: (_, record) => (
-          <span className={cls('action-box')}>
-            <PopoverIcon
-              key="edit"
-              className="edit"
-              onClick={e => this.edit(record, e)}
-              type="edit"
-              tooltip={{
-                title: '编辑',
-              }}
-              ignore="true"
-              antd
-            />
-          </span>
+          <PopoverIcon
+            key="edit"
+            className="edit"
+            onClick={e => this.edit(record, e)}
+            type="edit"
+            tooltip={{
+              title: '编辑',
+            }}
+            ignore="true"
+            antd
+          />
         ),
       },
       {
@@ -203,10 +199,10 @@ class TablePanel extends Component {
     const { modalVisible } = masterDataRegister;
 
     return (
-      <div className={cls(styles['container-box'])}>
+      <>
         <ExtTable {...this.getExtableProps()} />
         {modalVisible ? <FormModal {...this.getFormModalProps()} /> : null}
-      </div>
+      </>
     );
   }
 }

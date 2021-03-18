@@ -1,40 +1,24 @@
 import React, { Component } from 'react';
 import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
-import cls from 'classnames';
 import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
 import TablePanel from './components/TablePanel';
 import TreePanel from './components/TreePanel';
-import ConfigModelFields from './components/ConfigModelFields';
+// import ConfigModelFields from './components/ConfigModelFields';
 
 const { Header, Content, SiderBar } = ProLayout;
 
 @withRouter
 @connect(({ masterDataRegister, loading }) => ({ masterDataRegister, loading }))
 class MasterDataRegister extends Component {
-  handleBack = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'masterDataRegister/updateState',
-      payload: {
-        configModelData: null,
-      },
-    });
-  };
-
   render() {
     const { masterDataRegister, loading } = this.props;
-    const { currNode, configModelData } = masterDataRegister;
+    const { currNode } = masterDataRegister;
 
     return (
       <>
-        <PageWrapper
-          loading={loading.global}
-          className={cls({
-            hide_ele: !!configModelData,
-          })}
-        >
+        <PageWrapper loading={loading.global}>
           <ProLayout>
             <SiderBar width={300} allowCollapse gutter={[0, 8]}>
               <ProLayout>
@@ -52,9 +36,9 @@ class MasterDataRegister extends Component {
             </ProLayout>
           </ProLayout>
         </PageWrapper>
-        {configModelData ? (
+        {/* {configModelData ? (
           <ConfigModelFields goBack={this.handleBack} dataModel={configModelData} />
-        ) : null}
+        ) : null} */}
       </>
     );
   }
