@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Empty, PageHeader } from 'antd';
+import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
-import ProLayout, { Header, Center, SiderBar } from '@/components/ProLayout';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
 import styles from './index.less';
+
+const { Header, Content, SiderBar } = ProLayout;
 
 @withRouter
 @connect(({ dataShare, loading }) => ({ dataShare, loading }))
@@ -31,33 +32,18 @@ class DataShare extends Component {
         <ProLayout>
           <SiderBar allowCollapse gutter={[0, 8]}>
             <ProLayout layout="column">
-              <Header height={60}>
-                <PageHeader title="应用模块" />
-              </Header>
-              <Center>
+              <Header title="应用模块" />
+              <Content>
                 <ParentTable />
-              </Center>
+              </Content>
             </ProLayout>
           </SiderBar>
-          <Center>
-            <ProLayout layout="column">
-              <Header height={60}>
-                <PageHeader
-                  title={`${currPRowData ? `订阅数据` : ''}`}
-                  subTitle={currPRowData && currPRowData.name}
-                />
-              </Header>
-              <Center>
-                {this.getRightCmp() || (
-                  <Empty
-                    slot="right"
-                    className={cls('empty-wrapper')}
-                    description="请选择应用模块进行订阅数据"
-                  />
-                )}
-              </Center>
-            </ProLayout>
-          </Center>
+          <ProLayout layout="column">
+            <Header title="订阅数据" subTitle={currPRowData && currPRowData.name} />
+            <Content empty={{ description: '请选择应用模块进行订阅数据' }}>
+              {this.getRightCmp()}
+            </Content>
+          </ProLayout>
         </ProLayout>
       </PageWrapper>
     );

@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Empty, PageHeader } from 'antd';
+import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
-import ProLayout, { Header, Center, SiderBar } from '@/components/ProLayout';
-// import CascadeLayout from '@/components/Layout/CascadeLayout';
 import ParentTable from './components/ParentTable';
 import UiConfigPreview from './components/UiConfigPreview';
 import TableUiConfig from './components/TableUiConfig';
@@ -15,6 +13,8 @@ import TreeUiConfig from './components/TreeUiConfig';
 import ExportUiConfig from './components/ExportUiConfig';
 import ImportUiConfig from './components/ImportUiConfig';
 import styles from './index.less';
+
+const { Header, Content, SiderBar } = ProLayout;
 
 @withRouter
 @connect(({ dataModelUiConfig, loading }) => ({ dataModelUiConfig, loading }))
@@ -48,46 +48,22 @@ class DataModelUiConfig extends Component {
           <ProLayout>
             <SiderBar allowCollapse gutter={[0, 8]}>
               <ProLayout layout="column">
-                <Header height={60}>
-                  <PageHeader title="主数据" />
-                </Header>
-                <Center>
+                <Header title="主数据" />
+                <Content>
                   <ParentTable />
-                </Center>
+                </Content>
               </ProLayout>
             </SiderBar>
-            <Center>
-              <ProLayout layout="column">
-                <Header height={60}>
-                  <PageHeader
-                    title={`${currPRowData ? `主数据【${currPRowData.name}】的UI配置预览` : ''}`}
-                  />
-                </Header>
-                <Center>
-                  {currPRowData && modelUiConfig ? (
-                    <UiConfigPreview modelUiConfig={modelUiConfig} />
-                  ) : (
-                    <Empty className={cls('empty-wrapper')} description="请选择左边的数据" />
-                  )}
-                </Center>
-              </ProLayout>
-            </Center>
+            <ProLayout layout="column">
+              <Header
+                title="主数据UI配置预览"
+                subTitle={`${currPRowData ? currPRowData.name : ''}`}
+              />
+              <Content description={{ description: '请选择左边的数据' }}>
+                {currPRowData && modelUiConfig && <UiConfigPreview modelUiConfig={modelUiConfig} />}
+              </Content>
+            </ProLayout>
           </ProLayout>
-          {/* <CascadeLayout
-            title={[
-              '主数据',
-              `${currPRowData ? `主数据【${currPRowData.name}】的UI配置预览` : ''}`,
-            ]}
-            layout={[8, 16]}
-            canShrink
-          >
-            <ParentTable slot="left" />
-            {currPRowData && modelUiConfig ? (
-              <UiConfigPreview modelUiConfig={modelUiConfig} slot="right" />
-            ) : (
-              <Empty slot="right" className={cls('empty-wrapper')} description="请选择左边的数据" />
-            )}
-          </CascadeLayout> */}
         </PageWrapper>
         {vTableUiConfig && currPRowData.dataStructure === 'GENERAL' ? (
           <TableUiConfig modelUiConfig={modelUiConfig} />
