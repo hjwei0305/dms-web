@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm, Descriptions, Collapse, Tag, Badge } from 'antd';
@@ -7,6 +7,7 @@ import { utils, ExtIcon } from 'suid';
 import { constants } from '@/utils';
 import ExtTablePreview from '@/components/ExtTablePreview';
 import PopoverIcon from '@/components/PopoverIcon';
+import Space from '@/components/Space';
 import FormModal from './FormModal';
 import ImportModal from './ImportModal';
 import ExportModal from './ExportModal';
@@ -299,7 +300,7 @@ class ChildTable extends Component {
     ];
     const toolBarProps = {
       left: (
-        <Fragment>
+        <Space>
           {authAction(
             <Button key="add" type="primary" onClick={this.add} ignore="true">
               新建
@@ -326,7 +327,7 @@ class ChildTable extends Component {
               )
             : null}
           <Button onClick={this.reloadData}>刷新</Button>
-        </Fragment>
+        </Space>
       ),
       extra: filterFormConfig ? (
         <PopoverIcon type="filter" theme="twoTone" antd onClick={this.toggoleDrawerVisible} />
