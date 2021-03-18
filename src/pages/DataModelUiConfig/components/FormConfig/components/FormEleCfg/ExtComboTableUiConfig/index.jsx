@@ -124,9 +124,9 @@ class ExtComboTableUiConfig extends Component {
     const { mapFieldLists } = this.props;
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <ProLayout>
+        <ProLayout className={cls(styles['ext-combo-ui-config'])}>
           <ProLayout style={{ marginRight: 4 }}>
-            <Header title="可分配列" />
+            <Header size="small" title="可分配列" />
             <Content>
               <ul className={cls('list-items')}>
                 <ScrollBar>
@@ -153,7 +153,7 @@ class ExtComboTableUiConfig extends Component {
             </Content>
           </ProLayout>
           <ProLayout>
-            <Header title="" />
+            <Header size="small" title="已分配列" />
             <Content>
               <div style={{ height: '100%' }}>
                 <Droppable

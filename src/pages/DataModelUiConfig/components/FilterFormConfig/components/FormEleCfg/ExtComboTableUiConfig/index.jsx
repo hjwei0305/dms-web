@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import cls from 'classnames';
 import { Popconfirm } from 'antd';
 import { cloneDeep } from 'lodash';
-// import ColumnLayout from '@/components/Layout/ColumnLayout';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { ScrollBar, ExtIcon, ProLayout } from 'suid';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
@@ -124,14 +123,9 @@ class ExtComboTableUiConfig extends Component {
     const { mapFieldLists } = this.props;
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <ProLayout
-          className={cls(styles['ext-combo-ui-config'])}
-          layout={[12, 12]}
-          title={['可分配列', '已分配列']}
-          gutter={4}
-        >
+        <ProLayout className={cls(styles['ext-combo-ui-config'])}>
           <ProLayout>
-            <Header title="可分配列" />
+            <Header size="small" title="可分配列" />
             <Content>
               <ul className={cls('list-items')}>
                 <ScrollBar>
@@ -158,7 +152,7 @@ class ExtComboTableUiConfig extends Component {
             </Content>
           </ProLayout>
           <ProLayout>
-            <Header title="已分配列" />
+            <Header size="small" title="已分配列" />
             <Content>
               <div style={{ height: '100%' }}>
                 <Droppable
