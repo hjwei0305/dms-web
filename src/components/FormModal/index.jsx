@@ -27,7 +27,7 @@ class FormModal extends PureComponent {
 
   render() {
     const { form, renderFormItems, formCfg } = this.props;
-    const extModalProps = omit(this.props, ['formCfg', 'renderFormItems', 'form']);
+    const extModalProps = omit(this.props, ['formCfg', 'renderFormItems', 'form', 'onOk']);
 
     const fullFormCfg = merge(defaultFormCfg, formCfg || {});
 

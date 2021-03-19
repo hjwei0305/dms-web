@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
 import { Drawer, Form, Button } from 'antd';
 import { ScrollBar, ProLayout } from 'suid';
+import { omit, merge } from 'lodash';
 import Space from '@/components/Space';
 
 const { Content, Footer } = ProLayout;
 const { Item: FormItem } = Form;
+const defaultFormProps = {
+  labelCol: {
+    span: 6,
+  },
+  wrapperCol: {
+    span: 18,
+  },
+  layout: 'horizontal',
+};
 
 @Form.create({})
 class FilterDrawer extends Component {
@@ -23,29 +33,32 @@ class FilterDrawer extends Component {
   };
 
   render() {
-    const { title, placement = 'right', visible, onClose, renderFormItems, form } = this.props;
-    return (
-      <Drawer
-        visible={visible}
-        title={title}
-        placement={placement}
-        bodyStyle={{
+    const { renderFormItems, form, formProps } = this.props;
+    const finalFormProps = merge(defaultFormProps, formProps || {});
+    const drawerProps = merge(
+      {
+        bodyStyle: {
           height: 'calc(100% - 55px)',
           padding: 0,
-        }}
-        onClose={onClose}
-      >
+        },
+        placement: 'right',
+      },
+      omit(this.props, ['renderFormItems', 'form', 'formProps']),
+    );
+
+    return (
+      <Drawer {...drawerProps}>
         <ProLayout>
           <Content style={{ padding: 16 }}>
             <ScrollBar>
-              <Form>{renderFormItems && renderFormItems(form, FormItem)}</Form>
+              <Form {...finalFormProps}>{renderFormItems && renderFormItems(form, FormItem)}</Form>
             </ScrollBar>
           </Content>
-          <Footer style={{ justifyContent: 'flex-end' }}>
+          <Footer align="end">
             <Space>
-              <Button onClick={this.handleReset}>重置</Button>
+              <Button onClick={this.handleReset}>取消</Button>
               <Button onClick={this.onFormSubmit} type="primary">
-                过滤
+                确定
               </Button>
             </Space>
           </Footer>

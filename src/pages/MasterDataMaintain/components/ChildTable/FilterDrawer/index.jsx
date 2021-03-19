@@ -66,7 +66,7 @@ class FilterDrawer extends Component {
               />
             </ScrollBar>
           </Content>
-          <Footer style={{ justifyContent: 'flex-end' }}>
+          <Footer align="end">
             <Space>
               <Button onClick={this.handleReset}>重置</Button>
               <Button onClick={this.onFormSubmit} type="primary">
