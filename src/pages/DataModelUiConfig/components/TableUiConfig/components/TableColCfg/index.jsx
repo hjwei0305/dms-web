@@ -162,9 +162,13 @@ class TableColCfg extends Component {
                                 {title}
                                 <span className={cls('list-item-extra')}>
                                   <FormPopover editData={item} onSave={this.handleEditCol}>
-                                    <span className={cls('icon-wrapper')}>
-                                      <PopoverIcon type="edit" tooltip={{ title: '编辑' }} antd />
-                                    </span>
+                                    <PopoverIcon
+                                      style={{ padding: 6 }}
+                                      className={cls('icon-wrapper')}
+                                      type="edit"
+                                      tooltip={{ title: '编辑' }}
+                                      antd
+                                    />
                                   </FormPopover>
                                   <Popconfirm
                                     title="删除后不能恢复，确认删除吗？"
@@ -173,14 +177,13 @@ class TableColCfg extends Component {
                                     okText="是"
                                     onConfirm={() => this.handleDelCol(item)}
                                   >
-                                    <span className={cls('icon-wrapper')}>
-                                      <PopoverIcon
-                                        type="delete"
-                                        className="del"
-                                        tooltip={{ title: '删除' }}
-                                        antd
-                                      />
-                                    </span>
+                                    <PopoverIcon
+                                      type="delete"
+                                      style={{ padding: 6 }}
+                                      className="del icon-wrapper"
+                                      tooltip={{ title: '删除' }}
+                                      antd
+                                    />
                                   </Popconfirm>
                                 </span>
                               </li>
