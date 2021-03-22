@@ -20,7 +20,7 @@ class Semanteme extends Component {
     return (
       <PageWrapper loading={loading.global} className={cls(styles['container-box'])}>
         <ProLayout>
-          <SiderBar width={400} gutter={[0, 8]}>
+          <SiderBar width={400} gutter={[0, 4]}>
             <ProLayout>
               <Header title="语义类型" />
               <Content>

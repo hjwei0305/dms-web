@@ -65,7 +65,7 @@ class MasterDataMaintain extends Component {
     return (
       <PageWrapper className={cls(styles['container-box'])}>
         <ProLayout>
-          <SiderBar allowCollapse gutter={[0, 8]}>
+          <SiderBar allowCollapse gutter={[0, 4]}>
             <ProLayout>
               <Header title="主数据" />
               <Content>
