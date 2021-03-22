@@ -5,6 +5,7 @@ import { Button, Popconfirm, message, Tag } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import { ExtTable, utils, ExtIcon } from 'suid';
 import { constants, userUtils } from '@/utils';
+import PopoverIcon from '@/components/PopoverIcon';
 import FormModal from './FormModal';
 import styles from '../../index.less';
 
@@ -115,7 +116,7 @@ class DataDictTypeTable extends Component {
     if (loading.effects['dataDict/del'] && delRowId === row.id) {
       return <ExtIcon className="del-loading" type="loading" antd />;
     }
-    return <ExtIcon className="del" type="delete" antd />;
+    return <PopoverIcon className="del" type="delete" antd />;
   };
 
   getExtableProps = () => {
@@ -143,7 +144,7 @@ class DataDictTypeTable extends Component {
             return (
               <span className={cls('action-box')}>
                 {authAction(
-                  <ExtIcon
+                  <PopoverIcon
                     key="edit"
                     className="edit"
                     onClick={_ => this.edit(record)}
