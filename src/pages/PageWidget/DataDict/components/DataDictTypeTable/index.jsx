@@ -240,7 +240,7 @@ class DataDictTypeTable extends Component {
       remotePaging: true,
       store: {
         type: 'POST',
-        url: `${MDMSCONTEXT}/sei-commons-data/dataDict/findByPage`,
+        url: `${MDMSCONTEXT}/dataDict/findByPage`,
       },
       itemField: {
         avatar: this.renderTenantPrivate,
