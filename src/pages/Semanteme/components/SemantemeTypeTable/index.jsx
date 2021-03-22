@@ -251,104 +251,11 @@ class SemantemeTypeTable extends Component {
   reloadData = _ => {
     this.tableRef && this.tableRef.remoteDataRefresh();
   };
-  getExtableProps = () => {
-    const { dispatch } = this.props;
-    const columns = [
-      {
-        title: '操作',
-        key: 'operation',
-        width: 85,
-        align: 'center',
-        dataIndex: 'id',
-        className: 'action',
-        required: true,
-        render: (text, record) => {
-          return (
-            <>
-              <div className="action-box" onClick={e => e.stopPropagation()}>
-                {authAction(
-                  <PopoverIcon
-                    key={APP_MODULE_BTN_KEY.EDIT}
-                    className="edit"
-                    onClick={e => this.edit(record, e)}
-                    type="edit"
-                    ignore="true"
-                    tooltip={{ title: '编辑' }}
-                    antd
-                  />,
-                )}
-                {record.frozen ? null : (
-                  <Popconfirm
-                    key={APP_MODULE_BTN_KEY.DELETE}
-                    placement="topLeft"
-                    title="确定要删除吗？"
-                    onCancel={e => e.stopPropagation()}
-                    onConfirm={e => {
-                      this.del(record);
-                      e.stopPropagation();
-                    }}
-                  >
-                    {this.renderDelBtn(record)}
-                  </Popconfirm>
-                )}
-              </div>
-            </>
-          );
-        },
-      },
-      {
-        title: '属性名',
-        dataIndex: 'propertyName',
-        width: 120,
-        required: true,
-      },
-      {
-        title: '描述',
-        dataIndex: 'remark',
-        width: 160,
-        required: true,
-        render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>,
-      },
-    ];
-
-    const toolBarProps = {
-      left: (
-        <>
-          {authAction(
-            <Button key={APP_MODULE_BTN_KEY.CREATE} type="primary" onClick={this.add} ignore="true">
-              <FormattedMessage id="global.add" defaultMessage="新建" />
-            </Button>,
-          )}
-          <Button onClick={this.reloadData}>
-            <FormattedMessage id="global.refresh" defaultMessage="刷新" />
-          </Button>
-        </>
-      ),
-    };
-    return {
-      bordered: false,
-      searchProperties: ['className', 'propertyName'],
-      columns,
-      toolBar: toolBarProps,
-      onSelectRow: (_, selectedRows) => {
-        dispatch({
-          type: 'semanteme/updateState',
-          payload: {
-            currType: selectedRows[0],
-          },
-        });
-      },
-      store: {
-        url: `${SERVER_PATH}/sei-commons-data/semantemeType/findAll`,
-      },
-    };
-  };
 
   render() {
     return (
       <div className={cls(styles['container-box'])}>
         <ListCard onListCardRef={inst => (this.listCardRef = inst)} {...this.getListCardProps()} />
-        {/* <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} /> */}
         <FormModal {...this.getFormModalProps()} />
       </div>
     );
