@@ -7,12 +7,12 @@
 import { utils } from 'suid';
 import { constants } from '@/utils';
 
-const { SERVER_PATH } = constants;
+const { MDMSCONTEXT } = constants;
 const { request } = utils;
 
 /** 保存 */
 export async function save(data) {
-  const url = `${SERVER_PATH}/sei-commons-data/language/save`;
+  const url = `${MDMSCONTEXT}/language/save`;
   return request({
     url,
     method: 'POST',
@@ -22,7 +22,7 @@ export async function save(data) {
 
 /** 删除 */
 export async function del(params) {
-  const url = `${SERVER_PATH}/sei-commons-data/language/delete/${params.id}`;
+  const url = `${MDMSCONTEXT}/language/delete/${params.id}`;
   return request({
     url,
     method: 'DELETE',

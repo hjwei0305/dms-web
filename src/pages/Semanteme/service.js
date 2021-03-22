@@ -7,11 +7,11 @@
 import { utils } from 'suid';
 import { constants } from '@/utils';
 const { request } = utils;
-const { SERVER_PATH } = constants;
+const { MDMSCONTEXT } = constants;
 
 /** 保存语义译文 */
 export async function save(data) {
-  const url = `${SERVER_PATH}/sei-commons-data/translation/saveTranslation`;
+  const url = `${MDMSCONTEXT}/translation/saveTranslation`;
   return request({
     url,
     method: 'POST',
@@ -21,7 +21,7 @@ export async function save(data) {
 
 /** 保存语义类型 */
 export async function saveType(data) {
-  const url = `${SERVER_PATH}/sei-commons-data/semantemeType/save`;
+  const url = `${MDMSCONTEXT}/semantemeType/save`;
   return request({
     url,
     method: 'POST',
@@ -31,7 +31,7 @@ export async function saveType(data) {
 
 /** 删除语义类型 */
 export async function delType(params) {
-  const url = `${SERVER_PATH}/sei-commons-data/semantemeType/delete/${params.id}`;
+  const url = `${MDMSCONTEXT}/semantemeType/delete/${params.id}`;
   return request({
     url,
     method: 'DELETE',
@@ -40,7 +40,7 @@ export async function delType(params) {
 
 /** 获取外国语类型 */
 export async function getForeignLanguages() {
-  const url = `${SERVER_PATH}/sei-commons-data/language/getForeignLanguages`;
+  const url = `${MDMSCONTEXT}/language/getForeignLanguages`;
   return request({
     url,
     method: 'GET',

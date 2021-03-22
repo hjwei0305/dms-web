@@ -10,7 +10,7 @@ import styles from './index.less';
 
 const { Search } = Input;
 const { getCurrentUser } = userUtils;
-const { SERVER_PATH } = constants;
+const { MDMSCONTEXT } = constants;
 const { authAction } = utils;
 
 @connect(({ dataDict, loading }) => ({ dataDict, loading }))
@@ -240,7 +240,7 @@ class DataDictTypeTable extends Component {
       remotePaging: true,
       store: {
         type: 'POST',
-        url: `${SERVER_PATH}/sei-commons-data/dataDict/findByPage`,
+        url: `${MDMSCONTEXT}/sei-commons-data/dataDict/findByPage`,
       },
       itemField: {
         avatar: this.renderTenantPrivate,
