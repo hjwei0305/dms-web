@@ -21,6 +21,16 @@ export default [
       { title: '主数据分享', path: '/dataShare', component: './DataShare' },
       { title: '主数据分享关系图', path: '/dataSharedDiagram', component: './DataSharedDiagram' },
       { title: '数据字典', path: '/dataDict', component: './PageWidget/DataDict' },
+      {
+        path: '/language',
+        title: '语言类型',
+        component: './Language',
+      },
+      {
+        path: '/semanteme',
+        title: '译文',
+        component: './Semanteme',
+      },
     ],
   },
 ];
