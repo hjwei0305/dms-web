@@ -10,7 +10,7 @@ import FormModal from './FormModal';
 import styles from './index.less';
 
 const { Search } = Input;
-const { APP_MODULE_BTN_KEY, SERVER_PATH } = constants;
+const { APP_MODULE_BTN_KEY, MDMSCONTEXT } = constants;
 const { authAction } = utils;
 
 @connect(({ semanteme, loading }) => ({ semanteme, loading }))
@@ -231,7 +231,7 @@ class SemantemeTypeTable extends Component {
       onListCardRef: ref => (this.listCardRef = ref),
       selectedKeys,
       store: {
-        url: `${SERVER_PATH}/sei-commons-data/semantemeType/findAll`,
+        url: `${MDMSCONTEXT}/sei-commons-data/semantemeType/findAll`,
       },
       itemField: {
         title: this.renderTitle,

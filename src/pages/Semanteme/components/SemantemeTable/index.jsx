@@ -8,7 +8,7 @@ import { ExtTable } from 'suid';
 import { constants } from '@/utils';
 import styles from '../../index.less';
 
-const { SERVER_PATH } = constants;
+const { MDMSCONTEXT } = constants;
 
 @connect(({ semanteme, loading }) => ({ semanteme, loading }))
 class SemantemeTable extends Component {
@@ -160,7 +160,7 @@ class SemantemeTable extends Component {
       allowCancelSelect: true,
       store: {
         type: 'POST',
-        url: `${SERVER_PATH}/sei-commons-data/translation/findTranslationsByPage`,
+        url: `${MDMSCONTEXT}/sei-commons-data/translation/findTranslationsByPage`,
       },
     };
   };

@@ -11,7 +11,7 @@ import { constants } from '@/utils';
 import EditModal from './EditModal';
 import styles from './index.less';
 
-const { SERVER_PATH } = constants;
+const { MDMSCONTEXT } = constants;
 
 @withRouter
 @connect(({ language, loading }) => ({ language, loading }))
@@ -185,7 +185,7 @@ class Language extends Component {
       bordered: false,
       toolBar: toolBarProps,
       store: {
-        url: `${SERVER_PATH}/sei-commons-data/language/findAll`,
+        url: `${MDMSCONTEXT}/sei-commons-data/language/findAll`,
       },
     };
   };
