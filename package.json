@@ -1,6 +1,6 @@
 {
-  "name": "mdms-web",
-  "title": "mdms-web",
+  "name": "dms-web",
+  "title": "dms-web",
   "description": "主数据管理",
   "version": "1.0.0",
   "private": true,
