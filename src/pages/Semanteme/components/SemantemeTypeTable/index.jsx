@@ -129,12 +129,16 @@ class SemantemeTypeTable extends Component {
     };
   };
 
+  handlerPressEnter = () => {
+    this.listCardRef.handlerPressEnter();
+  };
+
   handlerSearchChange = v => {
     this.listCardRef.handlerSearchChange(v);
   };
 
-  handlerSearch = () => {
-    this.listCardRef.handlerSearch();
+  handlerSearch = v => {
+    this.listCardRef.handlerSearch(v);
   };
 
   renderCustomTool = ({ total }) => {
@@ -150,7 +154,7 @@ class SemantemeTypeTable extends Component {
             placeholder="输入代码或名称关键字查询"
             onChange={e => this.handlerSearchChange(e.target.value)}
             onSearch={this.handlerSearch}
-            onPressEnter={this.handlerSearch}
+            onPressEnter={this.handlerPressEnter}
             style={{ width: 220 }}
           />
         </div>
@@ -176,12 +180,7 @@ class SemantemeTypeTable extends Component {
   };
 
   renderTitle = item => {
-    return (
-      <>
-        {item.className}
-        <span style={{ marginLeft: 8, fontSize: 12, color: '#999' }}>{item.propertyName}</span>
-      </>
-    );
+    return <Tooltip title={item.className}>{item.remark}</Tooltip>;
   };
 
   renderItemAction = record => {
@@ -218,14 +217,17 @@ class SemantemeTypeTable extends Component {
   };
 
   getListCardProps = () => {
-    const { semanteme } = this.props;
+    const { semanteme, dispatch } = this.props;
     const { currDictType } = semanteme;
     const selectedKeys = currDictType ? [currDictType.id] : [];
     return {
       className: 'left-content',
       showSearch: false,
+      showArrow: false,
       onSelectChange: this.handlerDictTypeSelect,
       customTool: this.renderCustomTool,
+      searchProperties: ['propertyName', 'remark'],
+      searchPlaceHolder: '请输入属性名和备注关键字查询',
       onListCardRef: ref => (this.listCardRef = ref),
       selectedKeys,
       store: {
@@ -233,9 +235,17 @@ class SemantemeTypeTable extends Component {
       },
       itemField: {
         title: this.renderTitle,
-        description: item => item.remark,
+        description: item => item.propertyName,
       },
       itemTool: this.renderItemAction,
+      onSelectChange: (_, [selectedRow]) => {
+        dispatch({
+          type: 'semanteme/updateState',
+          payload: {
+            currType: selectedRow,
+          },
+        });
+      },
     };
   };
   reloadData = _ => {
@@ -337,7 +347,8 @@ class SemantemeTypeTable extends Component {
   render() {
     return (
       <div className={cls(styles['container-box'])}>
-        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
+        <ListCard onListCardRef={inst => (this.listCardRef = inst)} {...this.getListCardProps()} />
+        {/* <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} /> */}
         <FormModal {...this.getFormModalProps()} />
       </div>
     );
