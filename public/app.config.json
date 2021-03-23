@@ -1,5 +1,5 @@
 {
-  "name": "mdms-web",
-  "entry": "/mdms-web",
-  "base": "/mdms-web"
+  "name": "dms-web",
+  "entry": "/dms-web",
+  "base": "/dms-web"
 }
