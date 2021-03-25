@@ -132,7 +132,7 @@ class DataDictTypeTable extends Component {
   renderTenantPrivate = ({ item }) => {
     const { tenantPrivate } = item;
     const color = tenantPrivate === true ? 'orange' : 'cyan';
-    const text = tenantPrivate === true ? '私有' : '全局';
+    const text = tenantPrivate === true ? '私有' : '通用';
     return (
       <Tag color={color} style={{ marginLeft: 8 }}>
         {text}
@@ -193,6 +193,7 @@ class DataDictTypeTable extends Component {
   };
 
   renderItemAction = record => {
+    const userInfo = getCurrentUser();
     const { authorityPolicy } = userInfo || {};
     const isGlobalAdmin = authorityPolicy === 'GlobalAdmin';
     if (isGlobalAdmin) {
