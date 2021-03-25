@@ -70,7 +70,7 @@ export default modelExtend(model, {
     *getDataDictItems({ payload }, { call, put }) {
       const re = yield call(getDataDictItems, payload);
       if (re.success) {
-        const isPrivateDictItems = re.data.some(it => it.private);
+        const isPrivateDictItems = re.data.some(it => it.tenantPrivate);
         yield put({
           type: 'updateState',
           payload: {

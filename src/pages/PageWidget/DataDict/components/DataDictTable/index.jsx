@@ -234,7 +234,7 @@ class DataDictTypeTable extends Component {
               this.handlePrivate('true');
             }}
           >
-            <Button key="private" type="primary" ignore="true">
+            <Button key="private" ignore="true">
               转为私有
             </Button>
           </Popconfirm>,
