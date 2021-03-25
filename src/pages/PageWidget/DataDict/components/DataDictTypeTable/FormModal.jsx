@@ -96,7 +96,7 @@ class FormModal extends PureComponent {
               initialValue: remark,
             })(<Input />)}
           </FormItem>
-          <FormItem {...formItemInlineLayout} label="冻结">
+          <FormItem label="冻结">
             {getFieldDecorator('frozen', {
               initialValue: frozen,
               valuePropName: 'checked',

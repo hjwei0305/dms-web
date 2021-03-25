@@ -104,6 +104,26 @@ class DataDictTypeTable extends Component {
     );
   };
 
+  handlePrivate = action => {
+    const { dispatch, dataDict } = this.props;
+    const { currDictType } = dataDict;
+    if (currDictType) {
+      dispatch({
+        type: 'dataDict/privateDictItem',
+        payload: {
+          dictId: currDictType.id,
+          action,
+        },
+      }).then(({ success }) => {
+        if (success) {
+          this.reloadData();
+        }
+      });
+    } else {
+      message.warn('请选择数据字典');
+    }
+  };
+
   closeFormModal = _ => {
     this.setState({
       showModal: false,
@@ -116,7 +136,7 @@ class DataDictTypeTable extends Component {
     if (loading.effects['dataDict/del'] && delRowId === row.id) {
       return <ExtIcon className="del-loading" type="loading" antd />;
     }
-    return <PopoverIcon className="del" type="delete" antd />;
+    return <PopoverIcon tooltip={{ title: '删除' }} className="del" type="delete" antd />;
   };
 
   getExtableProps = () => {
@@ -126,49 +146,43 @@ class DataDictTypeTable extends Component {
     const { authorityPolicy } = userInfo || {};
     const isGlobalAdmin = authorityPolicy === 'GlobalAdmin';
     const isTenantAdmin = authorityPolicy === 'TenantAdmin';
+    const optColumn = {
+      title: formatMessage({ id: 'global.operation', defaultMessage: '操作' }),
+      key: 'operation',
+      width: 150,
+      align: 'center',
+      dataIndex: 'id',
+      className: 'action',
+      required: true,
+      render: (_, record) => (
+        <span className={cls('action-box')}>
+          {authAction(
+            <PopoverIcon
+              key="edit"
+              className="edit"
+              onClick={_ => this.edit(record)}
+              type="edit"
+              tooltip={{ title: '编辑' }}
+              ignore="true"
+              antd
+            />,
+          )}
+          <Popconfirm
+            key="del"
+            placement="topLeft"
+            title={formatMessage({
+              id: 'global.delete.confirm',
+              defaultMessage: '确定要删除吗？提示：删除后不可恢复',
+            })}
+            onConfirm={_ => this.del(record)}
+          >
+            {this.renderDelBtn(record)}
+          </Popconfirm>
+        </span>
+      ),
+    };
+
     const columns = [
-      {
-        title: formatMessage({ id: 'global.operation', defaultMessage: '操作' }),
-        key: 'operation',
-        width: 150,
-        align: 'center',
-        dataIndex: 'id',
-        className: 'action',
-        required: true,
-        render: (_, record) => {
-          const { dataDict: tempDataDict } = this.props;
-          const { currDictType: tempCurrDictType } = tempDataDict;
-          const { tenantPrivate: tempTenantPrivate } = tempCurrDictType || {};
-          if ((tempTenantPrivate && !isGlobalAdmin) || (isGlobalAdmin && !tempTenantPrivate)) {
-            return (
-              <span className={cls('action-box')}>
-                {authAction(
-                  <PopoverIcon
-                    key="edit"
-                    className="edit"
-                    onClick={_ => this.edit(record)}
-                    type="edit"
-                    ignore="true"
-                    antd
-                  />,
-                )}
-                <Popconfirm
-                  key="del"
-                  placement="topLeft"
-                  title={formatMessage({
-                    id: 'global.delete.confirm',
-                    defaultMessage: '确定要删除吗？提示：删除后不可恢复',
-                  })}
-                  onConfirm={_ => this.del(record)}
-                >
-                  {this.renderDelBtn(record)}
-                </Popconfirm>
-              </span>
-            );
-          }
-          return null;
-        },
-      },
       {
         title: '展示值',
         dataIndex: 'dataName',
@@ -197,9 +211,11 @@ class DataDictTypeTable extends Component {
         },
       },
     ];
+
     const extraBtns = [];
     let addBtn = null;
     if (isGlobalAdmin || (isTenantAdmin && isPrivateDictItems)) {
+      columns.unshift(optColumn);
       addBtn = authAction(
         <Button key="add" type="primary" onClick={this.add} ignore="true">
           <FormattedMessage id="global.add" defaultMessage="新建" />
@@ -215,7 +231,7 @@ class DataDictTypeTable extends Component {
             placement="topLeft"
             title="是否私有？"
             onConfirm={_ => {
-              // TODO:是否私有的逻辑
+              this.handlePrivate('true');
             }}
           >
             <Button key="private" type="primary" ignore="true">
@@ -228,11 +244,18 @@ class DataDictTypeTable extends Component {
 
     if (isTenantAdmin && isPrivateDictItems) {
       extraBtns.push(
-        authAction(
-          <Button key="redo" ignore="true">
+        <Popconfirm
+          key="private"
+          placement="topLeft"
+          title="是否取消私有？"
+          onConfirm={_ => {
+            this.handlePrivate('false');
+          }}
+        >
+          <Button key="private" ignore="true">
             取消私有
-          </Button>,
-        ),
+          </Button>
+        </Popconfirm>,
       );
     }
 

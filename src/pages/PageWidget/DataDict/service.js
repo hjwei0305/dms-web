@@ -67,3 +67,12 @@ export async function deleteDictItem(id) {
     method: 'DELETE',
   });
 }
+
+/** 私有或者取消私有 */
+export async function privateDictItem({ dictId, action }) {
+  const url = `${MDMSCONTEXT}/dataDict/tenantPrivate/${dictId}/${action}`;
+  return request({
+    url,
+    method: 'POST',
+  });
+}

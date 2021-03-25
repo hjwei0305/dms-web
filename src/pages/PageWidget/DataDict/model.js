@@ -11,6 +11,7 @@ import {
   getDataDictItems,
   saveDictItem,
   deleteDictItem,
+  privateDictItem,
 } from './service';
 import { message } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -94,6 +95,15 @@ export default modelExtend(model, {
     },
     *deleteDictItem({ payload }, { call }) {
       const re = yield call(deleteDictItem, payload.id);
+      if (re.success) {
+        message.success(re.message);
+      } else {
+        message.error(re.message);
+      }
+      return re;
+    },
+    *privateDictItem({ payload }, { call }) {
+      const re = yield call(privateDictItem, payload);
       if (re.success) {
         message.success(re.message);
       } else {
