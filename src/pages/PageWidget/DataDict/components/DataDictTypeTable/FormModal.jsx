@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Switch, Row, Col } from 'antd';
+import { Form, Input, Switch } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { ExtModal } from 'suid';
 
@@ -96,24 +96,12 @@ class FormModal extends PureComponent {
               initialValue: remark,
             })(<Input />)}
           </FormItem>
-          <Row style={{ paddingLeft: 44 }}>
-            <Col span={8}>
-              <FormItem {...formItemInlineLayout} label="租户私有">
-                {getFieldDecorator('tenantPrivate', {
-                  initialValue: tenantPrivate,
-                  valuePropName: 'checked',
-                })(<Switch size="small" disabled={!!rowData} />)}
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem {...formItemInlineLayout} label="冻结">
-                {getFieldDecorator('frozen', {
-                  initialValue: frozen,
-                  valuePropName: 'checked',
-                })(<Switch size="small" />)}
-              </FormItem>
-            </Col>
-          </Row>
+          <FormItem {...formItemInlineLayout} label="冻结">
+            {getFieldDecorator('frozen', {
+              initialValue: frozen,
+              valuePropName: 'checked',
+            })(<Switch size="small" />)}
+          </FormItem>
         </Form>
       </ExtModal>
     );

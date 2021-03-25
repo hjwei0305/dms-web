@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Popconfirm, Tag, Input } from 'antd';
+import { Button, Popconfirm, Input } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import { utils, ExtIcon, ListCard } from 'suid';
 import { constants, userUtils } from '@/utils';
@@ -129,17 +129,6 @@ class DataDictTypeTable extends Component {
     this.listCardRef.handlerSearch();
   };
 
-  renderTenantPrivate = ({ item }) => {
-    const { tenantPrivate } = item;
-    const color = tenantPrivate === true ? 'orange' : 'cyan';
-    const text = tenantPrivate === true ? '私有' : '通用';
-    return (
-      <Tag color={color} style={{ marginLeft: 8 }}>
-        {text}
-      </Tag>
-    );
-  };
-
   renderCustomTool = () => {
     const userInfo = getCurrentUser();
     const { authorityPolicy } = userInfo || {};
@@ -250,7 +239,6 @@ class DataDictTypeTable extends Component {
         url: `${MDMSCONTEXT}/dataDict/findByPage`,
       },
       itemField: {
-        avatar: this.renderTenantPrivate,
         title: this.renderTitle,
         description: item => item.remark,
       },

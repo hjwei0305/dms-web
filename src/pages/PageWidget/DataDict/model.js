@@ -28,6 +28,7 @@ export default modelExtend(model, {
     showCreateModal: false,
     selectedTreeNode: null,
     dataDictItems: [],
+    isPrivateDictItems: false,
   },
   effects: {
     *queryList({ payload }, { call, put }) {
@@ -68,10 +69,12 @@ export default modelExtend(model, {
     *getDataDictItems({ payload }, { call, put }) {
       const re = yield call(getDataDictItems, payload);
       if (re.success) {
+        const isPrivateDictItems = re.data.some(it => it.private);
         yield put({
           type: 'updateState',
           payload: {
             dataDictItems: re.data,
+            isPrivateDictItems,
           },
         });
       } else {

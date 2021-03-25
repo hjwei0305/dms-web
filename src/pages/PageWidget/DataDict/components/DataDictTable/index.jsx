@@ -121,12 +121,11 @@ class DataDictTypeTable extends Component {
 
   getExtableProps = () => {
     const { loading, dataDict } = this.props;
-    const { dataDictItems, currDictType } = dataDict;
-    const { tenantPrivate } = currDictType || {};
+    const { dataDictItems, isPrivateDictItems } = dataDict;
     const userInfo = getCurrentUser();
     const { authorityPolicy } = userInfo || {};
     const isGlobalAdmin = authorityPolicy === 'GlobalAdmin';
-    const isShowOpt = (tenantPrivate && !isGlobalAdmin) || (!tenantPrivate && isGlobalAdmin);
+    const isTenantAdmin = authorityPolicy === 'TenantAdmin';
     const columns = [
       {
         title: formatMessage({ id: 'global.operation', defaultMessage: '操作' }),
@@ -136,7 +135,7 @@ class DataDictTypeTable extends Component {
         dataIndex: 'id',
         className: 'action',
         required: true,
-        render: (text, record) => {
+        render: (_, record) => {
           const { dataDict: tempDataDict } = this.props;
           const { currDictType: tempCurrDictType } = tempDataDict;
           const { tenantPrivate: tempTenantPrivate } = tempCurrDictType || {};
@@ -198,8 +197,9 @@ class DataDictTypeTable extends Component {
         },
       },
     ];
+    const extraBtns = [];
     let addBtn = null;
-    if (isShowOpt) {
+    if (isGlobalAdmin || (isTenantAdmin && isPrivateDictItems)) {
       addBtn = authAction(
         <Button key="add" type="primary" onClick={this.add} ignore="true">
           <FormattedMessage id="global.add" defaultMessage="新建" />
@@ -207,10 +207,40 @@ class DataDictTypeTable extends Component {
       );
     }
 
+    if (isTenantAdmin && !isPrivateDictItems) {
+      extraBtns.push(
+        authAction(
+          <Popconfirm
+            key="private"
+            placement="topLeft"
+            title="是否私有？"
+            onConfirm={_ => {
+              // TODO:是否私有的逻辑
+            }}
+          >
+            <Button key="private" type="primary" ignore="true">
+              租户私有
+            </Button>
+          </Popconfirm>,
+        ),
+      );
+    }
+
+    if (isTenantAdmin && isPrivateDictItems) {
+      extraBtns.push(
+        authAction(
+          <Button key="redo" ignore="true">
+            取消私有
+          </Button>,
+        ),
+      );
+    }
+
     const toolBarProps = {
       left: (
         <Fragment>
           {addBtn}
+          {extraBtns}
           <Button onClick={this.reloadData}>
             <FormattedMessage id="global.refresh" defaultMessage="刷新" />
           </Button>
