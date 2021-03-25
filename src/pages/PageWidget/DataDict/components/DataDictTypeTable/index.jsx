@@ -19,7 +19,7 @@ class DataDictTypeTable extends Component {
     delRowId: null,
   };
 
-  add = _ => {
+  add = () => {
     const { dispatch } = this.props;
     dispatch({
       type: 'dataDict/updateState',
@@ -68,7 +68,7 @@ class DataDictTypeTable extends Component {
       {
         delRowId: record.id,
       },
-      _ => {
+      () => {
         dispatch({
           type: 'dataDict/del',
           payload: {
@@ -86,7 +86,7 @@ class DataDictTypeTable extends Component {
     );
   };
 
-  closeFormModal = _ => {
+  closeFormModal = () => {
     const { dispatch } = this.props;
     dispatch({
       type: 'dataDict/updateState',
@@ -140,7 +140,7 @@ class DataDictTypeTable extends Component {
     );
   };
 
-  renderCustomTool = ({ total }) => {
+  renderCustomTool = () => {
     const userInfo = getCurrentUser();
     const { authorityPolicy } = userInfo || {};
     const isGlobalAdmin = authorityPolicy === 'GlobalAdmin';
@@ -193,36 +193,42 @@ class DataDictTypeTable extends Component {
   };
 
   renderItemAction = record => {
-    return (
-      <>
-        <div className="tool-action" onClick={e => e.stopPropagation()}>
-          {authAction(
-            <ExtIcon
-              key="edit"
-              className="action-item"
-              onClick={e => this.edit(record, e)}
-              type="edit"
-              ignore="true"
-              antd
-            />,
-          )}
-          {record.frozen ? null : (
-            <Popconfirm
-              key="del"
-              placement="topLeft"
-              title="确定要删除吗？"
-              onCancel={e => e.stopPropagation()}
-              onConfirm={e => {
-                this.del(record);
-                e.stopPropagation();
-              }}
-            >
-              {this.renderDelBtn(record)}
-            </Popconfirm>
-          )}
-        </div>
-      </>
-    );
+    const { authorityPolicy } = userInfo || {};
+    const isGlobalAdmin = authorityPolicy === 'GlobalAdmin';
+    if (isGlobalAdmin) {
+      return (
+        <>
+          <div className="tool-action" onClick={e => e.stopPropagation()}>
+            {authAction(
+              <ExtIcon
+                key="edit"
+                className="action-item"
+                onClick={e => this.edit(record, e)}
+                type="edit"
+                ignore="true"
+                antd
+              />,
+            )}
+            {record.frozen ? null : (
+              <Popconfirm
+                key="del"
+                placement="topLeft"
+                title="确定要删除吗？"
+                onCancel={e => e.stopPropagation()}
+                onConfirm={e => {
+                  this.del(record);
+                  e.stopPropagation();
+                }}
+              >
+                {this.renderDelBtn(record)}
+              </Popconfirm>
+            )}
+          </div>
+        </>
+      );
+    }
+
+    return null;
   };
 
   getListCardProps = () => {
