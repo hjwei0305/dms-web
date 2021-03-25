@@ -235,7 +235,7 @@ class DataDictTypeTable extends Component {
             }}
           >
             <Button key="private" type="primary" ignore="true">
-              租户私有
+              转为私有
             </Button>
           </Popconfirm>,
         ),
