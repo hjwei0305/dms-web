@@ -17,7 +17,7 @@ class DataDict extends PureComponent {
   getTags = () => {
     const { dataDict } = this.props;
     const { isPrivateDictItems } = dataDict;
-    let color = 'cyan';
+    let color = 'blue';
     let text = '通用';
 
     if (isPrivateDictItems) {
