@@ -92,8 +92,6 @@ class DataDictTypeTable extends Component {
       type: 'dataDict/updateState',
       payload: {
         showModal: false,
-        showCopyModal: false,
-        currDictType: null,
       },
     });
   };
