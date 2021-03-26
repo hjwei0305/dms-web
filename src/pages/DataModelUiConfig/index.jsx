@@ -44,7 +44,7 @@ class DataModelUiConfig extends Component {
           })}
         >
           <ProLayout>
-            <SiderBar allowCollapse gutter={[0, 4]}>
+            <SiderBar width={350} allowCollapse gutter={[0, 4]}>
               <ProLayout layout="column">
                 <Header title="主数据" />
                 <Content>

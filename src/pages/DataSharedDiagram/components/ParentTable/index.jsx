@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Input } from 'antd';
+import cls from 'classnames';
 import { ComboTree, ListCard, ProLayout } from 'suid';
 import { constants } from '@/utils';
+import styles from './index.less';
 
 const { Search } = Input;
 const { MDMSCONTEXT } = constants;
@@ -38,9 +40,6 @@ class CascadeTableMaster extends Component {
     return {
       value,
       placeholder: '选择主数据分类',
-      style: {
-        width: 150,
-      },
       store: {
         url: `${MDMSCONTEXT}/dataCategory/getTypeTree`,
         autoLoad: true,
@@ -74,7 +73,8 @@ class CascadeTableMaster extends Component {
         <ComboTree width={200} afterSelect={this.handleAfterSelect} {...this.getComboTreeProps()} />
         <div
           style={{
-            paddingLeft: 20,
+            flex: 1,
+            paddingLeft: 8,
           }}
         >
           <Search
@@ -82,7 +82,7 @@ class CascadeTableMaster extends Component {
             onChange={e => this.handlerSearchChange(e.target.value)}
             onSearch={this.handlerSearch}
             onPressEnter={this.handlerSearch}
-            style={{ width: 172 }}
+            style={{ width: '100%' }}
           />
         </div>
       </>
@@ -130,7 +130,7 @@ class CascadeTableMaster extends Component {
 
   render() {
     return (
-      <ProLayout>
+      <ProLayout className={cls(styles['page-wrapper'])}>
         <Header title="主数据" />
         <Content>
           <ListCard {...this.getListCardProps()} />

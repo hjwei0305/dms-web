@@ -23,7 +23,6 @@ class ExtFormRender extends Component {
   }
 
   onChange = formData => {
-    console.log('ExtFormRender -> formData', formData);
     const keys = Object.keys(formData).filter(key => /(__ds)$/.test(key));
     const tempFormData = {};
     keys.forEach(key => {
