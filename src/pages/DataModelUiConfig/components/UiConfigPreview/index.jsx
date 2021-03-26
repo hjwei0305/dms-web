@@ -259,21 +259,6 @@ class UiConfigPreview extends Component {
               </span>
             ) : null}
           </TabPane>
-          {dataStructure === 'GENERAL' ? (
-            <TabPane tab={<span>过滤表单配置预览</span>} key="filterFormUi">
-              {filterFormUiConfig ? (
-                <ExtFormRender uiConfig={filterFormUiConfig} />
-              ) : (
-                <span className={cls('ele-center')}>
-                  <Empty description={<span>暂无过滤表单配置</span>}>
-                    <Button type="primary" onClick={this.handleConfigFilterFormUI}>
-                      去配置
-                    </Button>
-                  </Empty>
-                </span>
-              )}
-            </TabPane>
-          ) : null}
 
           <TabPane
             tab={
@@ -296,6 +281,21 @@ class UiConfigPreview extends Component {
               </span>
             )}
           </TabPane>
+          {dataStructure === 'GENERAL' ? (
+            <TabPane tab={<span>过滤表单配置预览</span>} key="filterFormUi">
+              {filterFormUiConfig ? (
+                <ExtFormRender uiConfig={filterFormUiConfig} />
+              ) : (
+                <span className={cls('ele-center')}>
+                  <Empty description={<span>暂无过滤表单配置</span>}>
+                    <Button type="primary" onClick={this.handleConfigFilterFormUI}>
+                      去配置
+                    </Button>
+                  </Empty>
+                </span>
+              )}
+            </TabPane>
+          ) : null}
           {/* <TabPane tab="数据导出配置预览" key="exportUi">
             {exportUiConfig ? (
               this.getExportPreview()

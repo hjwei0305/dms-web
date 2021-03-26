@@ -13,7 +13,7 @@ class ExtSwitch extends Component {
   };
 
   render() {
-    const { value } = this.props;
+    const { value = false } = this.props;
 
     return (
       <div className={cls(styles['ext-cmp-width'])}>

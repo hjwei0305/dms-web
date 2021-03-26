@@ -23,6 +23,7 @@ class ExtFormRender extends Component {
   }
 
   onChange = formData => {
+    console.log('ExtFormRender -> formData', formData);
     const keys = Object.keys(formData).filter(key => /(__ds)$/.test(key));
     const tempFormData = {};
     keys.forEach(key => {
@@ -55,7 +56,11 @@ class ExtFormRender extends Component {
       if (value.required) {
         required.push(key);
       }
-      Object.assign(value, { type: 'string' });
+      if (value['ui:widget'] === 'ExtSwitch') {
+        Object.assign(value, { type: 'boolean' });
+      } else {
+        Object.assign(value, { type: 'string' });
+      }
       Object.assign(properties, { [key]: value });
     });
 
