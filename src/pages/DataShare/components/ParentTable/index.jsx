@@ -56,13 +56,13 @@ class CascadeTableMaster extends Component {
             <ExtIcon type="plus" antd /> 新增
           </Button>
         </FormPopover>
-        <div>
+        <div style={{ flex: 1 }}>
           <Search
             placeholder="请输入名称或代码关键字进行查询"
             onChange={e => this.handlerSearchChange(e.target.value)}
             onSearch={this.handlerSearch}
             onPressEnter={this.handlerPressEnter}
-            style={{ width: 172 }}
+            style={{ width: '100%' }}
           />
         </div>
       </>

@@ -28,7 +28,7 @@ class DataShare extends Component {
     return (
       <PageWrapper loading={loading.global}>
         <ProLayout>
-          <SiderBar allowCollapse gutter={[0, 4]}>
+          <SiderBar width={350} allowCollapse gutter={[0, 4]}>
             <ProLayout layout="column">
               <Header title="应用模块" />
               <Content>

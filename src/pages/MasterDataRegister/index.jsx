@@ -20,7 +20,7 @@ class MasterDataRegister extends Component {
       <>
         <PageWrapper loading={loading.global}>
           <ProLayout>
-            <SiderBar width={300} allowCollapse gutter={[0, 4]}>
+            <SiderBar width={350} allowCollapse gutter={[0, 4]}>
               <ProLayout>
                 <Header title="主数据类型" />
                 <Content style={{ padding: 8 }}>

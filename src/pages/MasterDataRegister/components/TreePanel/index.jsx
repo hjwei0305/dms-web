@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Button, message } from 'antd';
+import { ExtIcon } from 'suid';
 import TreeView from '@/components/TreeView';
 import FormModal from './FormModal';
 
@@ -135,11 +136,10 @@ class TreePanel extends Component {
 
   getToolBarProps = () => ({
     left: (
-      <Fragment>
-        <Button onClick={this.handleCreateRootNode} type="primary">
-          创建根结点
-        </Button>
-      </Fragment>
+      <Button onClick={this.handleCreateRootNode} type="link">
+        <ExtIcon type="plus" antd />
+        创建根结点
+      </Button>
     ),
   });
 
