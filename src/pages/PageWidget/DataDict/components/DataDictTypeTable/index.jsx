@@ -133,20 +133,20 @@ class DataDictTypeTable extends Component {
     const isGlobalAdmin = authorityPolicy === 'GlobalAdmin';
     return (
       <>
-        <div className="tool-bar-left">
-          {isGlobalAdmin ? (
+        {isGlobalAdmin ? (
+          <div className="tool-bar-left">
             <Button type="link" icon="plus" onClick={this.add} ignore="true">
               <FormattedMessage id="global.add" defaultMessage="新建" />
             </Button>
-          ) : null}
-        </div>
-        <div>
+          </div>
+        ) : null}
+        <div style={{ flex: 1 }}>
           <Search
             placeholder="输入代码或名称关键字查询"
             onChange={e => this.handlerSearchChange(e.target.value)}
             onSearch={this.handlerSearch}
             onPressEnter={this.handlerSearch}
-            style={{ width: 220 }}
+            style={{ width: '100%' }}
           />
         </div>
       </>
