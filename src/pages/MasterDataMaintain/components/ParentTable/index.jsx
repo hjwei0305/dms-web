@@ -106,7 +106,7 @@ class CascadeTableMaster extends Component {
         <PopoverIcon
           className="action-item"
           onClick={e => this.viewGraph(record, e)}
-          type="eye"
+          type="deployment-unit"
           ignore="true"
           tooltip={{ title: '订阅关系图' }}
           antd
