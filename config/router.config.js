@@ -31,6 +31,11 @@ export default [
         title: '译文',
         component: './Semanteme',
       },
+      {
+        path: '/demo',
+        title: '树表测试',
+        component: './demo',
+      },
     ],
   },
 ];

@@ -9,7 +9,8 @@ import { constants } from '@/utils';
 // import ThreeColumnLayout from '@/components/Layout/ThreeColumnLayout';
 import ExtFormRender from '@/components/ExtFormRender';
 import ExtTablePreview from '@/components/ExtTablePreview';
-import ExtTreePreview from '@/components/ExtTreePreview';
+// import ExtTreePreview from '@/components/ExtTreePreview';
+import ExtTreeTablePreview from '@/components/ExtTreeTablePreview';
 // import ExtExportPriview from '@/components/ExtExportPriview';
 
 import styles from './index.less';
@@ -232,7 +233,10 @@ class UiConfigPreview extends Component {
           activeKey={activeKey}
           onChange={this.handleTabChange}
         >
-          <TabPane tab={dataStructure === 'TREE' ? '树形配置预览' : '列表配置预览'} key="tableUi">
+          <TabPane
+            tab={dataStructure === 'TREE' ? '树形表格配置预览' : '列表配置预览'}
+            key="tableUi"
+          >
             {tableUiConfig && dataStructure === 'GENERAL' ? (
               <ExtTablePreview
                 tableUiConfig={tableUiConfig}
@@ -243,7 +247,7 @@ class UiConfigPreview extends Component {
               />
             ) : null}
             {tableUiConfig && dataStructure === 'TREE' ? (
-              <ExtTreePreview
+              <ExtTreeTablePreview
                 treeUiConfig={tableUiConfig}
                 dataModelCode={currPRowData.code}
                 formUiConfig={formUiConfig}

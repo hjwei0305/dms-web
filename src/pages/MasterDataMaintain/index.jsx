@@ -3,10 +3,11 @@ import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
 import { get } from 'lodash';
 import cls from 'classnames';
-import { Empty, Button, PageHeader } from 'antd';
+import { Button } from 'antd';
 import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
 import ExtTreePreview from '@/components/ExtTreePreview';
+import ExtTreeTablePreview from '@/components/ExtTreeTablePreview';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
 import styles from './index.less';
@@ -28,7 +29,7 @@ class MasterDataMaintain extends Component {
 
     if (currPRowData && formUiConfig && tableUiConfig && dataStructure === 'TREE') {
       return (
-        <ExtTreePreview
+        <ExtTreeTablePreview
           key={currPRowData.id}
           treeUiConfig={tableUiConfig}
           importUiConfig={importUiConfig}
