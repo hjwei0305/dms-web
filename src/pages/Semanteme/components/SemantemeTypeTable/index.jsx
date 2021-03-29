@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm, Tag, Input, Tooltip } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
-import { utils, ExtIcon, ListCard, ExtTable } from 'suid';
+import { utils, ExtIcon, ListCard } from 'suid';
 import { constants } from '@/utils';
 import PopoverIcon from '@/components/PopoverIcon';
 import FormModal from './FormModal';

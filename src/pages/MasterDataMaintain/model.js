@@ -16,6 +16,7 @@ import {
   importDataExcel,
   exportData,
   imExStatus,
+  getAppFromDataCode,
 } from './service';
 
 const { dvaModel } = utils;
@@ -35,6 +36,7 @@ export default modelExtend(model, {
     modelUiConfig: null,
     importXlsData: null,
     importTemplateTitles: null,
+    subList: [],
   },
   effects: {
     *updatePageState({ payload }, { put }) {
@@ -164,6 +166,23 @@ export default modelExtend(model, {
       if (!success) {
         message.error(msg);
       }
+
+      return result;
+    },
+    *onItemSelected({ payload }, { call, put }) {
+      const result = yield call(getAppFromDataCode, { dataCode: payload.currSelectedItem.code });
+      const { success, message: msg, data } = result || {};
+      message.destroy();
+      if (!success) {
+        message.error(msg);
+      }
+      yield put({
+        type: 'updateState',
+        payload: {
+          ...payload,
+          subList: data,
+        },
+      });
 
       return result;
     },

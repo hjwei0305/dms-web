@@ -3,7 +3,9 @@ import { connect } from 'dva';
 import cls from 'classnames';
 import { Input } from 'antd';
 import { ListCard, ComboTree } from 'suid';
+import PopoverIcon from '@/components/PopoverIcon';
 import { constants } from '@/utils';
+import RelationTree from './RelationTree';
 import styles from './index.less';
 
 // const { authAction } = utils;
@@ -14,6 +16,7 @@ const { MDMSCONTEXT } = constants;
 class CascadeTableMaster extends Component {
   state = {
     selectedNode: null,
+    viewData: null,
   };
 
   reloadData = () => {
@@ -90,6 +93,28 @@ class CascadeTableMaster extends Component {
     );
   };
 
+  viewGraph = (viewData, e) => {
+    e.stopPropagation();
+    this.setState({
+      viewData,
+    });
+  };
+
+  renderItemAction = record => {
+    return (
+      <div className="tool-action" onClick={e => e.stopPropagation()}>
+        <PopoverIcon
+          className="action-item"
+          onClick={e => this.viewGraph(record, e)}
+          type="eye"
+          ignore="true"
+          tooltip={{ title: '订阅关系图' }}
+          antd
+        />
+      </div>
+    );
+  };
+
   getListCardProps = () => {
     const { dispatch } = this.props;
     const { selectedNode } = this.state;
@@ -131,15 +156,24 @@ class CascadeTableMaster extends Component {
         title: item => `${item.name}【${item.code}】`,
         description: item => item.dataStructureEnumRemark,
       },
+      itemTool: this.renderItemAction,
       onListCardRef: ref => (this.listCardRef = ref),
       customTool: this.getCustomTool,
     };
   };
 
   render() {
+    const { viewData } = this.state;
     return (
       <div className={cls(styles['container-box'])}>
         <ListCard {...this.getListCardProps()} />
+        <RelationTree
+          key={viewData}
+          masterData={viewData}
+          onBack={() => {
+            this.setState({ viewData: null });
+          }}
+        />
       </div>
     );
   }

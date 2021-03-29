@@ -246,8 +246,8 @@ class ChildTable extends Component {
     const { masterDataMaintain, loading } = this.props;
     const { modelUiConfig, currPRowData } = masterDataMaintain;
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
-    const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
-    const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
+    // const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
+    // const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const tableUiConfig = get(uiObj, 'showConfig', null);
     const filterFormConfig = get(uiObj, 'filterFormConfig', null);
     const tableProps = tableUiConfig || {
@@ -306,26 +306,21 @@ class ChildTable extends Component {
               新建
             </Button>,
           )}
-
-          {importUiConfig
-            ? authAction(
-                <Button key="import" onClick={this.handleImport} ignore="true">
-                  导入
-                </Button>,
-              )
-            : null}
-          {exportUiConfig
-            ? authAction(
-                <Button
-                  key="export"
-                  loading={loading.effects['masterDataMaintain/exportData']}
-                  onClick={this.handleExport}
-                  ignore="true"
-                >
-                  导出
-                </Button>,
-              )
-            : null}
+          {authAction(
+            <Button key="import" onClick={this.handleImport} ignore="true">
+              导入
+            </Button>,
+          )}
+          {authAction(
+            <Button
+              key="export"
+              loading={loading.effects['masterDataMaintain/exportData']}
+              onClick={this.handleExport}
+              ignore="true"
+            >
+              导出
+            </Button>,
+          )}
           <Button onClick={this.reloadData}>刷新</Button>
         </Space>
       ),

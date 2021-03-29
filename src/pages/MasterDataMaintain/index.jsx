@@ -6,7 +6,7 @@ import cls from 'classnames';
 import { Button } from 'antd';
 import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
-import ExtTreePreview from '@/components/ExtTreePreview';
+// import ExtTreePreview from '@/components/ExtTreePreview';
 import ExtTreeTablePreview from '@/components/ExtTreeTablePreview';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
