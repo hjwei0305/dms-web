@@ -13,6 +13,8 @@
       margin-right: 8px;
       margin-bottom: -50px;
       visibility: hidden;
+      opacity: 0;
+      transition: all ease-in 0.2s;
       &.ant-popover-open {
         visibility: visible;
       }
@@ -21,6 +23,7 @@
       &:hover {
         .icon-wrapper {
           visibility: visible;
+          opacity: 1;
         }
       }
     }

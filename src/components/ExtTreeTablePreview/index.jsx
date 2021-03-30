@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { utils, ExtTable } from 'suid';
 import { cloneDeep, get } from 'lodash';
 import { Popconfirm, Button, Input, message } from 'antd';
+import cls from 'classnames';
 import { constants } from '@/utils';
 import Space from '@/components/Space';
 import FormModal from './FormModal';
 import PopoverIcon from '../PopoverIcon';
+
+import styles from './index.less';
 
 const { request } = utils;
 const { MDMSCONTEXT } = constants;
@@ -252,6 +255,7 @@ class ExtTreeTablePreview extends Component {
           title,
           dataIndex,
           width: 300,
+          className: cls(styles['tree-col']),
         });
       } else {
         columns.push({

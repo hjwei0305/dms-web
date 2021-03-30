@@ -9,5 +9,21 @@
     .suid-list-card-tool-box {
       padding: 0 8px !important;
     }
+    .ant-list-item {
+      .tool-action {
+        margin-right: 8px;
+        margin-bottom: -50px;
+        visibility: hidden;
+        opacity: 0;
+        transition: all ease-in 0.2s;
+      }
+      &:hover {
+        .tool-action {
+          visibility: visible;
+          opacity: 1;
+          transition: all ease-in 0.2s;
+        }
+      }
+    }
   }
 }
