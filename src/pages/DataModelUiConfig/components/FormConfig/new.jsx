@@ -160,20 +160,9 @@ class FormUiConfig extends Component {
                   });
                 }}
               >
-                <Menu.Item key="1">
-                  <Icon type="plus" />
-                  新增表单
-                </Menu.Item>
-                <Menu.Item key="2">
-                  <Icon type="edit" />
-                  编辑表单
-                </Menu.Item>
-                {canCreateRoot ? (
-                  <Menu.Item key="3">
-                    <Icon type="plus" />
-                    创建根结点表单
-                  </Menu.Item>
-                ) : null}
+                <Menu.Item key="1">新增表单</Menu.Item>
+                <Menu.Item key="2">编辑表单</Menu.Item>
+                {canCreateRoot ? <Menu.Item key="3">创建根结点表单</Menu.Item> : null}
               </Menu>
             </SiderBar>
             <ProLayout>
