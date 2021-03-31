@@ -16,6 +16,7 @@ class FormEleCfg extends Component {
     showUnAssign: false,
     editData: null,
     optKey: null,
+    selectedItem: null,
   };
 
   componentDidMount() {
@@ -118,6 +119,20 @@ class FormEleCfg extends Component {
     });
   };
 
+  handleSelectItem = selectedItem => {
+    const { onSelect } = this.props;
+    this.setState(
+      {
+        selectedItem,
+      },
+      () => {
+        if (onSelect) {
+          onSelect(selectedItem);
+        }
+      },
+    );
+  };
+
   getEditModalProps = () => {
     const { editData, fieldLists, optKey } = this.state;
 
@@ -160,7 +175,7 @@ class FormEleCfg extends Component {
   };
 
   render() {
-    const { fieldLists, showUnAssign, editData, optKey } = this.state;
+    const { fieldLists, showUnAssign, editData, optKey, selectedItem } = this.state;
     const { uiConfig } = this.props;
     const formItems = get(uiConfig, 'formItems', []);
 
@@ -221,12 +236,17 @@ class FormEleCfg extends Component {
                           >
                             {(dragprovided, snapshot) => (
                               <li
-                                className={cls('list-item')}
+                                className={cls({
+                                  'list-item': true,
+                                  'list-item-selected':
+                                    selectedItem && selectedItem[0].code === fieldName,
+                                })}
                                 {...dragprovided.draggableProps}
                                 {...dragprovided.dragHandleProps}
                                 ref={dragprovided.innerRef}
                                 isdragging={snapshot.isDragging}
                                 title={title}
+                                onClick={() => this.handleSelectItem(item)}
                                 // isDragging={snapshot.isDragging}
                               >
                                 {title}
