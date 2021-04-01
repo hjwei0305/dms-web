@@ -6,7 +6,6 @@ import { ScrollBar, ExtIcon } from 'suid';
 import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
 import PopoverIcon from '@/components/PopoverIcon';
-import FormPopover from './FormPopover';
 
 import styles from './index.less';
 

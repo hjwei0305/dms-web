@@ -146,18 +146,27 @@ class TableUiConfig extends Component {
               )
             }
             extra={
-              <Button type="primary" onClick={this.handleSave}>
-                保存
-              </Button>
+              <>
+                <div style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+                  <TableCfg
+                    editData={tableUiConfig}
+                    dataModel={currPRowData}
+                    onEditTable={this.handleEditTable}
+                  />
+                </div>
+                <Button type="primary" onClick={this.handleSave}>
+                  保存
+                </Button>
+              </>
             }
           />
-          <ProHeader gutter={[0, 4]}>
+          {/* <ProHeader gutter={[0, 4]}>
             <TableCfg
               editData={tableUiConfig}
               dataModel={currPRowData}
               onEditTable={this.handleEditTable}
             />
-          </ProHeader>
+          </ProHeader> */}
           <ProLayout>
             <SiderBar allowCollapse width={200} gutter={[0, 4]}>
               <TableColCfg
