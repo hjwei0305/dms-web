@@ -61,14 +61,14 @@ class TableCfg extends React.Component {
     const { getFieldDecorator } = form;
 
     return (
-      <Card
-        extra={this.getCardExtra()}
-        className={cls(styles['right-sider-bar'])}
-        bordered={false}
-        title="表格属性"
-      >
-        <Form {...formItemLayout}>
-          {/* <FormItem label="请求类型" {...colFormItemLayout}>
+      // <Card
+      //   // extra={this.getCardExtra()}
+      //   // className={cls(styles['right-sider-bar'])}
+      //   // bordered={false}
+      //   // title="表格属性"
+      // >
+      <Form layout="inline">
+        {/* <FormItem label="请求类型">
             {getFieldDecorator('store.type', {
               initialValue: get(editData, 'store.type'),
               rules: [
@@ -84,7 +84,7 @@ class TableCfg extends React.Component {
               </Select>,
             )}
           </FormItem>
-          <FormItem label="请求地址" {...colFormItemLayout}>
+          <FormItem label="请求地址">
             {getFieldDecorator('store.url', {
               initialValue: get(editData, 'store.url'),
               rules: [
@@ -95,65 +95,65 @@ class TableCfg extends React.Component {
               ],
             })(<Input />)}
           </FormItem> */}
-          <FormItem label="边框" {...colFormItemLayout}>
-            {getFieldDecorator('bordered', {
-              valuePropName: 'checked',
-              initialValue: get(editData, 'bordered'),
-            })(
-              <Switch
-                onChange={bordered => {
-                  const { onEditTable } = this.props;
-                  if (onEditTable) {
-                    onEditTable({
-                      bordered,
-                    });
-                  }
-                }}
-              />,
-            )}
-          </FormItem>
-          <FormItem label="自定义列" {...colFormItemLayout}>
-            {getFieldDecorator('allowCustomColumns', {
-              valuePropName: 'checked',
-              initialValue: get(editData, 'allowCustomColumns'),
-            })(
-              <Switch
-                onChange={allowCustomColumns => {
-                  const { onEditTable } = this.props;
-                  if (onEditTable) {
-                    onEditTable({
-                      allowCustomColumns,
-                    });
-                  }
-                }}
-              />,
-            )}
-          </FormItem>
-          <FormItem label="查询文本提示" {...colFormItemLayout}>
-            {getFieldDecorator('showSearchTooltip', {
-              valuePropName: 'checked',
-              initialValue: get(editData, 'showSearchTooltip'),
-            })(
-              <Switch
-                onChange={showSearchTooltip => {
-                  const { onEditTable } = this.props;
-                  if (onEditTable) {
-                    onEditTable({
-                      showSearchTooltip,
-                    });
-                  }
-                }}
-              />,
-            )}
-          </FormItem>
-          <FormItem style={{ display: 'none' }} {...colFormItemLayout}>
-            {getFieldDecorator('remotePaging', {
-              valuePropName: 'checked',
-              initialValue: get(editData, 'remotePaging'),
-            })(<Switch />)}
-          </FormItem>
-        </Form>
-      </Card>
+        <FormItem label="边框">
+          {getFieldDecorator('bordered', {
+            valuePropName: 'checked',
+            initialValue: get(editData, 'bordered'),
+          })(
+            <Switch
+              onChange={bordered => {
+                const { onEditTable } = this.props;
+                if (onEditTable) {
+                  onEditTable({
+                    bordered,
+                  });
+                }
+              }}
+            />,
+          )}
+        </FormItem>
+        <FormItem label="自定义列">
+          {getFieldDecorator('allowCustomColumns', {
+            valuePropName: 'checked',
+            initialValue: get(editData, 'allowCustomColumns'),
+          })(
+            <Switch
+              onChange={allowCustomColumns => {
+                const { onEditTable } = this.props;
+                if (onEditTable) {
+                  onEditTable({
+                    allowCustomColumns,
+                  });
+                }
+              }}
+            />,
+          )}
+        </FormItem>
+        <FormItem label="查询文本提示">
+          {getFieldDecorator('showSearchTooltip', {
+            valuePropName: 'checked',
+            initialValue: get(editData, 'showSearchTooltip'),
+          })(
+            <Switch
+              onChange={showSearchTooltip => {
+                const { onEditTable } = this.props;
+                if (onEditTable) {
+                  onEditTable({
+                    showSearchTooltip,
+                  });
+                }
+              }}
+            />,
+          )}
+        </FormItem>
+        <FormItem style={{ display: 'none' }}>
+          {getFieldDecorator('remotePaging', {
+            valuePropName: 'checked',
+            initialValue: get(editData, 'remotePaging'),
+          })(<Switch />)}
+        </FormItem>
+      </Form>
+      // </Card>
     );
   }
 }

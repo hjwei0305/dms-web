@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import cls from 'classnames';
 import { connect } from 'dva';
-// import { message, } from 'antd';
-import { ProLayout } from 'suid';
+import { ProLayout, ExtIcon } from 'suid';
+import { Popconfirm, Button } from 'antd';
 import { get, cloneDeep, isEqual } from 'lodash';
 import PageWrapper from '@/components/PageWrapper';
 import { constants } from '@/utils';
 import ExtTablePreview from '@/components/ExtTablePreview';
-import Header from './components/Header';
 import TableColCfg from './components/TableColCfg';
+import EditColForm from './components/TableColCfg/form';
 import TableCfg from './components/TableCfg';
 
 const { MDMSCONTEXT } = constants;
@@ -34,6 +33,7 @@ class TableUiConfig extends Component {
     this.state = {
       tableUiConfig,
       oldTableUiConfig: cloneDeep(tableUiConfig),
+      selectedColItem: null,
     };
   }
 
@@ -117,47 +117,98 @@ class TableUiConfig extends Component {
   render() {
     const { dataModelUiConfig, loading } = this.props;
     const { currPRowData } = dataModelUiConfig;
-    const { tableUiConfig, oldTableUiConfig } = this.state;
+    const { tableUiConfig, oldTableUiConfig, selectedColItem } = this.state;
+    const hasUpdate = !isEqual(tableUiConfig, oldTableUiConfig);
 
     return (
       <PageWrapper loading={loading.global}>
         <ProLayout>
-          <ProHeader style={{ paddingLeft: 0 }} gutter={[0, 4]}>
-            <Header
-              hasUpdate={!isEqual(tableUiConfig, oldTableUiConfig)}
-              onSave={this.handleSave}
-              onBack={this.handleBack}
+          <ProHeader
+            style={{ paddingLeft: 0 }}
+            gutter={[0, 4]}
+            title="UI列表配置"
+            subTitle={currPRowData.name}
+            onBack={this.handleBack}
+            backIcon={
+              hasUpdate ? (
+                <Popconfirm
+                  title="列表配置有更新, 是否保存？"
+                  onConfirm={this.handleSave}
+                  placement="rightTop"
+                  onCancel={this.handleBack}
+                  okText="是"
+                  cancelText="否"
+                >
+                  <ExtIcon type="left" antd />
+                </Popconfirm>
+              ) : (
+                <ExtIcon type="left" onClick={this.handleBack} antd />
+              )
+            }
+            extra={
+              <Button type="primary" onClick={this.handleSave}>
+                保存
+              </Button>
+            }
+          />
+          <ProHeader gutter={[0, 4]}>
+            <TableCfg
+              editData={tableUiConfig}
               dataModel={currPRowData}
+              onEditTable={this.handleEditTable}
             />
           </ProHeader>
           <ProLayout>
-            <SiderBar allowCollapse width={250} gutter={[0, 4]}>
-              <TableCfg
-                editData={tableUiConfig}
-                dataModel={currPRowData}
-                onEditTable={this.handleEditTable}
-                onSave={this.handleSave}
-              />
-            </SiderBar>
-            <SiderBar width={200} gutter={[0, 4]}>
+            <SiderBar allowCollapse width={200} gutter={[0, 4]}>
               <TableColCfg
                 onColChange={this.handleColChange}
                 dataModel={currPRowData}
                 tableUiConfig={tableUiConfig}
                 onDelCol={this.handleDelCol}
                 onEditCol={this.handleEditCol}
-              />
-            </SiderBar>
-            <Content>
-              <ExtTablePreview
-                key={JSON.stringify(tableUiConfig)}
-                tableUiConfig={tableUiConfig}
-                store={{
-                  type: 'POST',
-                  url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
+                onSelect={selectedColItem => {
+                  this.setState({
+                    selectedColItem,
+                  });
                 }}
               />
-            </Content>
+            </SiderBar>
+            <SiderBar width={250} gutter={[0, 4]}>
+              <ProLayout>
+                <ProHeader
+                  height={47}
+                  title="列属性"
+                  subTitle={selectedColItem && selectedColItem.title}
+                />
+                <Content
+                  empty={{
+                    description: '请选择已配置列进行属性配置',
+                  }}
+                >
+                  {selectedColItem && (
+                    <EditColForm
+                      editData={selectedColItem}
+                      onValuesChange={values => {
+                        this.handleEditCol(Object.assign({}, selectedColItem, values));
+                      }}
+                    />
+                  )}
+                </Content>
+              </ProLayout>
+            </SiderBar>
+            <ProLayout>
+              <ProHeader height={47} title="实时预览" />
+              <Content>
+                <ExtTablePreview
+                  key={JSON.stringify(tableUiConfig)}
+                  tableUiConfig={tableUiConfig}
+                  store={{
+                    type: 'POST',
+                    url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
+                  }}
+                />
+              </Content>
+            </ProLayout>
           </ProLayout>
         </ProLayout>
       </PageWrapper>

@@ -14,6 +14,7 @@ class TableColCfg extends Component {
   state = {
     fieldLists: [],
     showUnAssign: false,
+    selectedItem: null,
   };
 
   componentDidMount() {
@@ -89,8 +90,8 @@ class TableColCfg extends Component {
   };
 
   render() {
-    const { fieldLists, showUnAssign } = this.state;
-    const { tableUiConfig } = this.props;
+    const { fieldLists, showUnAssign, selectedItem } = this.state;
+    const { tableUiConfig, onSelect } = this.props;
     const { columns = [] } = tableUiConfig || {};
 
     return (
@@ -151,12 +152,28 @@ class TableColCfg extends Component {
                           >
                             {(dragprovided, snapshot) => (
                               <li
-                                className={cls('list-item')}
+                                className={cls({
+                                  'list-item': true,
+                                  'list-item-selected':
+                                    selectedItem && selectedItem.dataIndex === dataIndex,
+                                })}
                                 {...dragprovided.draggableProps}
                                 {...dragprovided.dragHandleProps}
                                 ref={dragprovided.innerRef}
                                 isdragging={snapshot.isDragging}
                                 title={title}
+                                onClick={() => {
+                                  this.setState(
+                                    {
+                                      selectedItem: item,
+                                    },
+                                    () => {
+                                      if (onSelect) {
+                                        onSelect(item);
+                                      }
+                                    },
+                                  );
+                                }}
                                 // isDragging={snapshot.isDragging}
                               >
                                 {title}

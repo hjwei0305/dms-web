@@ -129,6 +129,12 @@ class FormModal extends PureComponent {
               initialValue: editData ? editData.remark : '',
             })(<Input.TextArea />)}
           </FormItem>
+          <FormItem label="是否定制页面">
+            {getFieldDecorator('customize', {
+              valuePropName: 'checked',
+              initialValue: editData ? editData.customize : false,
+            })(<Switch />)}
+          </FormItem>
           <FormItem label="冻结">
             {getFieldDecorator('frozen', {
               valuePropName: 'checked',

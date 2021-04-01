@@ -132,12 +132,12 @@ class TablePanel extends Component {
         width: 120,
         required: true,
       },
-      {
-        title: '数据结构',
-        dataIndex: 'dataStructureEnumRemark',
-        width: 80,
-        required: true,
-      },
+      // {
+      //   title: '数据结构',
+      //   dataIndex: 'dataStructureEnumRemark',
+      //   width: 80,
+      //   required: true,
+      // },
       {
         title: '数据分类名称',
         dataIndex: 'categoryName',
@@ -149,6 +149,15 @@ class TablePanel extends Component {
         dataIndex: 'remark',
         width: 200,
         required: true,
+      },
+      {
+        title: '是否定制页面',
+        dataIndex: 'customize',
+        width: 120,
+        required: true,
+        render: customize => (
+          <Tag color={customize ? 'green' : 'red'}>{customize ? '是' : '否'}</Tag>
+        ),
       },
       {
         title: '冻结',
