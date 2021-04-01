@@ -190,7 +190,6 @@ class FormUiConfig extends Component {
                   />
                 </SiderBar>
                 <Content
-                  style={{ padding: '0 8px' }}
                   empty={{
                     description: '请选择表单项进行配置',
                   }}

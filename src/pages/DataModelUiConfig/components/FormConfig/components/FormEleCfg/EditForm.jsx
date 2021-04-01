@@ -3,7 +3,6 @@ import { Form, Switch, Select, Input, Tag } from 'antd';
 import { get } from 'lodash';
 import { ComboList, ScrollBar, ProLayout } from 'suid';
 import { constants, validateRules } from '@/utils';
-import PopoverIcon from '@/components/PopoverIcon';
 import ExtComboTableUiConfig from './ExtComboTableUiConfig';
 
 const { Header, Content } = ProLayout;
@@ -217,8 +216,13 @@ class EditForm extends React.Component {
 
     return (
       <ProLayout>
-        <Header title="表单项配置" subTitle={title} tags={[<Tag color="blue">{tagText}</Tag>]} />
-        <Content>
+        <Header
+          height={47}
+          title="表单项配置"
+          subTitle={title}
+          tags={[<Tag color="blue">{tagText}</Tag>]}
+        />
+        <Content style={{ padding: '0 8px' }}>
           <ScrollBar>{this.getContent()}</ScrollBar>
         </Content>
       </ProLayout>
