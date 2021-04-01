@@ -178,7 +178,7 @@ class TableColCfg extends Component {
                               >
                                 {title}
                                 <span className={cls('list-item-extra')}>
-                                  <FormPopover editData={item} onSave={this.handleEditCol}>
+                                  {/* <FormPopover editData={item} onSave={this.handleEditCol}>
                                     <PopoverIcon
                                       style={{ padding: 6 }}
                                       className={cls('icon-wrapper')}
@@ -186,7 +186,7 @@ class TableColCfg extends Component {
                                       tooltip={{ title: '编辑' }}
                                       antd
                                     />
-                                  </FormPopover>
+                                  </FormPopover> */}
                                   <Popconfirm
                                     title="删除后不能恢复，确认删除吗？"
                                     placement="rightTop"
