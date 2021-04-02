@@ -6,6 +6,7 @@ import { get, cloneDeep, isEqual } from 'lodash';
 import PageWrapper from '@/components/PageWrapper';
 import { constants } from '@/utils';
 import ExtTablePreview from '@/components/ExtTablePreview';
+import ExtTreeTablePreview from '@/components/ExtTreeTablePreview';
 import TableColCfg from './components/TableColCfg';
 import EditColForm from './components/TableColCfg/form';
 import TableCfg from './components/TableCfg';
@@ -18,7 +19,9 @@ class TableUiConfig extends Component {
   constructor(props) {
     super(props);
     const { dataModelUiConfig } = this.props;
-    const { modelUiConfig } = dataModelUiConfig;
+    const { modelUiConfig, currPRowData } = dataModelUiConfig;
+    const { dataStructure } = currPRowData;
+    this.isTree = dataStructure === 'TREE';
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
     const tableUiConfig = get(uiObj, 'showConfig', {
       store: {
@@ -26,12 +29,12 @@ class TableUiConfig extends Component {
         url: '',
       },
       showSearchTooltip: true,
-      allowCustomColumns: true,
-      remotePaging: true,
+      allowCustomColumns: !this.isTree,
+      remotePaging: !this.isTree,
       columns: [],
     });
     this.state = {
-      tableUiConfig,
+      tableUiConfig: cloneDeep(tableUiConfig),
       oldTableUiConfig: cloneDeep(tableUiConfig),
       selectedColItem: null,
     };
@@ -48,6 +51,7 @@ class TableUiConfig extends Component {
   };
 
   handleColChange = columns => {
+    console.log('handleColChange -> columns', columns);
     const { tableUiConfig = {} } = this.state;
     Object.assign(tableUiConfig, { columns });
     this.setState({
@@ -58,6 +62,7 @@ class TableUiConfig extends Component {
   handleDelCol = col => {
     const { tableUiConfig = {} } = this.state;
     const { columns = [] } = tableUiConfig;
+    console.log('handleDelCol -> columns', columns);
     const tempColumns = columns.filter(item => item.dataIndex !== col.dataIndex);
     Object.assign(tableUiConfig, { columns: tempColumns });
     this.setState({
@@ -68,6 +73,7 @@ class TableUiConfig extends Component {
   handleEditCol = col => {
     const { tableUiConfig = {} } = this.state;
     const { columns = [] } = tableUiConfig;
+    console.log('handleEditCol -> tableUiConfig', tableUiConfig);
 
     const tempColumns = columns.map(item => {
       if (item.dataIndex !== col.dataIndex) {
@@ -86,7 +92,7 @@ class TableUiConfig extends Component {
 
     Object.assign(tableUiConfig, props);
     this.setState({
-      tableUiConfig,
+      tableUiConfig: cloneDeep(tableUiConfig),
     });
   };
 
@@ -119,6 +125,7 @@ class TableUiConfig extends Component {
     const { currPRowData } = dataModelUiConfig;
     const { tableUiConfig, oldTableUiConfig, selectedColItem } = this.state;
     const hasUpdate = !isEqual(tableUiConfig, oldTableUiConfig);
+    console.log('TableUiConfig -> render -> tableUiConfig', tableUiConfig);
 
     return (
       <PageWrapper loading={loading.global}>
@@ -151,13 +158,6 @@ class TableUiConfig extends Component {
               </Button>
             }
           />
-          {/* <ProHeader gutter={[0, 4]}>
-            <TableCfg
-              editData={tableUiConfig}
-              dataModel={currPRowData}
-              onEditTable={this.handleEditTable}
-            />
-          </ProHeader> */}
           <ProLayout>
             <SiderBar allowCollapse width={200} gutter={[0, 4]}>
               <TableColCfg
@@ -213,14 +213,22 @@ class TableUiConfig extends Component {
             <ProLayout>
               <ProHeader height={47} title="实时预览" />
               <Content>
-                <ExtTablePreview
-                  key={JSON.stringify(tableUiConfig)}
-                  tableUiConfig={tableUiConfig}
-                  store={{
-                    type: 'POST',
-                    url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
-                  }}
-                />
+                {this.isTree ? (
+                  <ExtTreeTablePreview
+                    key={JSON.stringify(tableUiConfig)}
+                    treeUiConfig={tableUiConfig}
+                    dataModelCode={currPRowData.code}
+                  />
+                ) : (
+                  <ExtTablePreview
+                    key={JSON.stringify(tableUiConfig)}
+                    tableUiConfig={tableUiConfig}
+                    store={{
+                      type: 'POST',
+                      url: `${MDMSCONTEXT}/${currPRowData.code}/findByPage`,
+                    }}
+                  />
+                )}
               </Content>
             </ProLayout>
           </ProLayout>

@@ -244,24 +244,14 @@ class ExtTreeTablePreview extends Component {
     const { dataSource, searchValue, loading } = this.state;
     const { treeUiConfig, formUiConfig } = this.props;
 
-    const { detailFields = [] } = treeUiConfig || {};
+    const { columns = [] } = cloneDeep(treeUiConfig) || {};
     const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
 
-    const columns = [];
-    detailFields.forEach(item => {
-      const { code: dataIndex, name: title } = item;
+    columns.forEach(item => {
+      const { dataIndex } = item;
       if (dataIndex === 'name') {
-        columns.unshift({
-          title,
-          dataIndex,
-          width: 300,
+        Object.assign(item, {
           className: cls(styles['tree-col']),
-        });
-      } else {
-        columns.push({
-          title,
-          dataIndex,
-          // width: 300,
         });
       }
     });
@@ -353,10 +343,11 @@ class ExtTreeTablePreview extends Component {
   };
 
   render() {
+    const { formUiConfig } = this.props;
     return (
       <>
         <ExtTable {...this.getExtTableProps()} />
-        <FormModal {...this.getModalProps()} />
+        {formUiConfig ? <FormModal {...this.getModalProps()} /> : null}
       </>
     );
   }

@@ -5,8 +5,6 @@ import { Tabs, Button, Empty } from 'antd';
 import { ProLayout } from 'suid';
 import { get } from 'lodash';
 import { constants } from '@/utils';
-// import ColumnLayout from '@/components/Layout/ColumnLayout';
-// import ThreeColumnLayout from '@/components/Layout/ThreeColumnLayout';
 import ExtFormRender from '@/components/ExtFormRender';
 import ExtTablePreview from '@/components/ExtTablePreview';
 // import ExtTreePreview from '@/components/ExtTreePreview';

@@ -63,15 +63,13 @@ class DataModelUiConfig extends Component {
             </ProLayout>
           </ProLayout>
         </PageWrapper>
-        {vTableUiConfig && currPRowData.dataStructure === 'GENERAL' ? (
-          <TableUiConfig modelUiConfig={modelUiConfig} />
-        ) : null}
+        {vTableUiConfig ? <TableUiConfig modelUiConfig={modelUiConfig} /> : null}
         {vFilterFormConfig && currPRowData.dataStructure === 'GENERAL' ? (
           <FilterFormConfig modelUiConfig={modelUiConfig} />
         ) : null}
-        {vTableUiConfig && currPRowData.dataStructure === 'TREE' ? (
-          <TreeUiConfig modelUiConfig={modelUiConfig} />
-        ) : null}
+        {/* {vTableUiConfig && currPRowData.dataStructure === 'TREE' ? (
+          <TableUiConfig modelUiConfig={modelUiConfig} />
+        ) : null} */}
         {vFormUiConfig ? <FormConfig modelUiConfig={modelUiConfig} /> : null}
 
         {/* {vExportUiConfig ? <ExportUiConfig modelUiConfig={modelUiConfig} /> : null}

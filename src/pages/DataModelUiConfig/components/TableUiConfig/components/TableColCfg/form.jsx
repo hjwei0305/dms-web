@@ -14,6 +14,7 @@ const formItemLayout = {
 
 @Form.create({
   onValuesChange: ({ onValuesChange }, _, allValues) => {
+    console.log('allValues', allValues);
     if (onValuesChange) {
       onValuesChange(allValues, _);
     }
