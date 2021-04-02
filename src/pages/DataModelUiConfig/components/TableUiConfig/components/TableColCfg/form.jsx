@@ -5,10 +5,10 @@ const FormItem = Form.Item;
 
 const formItemLayout = {
   labelCol: {
-    span: 8,
+    span: 10,
   },
   wrapperCol: {
-    span: 15,
+    span: 13,
   },
 };
 

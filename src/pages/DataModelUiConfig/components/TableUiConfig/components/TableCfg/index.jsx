@@ -1,31 +1,19 @@
-import React from 'react';
-import { Form, Card, Switch } from 'antd';
-import { ExtIcon } from 'suid';
+import React, { PureComponent } from 'react';
+import { Form, Switch } from 'antd';
 import { get } from 'lodash';
-import cls from 'classnames';
-
-import styles from './index.less';
 
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
-    span: 5,
+    span: 10,
   },
   wrapperCol: {
-    span: 19,
-  },
-};
-const colFormItemLayout = {
-  labelCol: {
-    span: 12,
-  },
-  wrapperCol: {
-    span: 12,
+    span: 11,
   },
 };
 
 @Form.create()
-class TableCfg extends React.Component {
+class TableCfg extends PureComponent {
   handleSave = () => {
     const { form, editData, onSave } = this.props;
     form.validateFields((err, formData) => {
@@ -35,25 +23,7 @@ class TableCfg extends React.Component {
       if (onSave) {
         onSave({ ...editData, ...formData });
       }
-      // if (onEditTable) {
-      //   onEditTable({ ...editData, ...formData });
-      // }
     });
-  };
-
-  getCardExtra = () => {
-    return (
-      <span className={cls('icon-wrapper')}>
-        <ExtIcon
-          type="save"
-          style={{ fontSize: '20px' }}
-          tooltip={{ title: '保存' }}
-          onClick={this.handleSave}
-          antd
-        />
-      </span>
-    );
-    // <ExtIcon type="save" tooltip={{ title: '保存' }} onClick={this.handleSave} antd />;
   };
 
   render() {
@@ -61,13 +31,7 @@ class TableCfg extends React.Component {
     const { getFieldDecorator } = form;
 
     return (
-      // <Card
-      //   // extra={this.getCardExtra()}
-      //   // className={cls(styles['right-sider-bar'])}
-      //   // bordered={false}
-      //   // title="表格属性"
-      // >
-      <Form layout="inline">
+      <Form {...formItemLayout} layout="horizontal">
         {/* <FormItem label="请求类型">
             {getFieldDecorator('store.type', {
               initialValue: get(editData, 'store.type'),
@@ -153,7 +117,6 @@ class TableCfg extends React.Component {
           })(<Switch />)}
         </FormItem>
       </Form>
-      // </Card>
     );
   }
 }

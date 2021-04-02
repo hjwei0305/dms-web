@@ -146,18 +146,9 @@ class TableUiConfig extends Component {
               )
             }
             extra={
-              <>
-                <div style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-                  <TableCfg
-                    editData={tableUiConfig}
-                    dataModel={currPRowData}
-                    onEditTable={this.handleEditTable}
-                  />
-                </div>
-                <Button type="primary" onClick={this.handleSave}>
-                  保存
-                </Button>
-              </>
+              <Button type="primary" onClick={this.handleSave}>
+                保存
+              </Button>
             }
           />
           {/* <ProHeader gutter={[0, 4]}>
@@ -184,25 +175,39 @@ class TableUiConfig extends Component {
             </SiderBar>
             <SiderBar width={250} gutter={[0, 4]}>
               <ProLayout>
-                <ProHeader
-                  height={47}
-                  title="列属性"
-                  subTitle={selectedColItem && selectedColItem.title}
-                />
-                <Content
-                  empty={{
-                    description: '请选择已配置列进行属性配置',
-                  }}
-                >
-                  {selectedColItem && (
-                    <EditColForm
-                      editData={selectedColItem}
-                      onValuesChange={values => {
-                        this.handleEditCol(Object.assign({}, selectedColItem, values));
-                      }}
-                    />
-                  )}
-                </Content>
+                <ProHeader height={250}>
+                  <ProLayout>
+                    <ProHeader height={47} title="表格配置" />
+                    <Content>
+                      <TableCfg
+                        editData={tableUiConfig}
+                        dataModel={currPRowData}
+                        onEditTable={this.handleEditTable}
+                      />
+                    </Content>
+                  </ProLayout>
+                </ProHeader>
+                <ProLayout>
+                  <ProHeader
+                    height={47}
+                    title="列配置"
+                    subTitle={selectedColItem && selectedColItem.title}
+                  />
+                  <Content
+                    empty={{
+                      description: '请选择已配置列进行属性配置',
+                    }}
+                  >
+                    {selectedColItem && (
+                      <EditColForm
+                        editData={selectedColItem}
+                        onValuesChange={values => {
+                          this.handleEditCol(Object.assign({}, selectedColItem, values));
+                        }}
+                      />
+                    )}
+                  </Content>
+                </ProLayout>
               </ProLayout>
             </SiderBar>
             <ProLayout>

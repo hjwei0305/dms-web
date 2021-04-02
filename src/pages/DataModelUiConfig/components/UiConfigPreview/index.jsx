@@ -264,15 +264,7 @@ class UiConfigPreview extends Component {
             ) : null}
           </TabPane>
 
-          <TabPane
-            tab={
-              <span>
-                表单配置预览
-                {/* <Icon type="edit" /> */}
-              </span>
-            }
-            key="formUi"
-          >
+          <TabPane tab={<span>表单配置预览</span>} key="formUi">
             {formUiConfig ? (
               this.getFormPreview()
             ) : (
