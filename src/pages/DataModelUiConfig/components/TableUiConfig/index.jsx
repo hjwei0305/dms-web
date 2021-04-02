@@ -51,7 +51,6 @@ class TableUiConfig extends Component {
   };
 
   handleColChange = columns => {
-    console.log('handleColChange -> columns', columns);
     const { tableUiConfig = {} } = this.state;
     Object.assign(tableUiConfig, { columns });
     this.setState({
@@ -62,7 +61,6 @@ class TableUiConfig extends Component {
   handleDelCol = col => {
     const { tableUiConfig = {} } = this.state;
     const { columns = [] } = tableUiConfig;
-    console.log('handleDelCol -> columns', columns);
     const tempColumns = columns.filter(item => item.dataIndex !== col.dataIndex);
     Object.assign(tableUiConfig, { columns: tempColumns });
     this.setState({
@@ -73,7 +71,6 @@ class TableUiConfig extends Component {
   handleEditCol = col => {
     const { tableUiConfig = {} } = this.state;
     const { columns = [] } = tableUiConfig;
-    console.log('handleEditCol -> tableUiConfig', tableUiConfig);
 
     const tempColumns = columns.map(item => {
       if (item.dataIndex !== col.dataIndex) {
@@ -125,7 +122,6 @@ class TableUiConfig extends Component {
     const { currPRowData } = dataModelUiConfig;
     const { tableUiConfig, oldTableUiConfig, selectedColItem } = this.state;
     const hasUpdate = !isEqual(tableUiConfig, oldTableUiConfig);
-    console.log('TableUiConfig -> render -> tableUiConfig', tableUiConfig);
 
     return (
       <PageWrapper loading={loading.global}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { utils, ExtTable } from 'suid';
-import { cloneDeep, get } from 'lodash';
+import { cloneDeep, get, omit } from 'lodash';
 import { Popconfirm, Button, Input, message } from 'antd';
 import cls from 'classnames';
 import { constants } from '@/utils';
@@ -339,6 +339,7 @@ class ExtTreeTablePreview extends Component {
       allowCustomColumns: false,
       showSearch: false,
       loading: loading.finding,
+      ...omit(treeUiConfig, ['column', 'columns', 'detailFields']),
     };
   };
 
