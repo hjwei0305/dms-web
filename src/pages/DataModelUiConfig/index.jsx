@@ -9,7 +9,6 @@ import UiConfigPreview from './components/UiConfigPreview';
 import TableUiConfig from './components/TableUiConfig';
 import FormConfig from './components/FormConfig/new';
 import FilterFormConfig from './components/FilterFormConfig';
-import TreeUiConfig from './components/TreeUiConfig';
 // import ExportUiConfig from './components/ExportUiConfig';
 // import ImportUiConfig from './components/ImportUiConfig';
 
