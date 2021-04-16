@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Switch, Select, Input, Tag } from 'antd';
+import { Form, Switch, Select, Input, Tag, InputNumber } from 'antd';
 import { get } from 'lodash';
 import { ComboList, ScrollBar, ProLayout } from 'suid';
 import { constants, validateRules } from '@/utils';
@@ -160,6 +160,13 @@ class EditForm extends React.Component {
             initialValue: get(editData[optKey], 'ui:hidden'),
           })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
         </FormItem>
+        {getFieldValue('ui:widget') === 'ExtInput' && (
+          <FormItem label="最大长度">
+            {getFieldDecorator('maxLength', {
+              initialValue: get(editData[optKey], 'maxLength'),
+            })(<InputNumber min={1} style={{ width: '100%' }} />)}
+          </FormItem>
+        )}
         <FormItem label="校验规则">
           {getFieldDecorator('pattern', {
             initialValue: get(editData[optKey], 'pattern'),
