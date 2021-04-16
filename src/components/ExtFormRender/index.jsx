@@ -56,10 +56,9 @@ class ExtFormRender extends Component {
         required.push(key);
       }
       if (value['ui:widget'] === 'ExtSwitch') {
-        Object.assign(value, { type: 'boolean' });
-      } else {
-        Object.assign(value, { type: 'string' });
+        Object.assign(value, { default: false });
       }
+      Object.assign(value, { type: 'string' });
       Object.assign(properties, { [key]: value });
     });
 

@@ -8,7 +8,7 @@ class ExtSwitch extends Component {
   handleChange = checked => {
     const { name, onChange } = this.props;
     if (onChange) {
-      onChange(name, checked);
+      onChange(name, !!checked);
     }
   };
 
@@ -17,7 +17,7 @@ class ExtSwitch extends Component {
 
     return (
       <div className={cls(styles['ext-cmp-width'])}>
-        <Switch checked={value} onChange={this.handleChange} />
+        <Switch checked={!!value} onChange={this.handleChange} />
       </div>
     );
   }
