@@ -208,7 +208,7 @@ class FormUiConfig extends Component {
                           },
                         );
                       }}
-                      key={selectedFormItem[0].code}
+                      key={`${selectedFormItem[0].code}${cfgType}`}
                       optKey={cfgType}
                       editData={selectedFormItem}
                       fieldLists={[]}
