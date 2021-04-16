@@ -4,7 +4,6 @@ import cls from 'classnames';
 import { Input, Button, Tag } from 'antd';
 import { get } from 'lodash';
 import { ListCard, ExtIcon } from 'suid';
-import PopoverIcon from '@/components/PopoverIcon';
 import { constants } from '@/utils';
 import FormPopover from './FormPopover';
 import styles from './index.less';
@@ -111,7 +110,7 @@ class CascadeTableMaster extends Component {
               isSaving={loading.effects['dataShare/saveParent']}
               editData={item}
             >
-              <PopoverIcon className="icon-wrapper" type="edit" tooltip={{ title: '编辑' }} antd />
+              <ExtIcon className="trigger-back" type="edit" tooltip={{ title: '编辑' }} antd />
             </FormPopover>
           );
         },
