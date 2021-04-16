@@ -151,7 +151,7 @@ class UiConfigPreview extends Component {
     return (
       <ProLayout>
         <ProLayout style={{ marginRight: 4 }}>
-          <Header size="small" title="新建子结点表单" />
+          <Header size="small" title="新建表单" />
           <Content>
             <ExtFormRender
               uiConfig={{
@@ -162,7 +162,7 @@ class UiConfigPreview extends Component {
           </Content>
         </ProLayout>
         <ProLayout>
-          <Header size="small" title="新建子结点表单" />
+          <Header size="small" title="编辑表单" />
           <Content>
             <ExtFormRender
               uiConfig={{
