@@ -75,7 +75,7 @@ class MasterDataMaintain extends Component {
             </ProLayout>
           </SiderBar>
           <ProLayout>
-            <Header title={`${currPRowData ? `${currPRowData.name}的数据` : ''}`} />
+            <Header title={`${currPRowData ? `${currPRowData.name}` : ''}`} />
             <Content
               empty={{
                 description: '请选择左边的数据',
