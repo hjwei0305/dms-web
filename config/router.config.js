@@ -36,6 +36,11 @@ export default [
         title: '树表测试',
         component: './demo',
       },
+      {
+        path: '/ledgerAccount',
+        title: '总账科目',
+        component: './PageWidget/LedgerAccount',
+      },
     ],
   },
 ];

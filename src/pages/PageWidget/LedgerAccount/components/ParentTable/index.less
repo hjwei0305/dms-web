@@ -1,0 +1,32 @@
+@page-background-color: #f8f8f8;
+
+.container-box {
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  background-color: @page-background-color;
+  :global {
+    .suid-list-card-tool-box {
+      padding: 0 8px !important;
+    }
+    .icon-wrapper {
+      margin-right: 8px;
+      margin-bottom: -50px;
+      visibility: hidden;
+      opacity: 0;
+      transition: all ease-in 0.2s;
+      &.ant-popover-open {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .ant-list-item {
+      &:hover {
+        .icon-wrapper {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
