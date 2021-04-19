@@ -10,6 +10,7 @@ import PageWrapper from '@/components/PageWrapper';
 import ExtTreeTablePreview from '@/components/ExtTreeTablePreview';
 import ParentTable from './components/ParentTable';
 import ChildTable from './components/ChildTable';
+import PageWidget from '../PageWidget';
 import styles from './index.less';
 
 const { Header, Content, SiderBar } = ProLayout;
@@ -26,6 +27,11 @@ class MasterDataMaintain extends Component {
     const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
     const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const dataStructure = get(currPRowData, 'dataStructure', 'GENERAL');
+
+    if (currPRowData && currPRowData.customize) {
+      const Cmp = PageWidget[currPRowData.code];
+      return <Cmp />;
+    }
 
     if (currPRowData && formUiConfig && tableUiConfig && dataStructure === 'TREE') {
       return (

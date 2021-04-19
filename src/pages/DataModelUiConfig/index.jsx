@@ -28,6 +28,7 @@ class DataModelUiConfig extends Component {
       vImportUiConfig,
       vFilterFormConfig,
     } = dataModelUiConfig;
+    console.log('DataModelUiConfig -> render -> currPRowData', currPRowData);
 
     return (
       <>
@@ -56,8 +57,17 @@ class DataModelUiConfig extends Component {
                 title="主数据UI配置预览"
                 subTitle={`${currPRowData ? currPRowData.name : ''}`}
               />
-              <Content description={{ description: '请选择左边的数据' }}>
-                {currPRowData && modelUiConfig && <UiConfigPreview modelUiConfig={modelUiConfig} />}
+              <Content
+                empty={{
+                  description:
+                    currPRowData && currPRowData.customize
+                      ? '定制页面，不用进行ui配置'
+                      : '请选择左边的数据',
+                }}
+              >
+                {currPRowData && !currPRowData.customize && modelUiConfig && (
+                  <UiConfigPreview modelUiConfig={modelUiConfig} />
+                )}
               </Content>
             </ProLayout>
           </ProLayout>
