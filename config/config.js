@@ -27,10 +27,10 @@ export default {
         dva: {
           hmr: true,
         },
-        dynamicImport: {
-          webpackChunkName: true,
-          loadingComponent: './components/Loader',
-        },
+        // dynamicImport: {
+        //   webpackChunkName: true,
+        //   loadingComponent: './components/Loader',
+        // },
         title,
         dll: {
           include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch', 'antd/es'],

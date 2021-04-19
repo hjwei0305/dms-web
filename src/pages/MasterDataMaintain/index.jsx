@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import withRouter from 'umi/withRouter';
+import { Route } from 'umi';
 import { connect } from 'dva';
 import { get } from 'lodash';
 import cls from 'classnames';
@@ -80,16 +81,28 @@ class MasterDataMaintain extends Component {
               </Content>
             </ProLayout>
           </SiderBar>
-          <ProLayout>
-            <Header title={`${currPRowData ? `${currPRowData.name}` : ''}`} />
-            <Content
-              empty={{
-                description: '请选择左边的数据',
-              }}
-            >
-              {this.getRightCmp()}
-            </Content>
-          </ProLayout>
+          {!currPRowData || (currPRowData && !currPRowData.customize) ? (
+            <ProLayout>
+              <Header title={`${currPRowData ? `${currPRowData.name}` : ''}`} />
+              <Content
+                empty={{
+                  description: '请选择左边的数据',
+                }}
+              >
+                {this.getRightCmp()}
+              </Content>
+            </ProLayout>
+          ) : (
+            <ProLayout>
+              <Content
+                empty={{
+                  description: '请选择左边的数据',
+                }}
+              >
+                {this.getRightCmp()}
+              </Content>
+            </ProLayout>
+          )}
         </ProLayout>
       </PageWrapper>
     );
