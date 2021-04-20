@@ -41,6 +41,11 @@ export default [
         title: '总账科目',
         component: './PageWidget/LedgerAccount',
       },
+      {
+        path: '/personnel',
+        title: '公司员工',
+        component: './PageWidget/Personnel',
+      },
     ],
   },
 ];

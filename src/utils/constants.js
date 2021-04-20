@@ -36,7 +36,7 @@ const LOCAL_PATH = process.env.NODE_ENV !== 'production' ? '..' : `../${APP_BASE
 
 const SERVER_PATH = getServerPath();
 
-const MDMSCONTEXT = `${SERVER_PATH}/dms/`;
+const MDMSCONTEXT = `${SERVER_PATH}/dms`;
 const BASICCONTEXT = `${SERVER_PATH}/sei-basic`;
 const EdmContext = `${SERVER_PATH}/edm-service`;
 

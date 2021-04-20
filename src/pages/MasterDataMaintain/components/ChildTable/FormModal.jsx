@@ -39,22 +39,24 @@ class FormModal extends PureComponent {
       >
         <div>
           <ScrollBar>
-            <ExtFormRender
-              onValidate={this.handleValidate}
-              onChange={this.handleFormValueChange}
-              uiConfig={
-                rowData
-                  ? {
-                      ...formUiConfig,
-                      ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[2]]) },
-                    }
-                  : {
-                      ...formUiConfig,
-                      ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
-                    }
-              }
-              formData={rowData}
-            />
+            {formUiConfig ? (
+              <ExtFormRender
+                onValidate={this.handleValidate}
+                onChange={this.handleFormValueChange}
+                uiConfig={
+                  rowData
+                    ? {
+                        ...formUiConfig,
+                        ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[2]]) },
+                      }
+                    : {
+                        ...formUiConfig,
+                        ...{ formItems: formUiConfig.formItems.map(it => [it[0], it[1]]) },
+                      }
+                }
+                formData={rowData}
+              />
+            ) : null}
           </ScrollBar>
         </div>
       </ExtModal>
