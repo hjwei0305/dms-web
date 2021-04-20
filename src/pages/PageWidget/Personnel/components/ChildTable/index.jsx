@@ -6,6 +6,7 @@ import { constants } from '@/utils';
 import PopoverIcon from '@/components/PopoverIcon';
 import Space from '@/components/Space';
 import FormPopover from './FormPopover';
+import FormDrawer from './FormDrawer';
 
 const { authAction } = utils;
 const { MDMSCONTEXT } = constants;
@@ -87,15 +88,22 @@ class ChildTable extends Component {
   };
 
   save = (data, cb) => {
-    const { dispatch } = this.props;
-
+    const { dispatch, personnel } = this.props;
+    const { currCRowData } = personnel;
+    let params = {};
+    if (currCRowData) {
+      Object.assign(params, currCRowData, data);
+    } else {
+      params = data;
+    }
     dispatch({
       type: 'personnel/saveChild',
-      payload: data,
+      payload: params,
     }).then(res => {
       if (res.success) {
         this.reloadData();
-        cb(false);
+        // cb(false);
+        this.closeFormModal();
       }
     });
   };
@@ -145,23 +153,23 @@ class ChildTable extends Component {
             <>
               <div className="action-box" onClick={e => e.stopPropagation()}>
                 {authAction(
-                  <FormPopover
+                  // <FormPopover
+                  //   key="edit"
+                  //   onSave={this.save}
+                  //   editData={currCRowData}
+                  //   isSaving={loading.effects['personnel/saveChild']}
+                  //   parentData={currPRowData}
+                  // >
+                  <PopoverIcon
                     key="edit"
-                    onSave={this.save}
-                    editData={currCRowData}
-                    isSaving={loading.effects['personnel/saveChild']}
-                    parentData={currPRowData}
-                  >
-                    <PopoverIcon
-                      key="edit"
-                      className="edit"
-                      onClick={e => this.edit(record, e)}
-                      type="edit"
-                      ignore="true"
-                      tooltip={{ title: '编辑' }}
-                      antd
-                    />
-                  </FormPopover>,
+                    className="edit"
+                    onClick={e => this.edit(record, e)}
+                    type="edit"
+                    ignore="true"
+                    tooltip={{ title: '编辑' }}
+                    antd
+                  />,
+                  // </FormPopover>,
                 )}
                 <Popconfirm
                   key="delete"
@@ -253,16 +261,16 @@ class ChildTable extends Component {
       left: (
         <Space>
           {authAction(
-            <FormPopover
-              key="add"
-              onSave={this.save}
-              isSaving={loading.effects['personnel/saveChild']}
-              parentData={currPRowData}
-            >
-              <Button key="add" type="primary" onClick={this.add} ignore="true">
-                新增
-              </Button>
-            </FormPopover>,
+            // <FormPopover
+            //   key="add"
+            //   onSave={this.save}
+            //   isSaving={loading.effects['personnel/saveChild']}
+            //   parentData={currPRowData}
+            // >
+            <Button key="add" type="primary" onClick={this.add} ignore="true">
+              新增
+            </Button>,
+            // </FormPopover>,
           )}
           <Button onClick={this.reloadData}>刷新</Button>
         </Space>
@@ -308,8 +316,26 @@ class ChildTable extends Component {
     };
   };
 
+  getFormDrawerProps = () => {
+    const { loading, personnel } = this.props;
+    const { currPRowData, currCRowData, cVisible } = personnel;
+    return {
+      onOk: this.save,
+      parentData: currPRowData,
+      editData: currCRowData,
+      visible: cVisible,
+      onClose: this.closeFormModal,
+      confirmLoading: loading.effects['personnel/saveChild'],
+    };
+  };
+
   render() {
-    return <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />;
+    return (
+      <>
+        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
+        <FormDrawer {...this.getFormDrawerProps()} />
+      </>
+    );
   }
 }
 

@@ -1,16 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-  Form,
-  Input,
-  Switch,
-  Popover,
-  Button,
-  Row,
-  PageHeader,
-  Select,
-  DatePicker,
-  Col,
-} from 'antd';
+import { Form, Input, Popover, Button, Row, PageHeader, Select, DatePicker, Col } from 'antd';
 import { ComboGrid } from 'suid';
 import { get } from 'lodash';
 import moment from 'moment';

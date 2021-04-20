@@ -17,7 +17,7 @@ const defaultFormProps = {
 };
 
 @Form.create({})
-class FilterDrawer extends Component {
+class FormDrawer extends Component {
   onFormSubmit = () => {
     const { form, onOk } = this.props;
     form.validateFields((err, formData) => {
@@ -33,7 +33,7 @@ class FilterDrawer extends Component {
   };
 
   render() {
-    const { renderFormItems, form, formProps } = this.props;
+    const { renderFormItems, form, formProps, confirmLoading, onClose } = this.props;
     const finalFormProps = merge(defaultFormProps, formProps || {});
     const drawerProps = merge(
       {
@@ -43,21 +43,23 @@ class FilterDrawer extends Component {
         },
         placement: 'right',
       },
-      omit(this.props, ['renderFormItems', 'form', 'formProps']),
+      omit(this.props, ['renderFormItems', 'form', 'formProps', 'confirmLoading']),
     );
 
     return (
       <Drawer {...drawerProps}>
         <ProLayout>
-          <Content style={{ padding: 16 }}>
+          <Content style={{ padding: 0 }}>
             <ScrollBar>
-              <Form {...finalFormProps}>{renderFormItems && renderFormItems(form, FormItem)}</Form>
+              <Form {...finalFormProps} style={{ padding: '0 12px' }}>
+                {renderFormItems && renderFormItems(form, FormItem)}
+              </Form>
             </ScrollBar>
           </Content>
           <Footer align="end">
             <Space>
-              <Button onClick={this.handleReset}>取消</Button>
-              <Button onClick={this.onFormSubmit} type="primary">
+              <Button onClick={onClose}>取消</Button>
+              <Button loading={confirmLoading} onClick={this.onFormSubmit} type="primary">
                 确定
               </Button>
             </Space>
@@ -68,4 +70,4 @@ class FilterDrawer extends Component {
   }
 }
 
-export default FilterDrawer;
+export default FormDrawer;
