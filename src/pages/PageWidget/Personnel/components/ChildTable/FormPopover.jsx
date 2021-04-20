@@ -137,17 +137,17 @@ class FormPopover extends PureComponent {
         <Form {...formItemLayout} layout="horizontal">
           <Row>
             <Col span={commonSpan}>
-              <FormItem label="员工代码">
+              <FormItem label="员工编号">
                 {getFieldDecorator('code', {
                   initialValue: get(editData, 'code', ''),
                   rules: [
                     {
                       required: true,
-                      message: '请输入员工代码',
+                      message: '请输入员工编号',
                     },
                     {
                       max: 4,
-                      message: '员工代码长度不能超过4',
+                      message: '员工编号长度不能超过4',
                     },
                   ],
                 })(<Input disabled={!!editData} />)}

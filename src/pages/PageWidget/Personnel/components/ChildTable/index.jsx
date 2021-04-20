@@ -181,12 +181,12 @@ class ChildTable extends Component {
         },
       },
       {
-        title: '代码',
+        title: '员工编号',
         dataIndex: 'code',
         width: 180,
       },
       {
-        title: '名称',
+        title: '员工姓名',
         dataIndex: 'name',
         width: 180,
       },
