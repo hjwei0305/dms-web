@@ -132,6 +132,11 @@ class FormPopover extends PureComponent {
               ],
             })(<Input />)}
           </FormItem>
+          <FormItem label="接收数据Url">
+            {getFieldDecorator('receiveUrl', {
+              initialValue: get(editData, 'receiveUrl', ''),
+            })(<Input />)}
+          </FormItem>
           <FormItem label="备注">
             {getFieldDecorator('remark', {
               initialValue: get(editData, 'remark'),
