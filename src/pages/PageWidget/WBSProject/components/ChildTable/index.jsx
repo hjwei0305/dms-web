@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Popconfirm, Tag } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import { utils, ExtTable } from 'suid';
+import moment from 'moment';
 import { constants } from '@/utils';
 import PopoverIcon from '@/components/PopoverIcon';
 import Space from '@/components/Space';
@@ -91,6 +92,7 @@ class ChildTable extends Component {
     const { dispatch, wbsProject } = this.props;
     const { currCRowData } = wbsProject;
     let params = {};
+    data.erpCreateDate = moment(data.erpCreateDate).format('YYYY-MM-DD HH:mm:ss');
     if (currCRowData) {
       Object.assign(params, currCRowData, data);
     } else {
@@ -189,72 +191,49 @@ class ChildTable extends Component {
         },
       },
       {
-        title: '员工编号',
-        dataIndex: 'code',
-        width: 180,
-      },
-      {
-        title: '员工姓名',
+        title: 'WBS名称',
         dataIndex: 'name',
         width: 180,
       },
       {
-        title: '身份证',
-        dataIndex: 'idCard',
-      },
-      {
-        title: '电子邮件',
-        dataIndex: 'email',
-      },
-      {
-        title: '生日',
-        dataIndex: 'birthday',
-      },
-      {
-        title: '	成本中心代码',
-        dataIndex: 'costCenterCode',
-      },
-      {
-        title: '性别',
-        dataIndex: 'gender',
-      },
-      {
-        title: '通信地址',
-        dataIndex: 'mailingAddress',
-      },
-      {
-        title: '移动电话',
-        dataIndex: 'mobile',
-      },
-      {
-        title: '员工组',
+        title: 'WBS编号',
+        dataIndex: 'code',
         width: 180,
-        dataIndex: 'wbsProjectGroup',
       },
       {
-        title: '职位等级',
-        width: 200,
-        dataIndex: 'postGrade',
+        title: 'ERP公司代码',
+        dataIndex: 'erpCorporationCode',
+        width: 180,
       },
       {
-        title: '邮政编码',
-        width: 200,
-        dataIndex: 'postalCode',
+        title: '成本中心代码',
+        dataIndex: 'costCenterCode',
+        width: 180,
       },
       {
-        title: '姓名缩写',
-        width: 200,
-        dataIndex: 'shortName',
+        title: '项目类型',
+        dataIndex: 'projectType',
+        width: 180,
       },
       {
-        title: '座机电话',
-        width: 200,
-        dataIndex: 'telephone',
+        title: '业务范围代码',
+        dataIndex: 'rangeCode',
+        width: 180,
       },
       {
-        title: '在职状态',
-        width: 200,
-        dataIndex: 'workingStatus',
+        title: '创建日期',
+        dataIndex: 'ERP创建日期',
+        width: 180,
+      },
+      {
+        title: '总账科目代码',
+        dataIndex: 'ledgerAccountCode',
+        width: 180,
+      },
+      {
+        title: '总账科目名称',
+        dataIndex: 'ledgerAccountName',
+        width: 180,
       },
     ];
     const toolBar = {
@@ -277,28 +256,15 @@ class ChildTable extends Component {
       ),
     };
 
-    const cascadeParams = {};
-    if (currPRowData) {
-      Object.assign(cascadeParams, {
-        filters: [
-          {
-            fieldName: 'erpCorporationCode',
-            operator: 'EQ',
-            value: currPRowData.erpCode,
-          },
-        ],
-      });
-    }
-
     return {
       toolBar,
       columns,
-      cascadeParams,
       searchProperties: ['code', 'name'],
       searchPlaceHolder: '请输入代码或者名称查询',
+      remotePaging: false,
       store: {
-        type: 'POST',
-        url: `${MDMSCONTEXT}/wbsProject/findByPage`,
+        type: 'GET',
+        url: `${MDMSCONTEXT}/wbsProject/getAllTree?erpCorporationCode=${currPRowData.erpCode}`,
       },
     };
   };

@@ -46,6 +46,11 @@ export default [
         title: '公司员工',
         component: './PageWidget/Personnel',
       },
+      {
+        path: '/wbsProject',
+        title: 'wbs项目',
+        component: './PageWidget/WBSProject',
+      },
     ],
   },
 ];

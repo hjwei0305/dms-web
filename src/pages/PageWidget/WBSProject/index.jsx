@@ -9,11 +9,11 @@ import ChildTable from './components/ChildTable';
 const { Header, Content, SiderBar } = ProLayout;
 
 @withRouter
-@connect(({ personnel, loading }) => ({ personnel, loading }))
-class Personnel extends Component {
+@connect(({ wbsProject, loading }) => ({ wbsProject, loading }))
+class WBSProject extends Component {
   getRightCmp = () => {
-    const { personnel } = this.props;
-    const { currPRowData } = personnel;
+    const { wbsProject } = this.props;
+    const { currPRowData } = wbsProject;
     if (currPRowData) {
       return <ChildTable key={currPRowData.id} />;
     }
@@ -22,8 +22,8 @@ class Personnel extends Component {
   };
 
   render() {
-    const { personnel, loading } = this.props;
-    const { currPRowData } = personnel;
+    const { wbsProject, loading } = this.props;
+    const { currPRowData } = wbsProject;
 
     return (
       <PageWrapper loading={loading.global}>
@@ -37,7 +37,7 @@ class Personnel extends Component {
             </ProLayout>
           </SiderBar>
           <ProLayout layout="column">
-            <Header title="公司员工" subTitle={currPRowData && currPRowData.name} />
+            <Header title="WBS项目" subTitle={currPRowData && currPRowData.name} />
             <Content empty={{ description: '请选择公司' }}>{this.getRightCmp()}</Content>
           </ProLayout>
         </ProLayout>
@@ -46,4 +46,4 @@ class Personnel extends Component {
   }
 }
 
-export default Personnel;
+export default WBSProject;

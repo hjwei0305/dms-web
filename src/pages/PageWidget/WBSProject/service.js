@@ -22,7 +22,7 @@ export async function saveParent(data) {
 
 /** 保存数据 */
 export async function saveChild(data) {
-  const url = `${MDMSCONTEXT}/personnel/save`;
+  const url = `${MDMSCONTEXT}/wbsProject/save`;
   return request({
     url,
     method: 'POST',
@@ -32,7 +32,7 @@ export async function saveChild(data) {
 
 /** 删除父亲表格数据 */
 export async function delParentRow({ id }) {
-  const url = `${MDMSCONTEXT}/ledgerAccount/delete/${id}`;
+  const url = `${MDMSCONTEXT}/wbsProject/delete/${id}`;
   return request({
     url,
     method: 'DELETE',

@@ -48,56 +48,30 @@ class EditFormDrawer extends Component {
       <>
         <Row>
           <Col span={commonSpan}>
-            <FormItem label="员工编号">
+            <FormItem label="项目代码">
               {getFieldDecorator('code', {
                 initialValue: get(editData, 'code', ''),
                 rules: [
                   {
                     required: true,
-                    message: '请输入员工编号',
+                    message: '请输入项目代码',
                   },
                   {
                     max: 4,
-                    message: '员工编号长度不能超过4',
+                    message: '项目代码长度不能超过4',
                   },
                 ],
               })(<Input disabled={!!editData} />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="员工姓名">
+            <FormItem label="项目姓名">
               {getFieldDecorator('name', {
                 initialValue: get(editData, 'name', ''),
                 rules: [
                   {
                     required: true,
-                    message: '请输入员工姓名',
-                  },
-                ],
-              })(<Input disabled={!!editData} />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="姓名缩写">
-              {getFieldDecorator('shortName', {
-                initialValue: get(editData, 'shortName', ''),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入姓名缩写',
-                  },
-                ],
-              })(<Input disabled={!!editData} />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="身份证">
-              {getFieldDecorator('idCard', {
-                initialValue: get(editData, 'idCard', ''),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入身份证',
+                    message: '请输入项目姓名',
                   },
                 ],
               })(<Input disabled={!!editData} />)}
@@ -106,7 +80,7 @@ class EditFormDrawer extends Component {
           <Col span={commonSpan}>
             <FormItem label="ERP公司代码">
               {getFieldDecorator('erpCorporationCode', {
-                initialValue: get(parentData, 'erpCode'),
+                initialValue: get(parentData, 'erpCode', ''),
                 rules: [
                   {
                     required: true,
@@ -117,65 +91,29 @@ class EditFormDrawer extends Component {
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="在职状态">
-              {getFieldDecorator('workingStatus', {
-                initialValue: get(editData, 'workingStatus'),
+            <FormItem label="项目类型">
+              {getFieldDecorator('projectType', {
+                initialValue: get(editData, 'projectType', ''),
                 rules: [
                   {
                     required: true,
-                    message: '请选择在职状态',
+                    message: '请输入项目类型',
                   },
                 ],
-              })(
-                <Select>
-                  <Select.Option value="ON_JOB">正常</Select.Option>
-                  <Select.Option value="RESIGNED">离职</Select.Option>
-                  <Select.Option value="SUPERANNUATED">退休</Select.Option>
-                </Select>,
-              )}
+              })(<Input disabled={!!editData} />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="员工组">
-              {getFieldDecorator('personnelGroup', {
-                initialValue: get(editData, 'personnelGroup', ''),
+            <FormItem label="创建日期">
+              {getFieldDecorator('erpCreateDate', {
+                initialValue: moment(get(editData, 'erpCreateDate')),
                 rules: [
                   {
                     required: true,
-                    message: '请输入员工组',
-                  },
-                  {
-                    max: 1,
-                    message: '员工组长度不能超过1',
+                    message: '请选择创建日期',
                   },
                 ],
-              })(<Input />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="HR组织机构代码">
-              {getFieldDecorator('hrOrganizationCode', {
-                initialValue: get(editData, 'hrOrganizationCode', ''),
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择Hr组织机构代码',
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="HR组织机构名称">
-              {getFieldDecorator('hrOrganizationName', {
-                initialValue: get(editData, 'hrOrganizationName', ''),
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择Hr组织机构名称',
-                  },
-                ],
-              })(<Input />)}
+              })(<DatePicker style={{ width: '100%' }} />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
@@ -186,63 +124,23 @@ class EditFormDrawer extends Component {
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="性别" hidden>
-              {getFieldDecorator('gender', {
-                initialValue: get(editData, 'gender'),
-              })(<Input />)}
-            </FormItem>
-            <FormItem label="性别">
-              {getFieldDecorator('genderName', {
-                initialValue: get(editData, 'genderName'),
-              })(<ComboGrid {...this.getGenderProps(form)} />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="职位等级">
-              {getFieldDecorator('postGrade', {
-                initialValue: get(editData, 'postGrade'),
+            <FormItem label="业务范围代码">
+              {getFieldDecorator('rangeCode', {
+                initialValue: get(editData, 'rangeCode'),
               })(<Input />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="生日">
-              {getFieldDecorator('birthday', {
-                initialValue: moment(get(editData, 'birthday')),
-              })(<DatePicker style={{ width: '100%' }} />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="电子邮件">
-              {getFieldDecorator('email', {
-                initialValue: get(editData, 'email'),
+            <FormItem label="总账科目代码">
+              {getFieldDecorator('ledgerAccountCode', {
+                initialValue: get(editData, 'ledgerAccountCode'),
               })(<Input />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="移动电话">
-              {getFieldDecorator('mobile', {
-                initialValue: get(editData, 'mobile'),
-              })(<Input />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="座机电话">
-              {getFieldDecorator('telephone', {
-                initialValue: get(editData, 'telephone'),
-              })(<Input />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="邮政编码">
-              {getFieldDecorator('postalCode', {
-                initialValue: get(editData, 'postalCode'),
-              })(<Input />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="通信地址">
-              {getFieldDecorator('mailingAddress', {
-                initialValue: get(editData, 'mailingAddress'),
+            <FormItem label="总账科目名称">
+              {getFieldDecorator('ledgerAccountName', {
+                initialValue: get(editData, 'ledgerAccountName'),
               })(<Input />)}
             </FormItem>
           </Col>
