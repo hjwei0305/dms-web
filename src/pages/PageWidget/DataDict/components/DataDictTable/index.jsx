@@ -27,7 +27,7 @@ class DataDictTypeTable extends Component {
       dispatch({
         type: 'dataDict/getDataDictItems',
         payload: {
-          dataDictId: currDictType.id,
+          dataDictId: currDictType && currDictType.id,
         },
       });
     } else {

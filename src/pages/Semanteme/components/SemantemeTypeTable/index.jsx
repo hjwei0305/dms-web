@@ -174,7 +174,7 @@ class SemantemeTypeTable extends Component {
     dispatch({
       type: 'semanteme/getDataDictItems',
       payload: {
-        dataDictId: currDictType.id,
+        dataDictId: currDictType && currDictType.id,
       },
     });
   };
@@ -224,7 +224,7 @@ class SemantemeTypeTable extends Component {
       className: 'left-content',
       showSearch: false,
       showArrow: false,
-      onSelectChange: this.handlerDictTypeSelect,
+      // onSelectChange: this.handlerDictTypeSelect,
       customTool: this.renderCustomTool,
       searchProperties: ['propertyName', 'remark'],
       searchPlaceHolder: '请输入属性名和备注关键字查询',
