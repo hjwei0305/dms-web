@@ -12,7 +12,7 @@ const { MDMSCONTEXT } = constants;
 
 /** 保存父表格数据 */
 export async function saveParent(data, contextPath) {
-  const url = `${MDMSCONTEXT}${contextPath}/save`;
+  const url = `${MDMSCONTEXT}/${contextPath}/save`;
   return request({
     url,
     method: 'POST',
@@ -23,7 +23,7 @@ export async function saveParent(data, contextPath) {
 /** 保存数据 */
 export async function saveChild(params) {
   const { data, contextPath } = params;
-  const url = `${MDMSCONTEXT}${contextPath}/save`;
+  const url = `${MDMSCONTEXT}/${contextPath}/save`;
   return request({
     url,
     method: 'POST',
@@ -34,7 +34,7 @@ export async function saveChild(params) {
 /** 删除父亲表格数据 */
 export async function delParentRow(params) {
   const { id, contextPath } = params;
-  const url = `${MDMSCONTEXT}${contextPath}/delete/${id}`;
+  const url = `${MDMSCONTEXT}/${contextPath}/delete/${id}`;
   return request({
     url,
     method: 'DELETE',
@@ -44,7 +44,7 @@ export async function delParentRow(params) {
 /** 删除字表格数据 */
 export async function delChildRow(params) {
   const { id, contextPath } = params;
-  const url = `${MDMSCONTEXT}${contextPath}/delete/${id}`;
+  const url = `${MDMSCONTEXT}/${contextPath}/delete/${id}`;
   return request({
     url,
     method: 'DELETE',
