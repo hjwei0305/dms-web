@@ -145,47 +145,45 @@ class ChildTable extends Component {
       {
         title: '操作',
         key: 'operation',
-        width: 90,
-        align: 'center',
+        width: 100,
         dataIndex: 'id',
         className: 'action',
+        align: 'center',
         required: true,
         render: (_, record) => {
           return (
             <>
-              <Space onClick={e => e.stopPropagation()}>
-                {authAction(
-                  // <FormPopover
-                  //   key="edit"
-                  //   onSave={this.save}
-                  //   editData={currCRowData}
-                  //   isSaving={loading.effects['wbsProject/saveChild']}
-                  //   parentData={currPRowData}
-                  // >
-                  <PopoverIcon
-                    key="edit"
-                    className="edit"
-                    onClick={e => this.edit(record, e)}
-                    type="edit"
-                    ignore="true"
-                    tooltip={{ title: '编辑' }}
-                    antd
-                  />,
-                  // </FormPopover>,
-                )}
-                <Popconfirm
-                  key="delete"
-                  placement="topLeft"
-                  title="删除后不能恢复，确定要删除吗？"
-                  onCancel={e => e.stopPropagation()}
-                  onConfirm={e => {
-                    this.del(record);
-                    e.stopPropagation();
-                  }}
-                >
-                  {this.renderDelBtn(record)}
-                </Popconfirm>
-              </Space>
+              {authAction(
+                // <FormPopover
+                //   key="edit"
+                //   onSave={this.save}
+                //   editData={currCRowData}
+                //   isSaving={loading.effects['wbsProject/saveChild']}
+                //   parentData={currPRowData}
+                // >
+                <PopoverIcon
+                  key="edit"
+                  className="edit"
+                  onClick={e => this.edit(record, e)}
+                  type="edit"
+                  ignore="true"
+                  tooltip={{ title: '编辑' }}
+                  antd
+                />,
+                // </FormPopover>,
+              )}
+              <Popconfirm
+                key="delete"
+                placement="topLeft"
+                title="删除后不能恢复，确定要删除吗？"
+                onCancel={e => e.stopPropagation()}
+                onConfirm={e => {
+                  this.del(record);
+                  e.stopPropagation();
+                }}
+              >
+                {this.renderDelBtn(record)}
+              </Popconfirm>
             </>
           );
         },
