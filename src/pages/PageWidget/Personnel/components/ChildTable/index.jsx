@@ -151,7 +151,7 @@ class ChildTable extends Component {
         render: (_, record) => {
           return (
             <>
-              <div className="action-box" onClick={e => e.stopPropagation()}>
+              <Space onClick={e => e.stopPropagation()}>
                 {authAction(
                   // <FormPopover
                   //   key="edit"
@@ -183,7 +183,7 @@ class ChildTable extends Component {
                 >
                   {this.renderDelBtn(record)}
                 </Popconfirm>
-              </div>
+              </Space>
             </>
           );
         },
