@@ -104,8 +104,8 @@ class FormPopover extends PureComponent {
                   message: '请输入ERP公司代码',
                 },
                 {
-                  max: 4,
-                  message: 'ERP公司代码长度不能超过4',
+                  max: 10,
+                  message: 'ERP公司代码长度不能超过10',
                 },
               ],
             })(<Input disabled={!!editData} />)}
