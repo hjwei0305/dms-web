@@ -56,10 +56,6 @@ class EditFormDrawer extends Component {
                     required: true,
                     message: '请输入员工编号',
                   },
-                  {
-                    max: 4,
-                    message: '员工编号长度不能超过4',
-                  },
                 ],
               })(<Input disabled={!!editData} />)}
             </FormItem>
@@ -198,9 +194,9 @@ class EditFormDrawer extends Component {
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="职位等级">
-              {getFieldDecorator('postGrade', {
-                initialValue: get(editData, 'postGrade'),
+            <FormItem label="职位">
+              {getFieldDecorator('post', {
+                initialValue: get(editData, 'post'),
               })(<Input />)}
             </FormItem>
           </Col>

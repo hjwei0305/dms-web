@@ -232,9 +232,9 @@ class ChildTable extends Component {
         dataIndex: 'personnelGroup',
       },
       {
-        title: '职位等级',
+        title: '职位',
         width: 200,
-        dataIndex: 'postGrade',
+        dataIndex: 'post',
       },
       {
         title: '邮政编码',
