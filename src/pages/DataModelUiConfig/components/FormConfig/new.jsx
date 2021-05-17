@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Menu, Icon, Popconfirm, Button } from 'antd';
+import { Menu, Popconfirm, Button } from 'antd';
 import cls from 'classnames';
 import { get, isEqual, cloneDeep } from 'lodash';
 import { ProLayout, ExtIcon } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
+import { getPropertiesByCode } from '@/pages/DataModelUiConfig/service';
 import FormEleCfg from './components/FormEleCfg';
 import EditForm from './components/FormEleCfg/EditForm';
 import FormCfg from './components/FormCfg/new';
@@ -27,8 +28,29 @@ class FormUiConfig extends Component {
       oldFormUiConfig: cloneDeep(formUiConfig),
       cfgType: '1',
       selectedFormItem: null,
+      fieldLists: [],
     };
   }
+
+  componentDidMount() {
+    this.getPropertiesByCode().then(result => {
+      const { success, data } = result;
+      if (success) {
+        this.setState({
+          fieldLists: data || [],
+        });
+      }
+    });
+  }
+
+  getPropertiesByCode = () => {
+    const { dataModelUiConfig } = this.props;
+    const { currPRowData } = dataModelUiConfig;
+
+    return getPropertiesByCode({
+      code: currPRowData.code,
+    });
+  };
 
   handleBack = () => {
     const { dispatch } = this.props;
@@ -109,7 +131,7 @@ class FormUiConfig extends Component {
   render() {
     const { dataModelUiConfig, loading } = this.props;
     const { currPRowData } = dataModelUiConfig;
-    const { formUiConfig, oldFormUiConfig, cfgType, selectedFormItem } = this.state;
+    const { formUiConfig, oldFormUiConfig, cfgType, selectedFormItem, fieldLists } = this.state;
     const canCreateRoot = get(formUiConfig, 'canCreateRoot', false);
     const hasUpdate = !isEqual(formUiConfig, oldFormUiConfig);
     return (
@@ -211,7 +233,7 @@ class FormUiConfig extends Component {
                       key={`${selectedFormItem[0].code}${cfgType}`}
                       optKey={cfgType}
                       editData={selectedFormItem}
-                      fieldLists={[]}
+                      fieldLists={fieldLists}
                     />
                   )}
                 </Content>
