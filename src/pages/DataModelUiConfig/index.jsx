@@ -28,7 +28,6 @@ class DataModelUiConfig extends Component {
       vImportUiConfig,
       vFilterFormConfig,
     } = dataModelUiConfig;
-    console.log('DataModelUiConfig -> render -> currPRowData', currPRowData);
 
     return (
       <>
