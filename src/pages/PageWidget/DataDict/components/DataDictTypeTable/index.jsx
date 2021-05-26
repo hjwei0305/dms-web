@@ -127,6 +127,10 @@ class DataDictTypeTable extends Component {
     this.listCardRef.handlerSearch(v);
   };
 
+  handlerPressEnter = () => {
+    this.listCardRef.handlerPressEnter();
+  };
+
   renderCustomTool = () => {
     const userInfo = getCurrentUser();
     const { authorityPolicy } = userInfo || {};
@@ -145,7 +149,7 @@ class DataDictTypeTable extends Component {
             placeholder="输入代码或名称关键字查询"
             onChange={e => this.handlerSearchChange(e.target.value)}
             onSearch={this.handlerSearch}
-            onPressEnter={this.handlerSearch}
+            onPressEnter={this.handlerPressEnter}
             style={{ width: '100%' }}
           />
         </div>
