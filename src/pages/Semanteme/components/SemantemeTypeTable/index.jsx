@@ -231,7 +231,7 @@ class SemantemeTypeTable extends Component {
       onListCardRef: ref => (this.listCardRef = ref),
       selectedKeys,
       store: {
-        url: `${MDMSCONTEXT}semantemeType/findAll`,
+        url: `${MDMSCONTEXT}/semantemeType/findAll`,
       },
       itemField: {
         title: this.renderTitle,

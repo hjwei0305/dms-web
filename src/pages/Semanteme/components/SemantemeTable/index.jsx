@@ -160,7 +160,7 @@ class SemantemeTable extends Component {
       allowCancelSelect: true,
       store: {
         type: 'POST',
-        url: `${MDMSCONTEXT}translation/findTranslationsByPage`,
+        url: `${MDMSCONTEXT}/translation/findTranslationsByPage`,
       },
     };
   };

@@ -185,7 +185,7 @@ class Language extends Component {
       bordered: false,
       toolBar: toolBarProps,
       store: {
-        url: `${MDMSCONTEXT}language/findAll`,
+        url: `${MDMSCONTEXT}/language/findAll`,
       },
     };
   };
