@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { get } from 'lodash';
+import { get, isPlainObject } from 'lodash';
 import { ComboGrid } from 'suid';
 import { constants } from '@/utils';
 
@@ -9,6 +9,7 @@ class ExtComboGrid extends Component {
   getComboGridProps = () => {
     const { schema, value } = this.props;
     let store = null;
+    let tempValue = value;
     const contextPath = get(schema, 'ExtComboGrid.dataModelCode');
     if (contextPath) {
       store = {
@@ -30,9 +31,12 @@ class ExtComboGrid extends Component {
       if (isShowField) {
         showField = code;
       }
+      if (isPlainObject(value)) {
+        tempValue = value[showField];
+      }
     });
     return {
-      value,
+      value: tempValue,
       store,
       reader: {
         name: showField,
