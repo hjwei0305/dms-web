@@ -42,6 +42,11 @@ export default [
         component: './PageWidget/LedgerAccount',
       },
       {
+        path: '/supplier',
+        title: '供应商',
+        component: './PageWidget/Supplier',
+      },
+      {
         path: '/personnel',
         title: '公司员工',
         component: './PageWidget/Personnel',
