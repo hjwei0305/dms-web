@@ -9,11 +9,11 @@ import ChildTable from './components/ChildTable';
 const { Header, Content, SiderBar } = ProLayout;
 
 @withRouter
-@connect(({ supplier, loading }) => ({ supplier, loading }))
-class Supplier extends Component {
+@connect(({ customer, loading }) => ({ customer, loading }))
+class Customer extends Component {
   getRightCmp = () => {
-    const { supplier } = this.props;
-    const { currPRowData } = supplier;
+    const { customer } = this.props;
+    const { currPRowData } = customer;
     if (currPRowData) {
       return <ChildTable key={currPRowData.id} />;
     }
@@ -22,15 +22,15 @@ class Supplier extends Component {
   };
 
   render() {
-    const { supplier, loading } = this.props;
-    const { currPRowData } = supplier;
+    const { customer, loading } = this.props;
+    const { currPRowData } = customer;
 
     return (
       <PageWrapper loading={loading.global}>
         <ProLayout>
           <SiderBar width={350} allowCollapse gutter={[0, 4]}>
             <ProLayout layout="column">
-              <Header title="供应商" />
+              <Header title="客户" />
               <Content>
                 <ParentTable />
               </Content>
@@ -38,7 +38,7 @@ class Supplier extends Component {
           </SiderBar>
           <ProLayout layout="column">
             <Header title="配置公司" subTitle={currPRowData && currPRowData.name} />
-            <Content empty={{ description: '请选择供应商进行配置' }}>{this.getRightCmp()}</Content>
+            <Content empty={{ description: '请选择客户进行配置' }}>{this.getRightCmp()}</Content>
           </ProLayout>
         </ProLayout>
       </PageWrapper>
@@ -46,4 +46,4 @@ class Supplier extends Component {
   }
 }
 
-export default Supplier;
+export default Customer;

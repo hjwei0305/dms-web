@@ -47,6 +47,11 @@ export default [
         component: './PageWidget/Supplier',
       },
       {
+        path: '/customer',
+        title: '客户',
+        component: './PageWidget/Customer',
+      },
+      {
         path: '/personnel',
         title: '公司员工',
         component: './PageWidget/Personnel',
