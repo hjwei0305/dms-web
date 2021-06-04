@@ -206,7 +206,7 @@ class ChildTable extends Component {
         width: 180,
         dataIndex: 'payFrozen',
         render: payFrozen => (
-          <Tag color={payFrozen ? 'green' : 'red'}>{payFrozen ? '允许' : '禁止'}</Tag>
+          <Tag color={payFrozen ? 'red' : 'green'}>{payFrozen ? '禁止' : '允许'}</Tag>
         ),
       },
     ];
