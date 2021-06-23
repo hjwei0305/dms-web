@@ -249,6 +249,7 @@ class ChildTable extends Component {
     // const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
     // const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const tableUiConfig = get(uiObj, 'showConfig', null);
+    console.log('ChildTable -> getExtableProps -> tableUiConfig', tableUiConfig);
     const filterFormConfig = get(uiObj, 'filterFormConfig', null);
     const tableProps = tableUiConfig || {
       columns: [],
@@ -329,6 +330,7 @@ class ChildTable extends Component {
       ) : null,
     };
     tableProps.columns = columns.concat(tableProps.columns);
+    console.log('ChildTable -> getExtableProps -> columns', tableProps.columns);
     tableProps.toolBar = toolBarProps;
     tableProps.showSearch = !!tableProps.searchProperties.length;
     if (isPlainObject(filterParams)) {

@@ -31,14 +31,14 @@ class ExtTablePreview extends React.Component {
       const searchProperties = [];
       const sortField = {};
       columns.forEach(it => {
-        const { title, canSearch, dataIndex, formatter, sort } = it;
+        const { title, canSearch, dataIndex, formatter, sort, formatObj } = it;
         if (canSearch) {
           tempPlaceHolder.push(title);
           searchProperties.push(dataIndex);
         }
         if (formatter) {
           Object.assign(it, {
-            render: formatters[formatter],
+            render: value => formatters[formatter](value, JSON.parse(formatObj)),
           });
         }
         if (sort) {
@@ -62,10 +62,10 @@ class ExtTablePreview extends React.Component {
     }
     const { columns: tempColumns } = tableProps;
     tempColumns.forEach(item => {
-      const { formatter, render } = item;
+      const { formatter, render, formatObj } = item;
       if (formatter && !render) {
         Object.assign(item, {
-          render: formatters[formatter],
+          render: value => formatters[formatter](value, JSON.parse(formatObj)),
         });
       }
     });

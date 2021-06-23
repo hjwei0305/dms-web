@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Switch, InputNumber, Select, Form } from 'antd';
+import { Switch, InputNumber, Select, Form, Input } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -23,7 +23,7 @@ const formItemLayout = {
 class EditForm extends PureComponent {
   render() {
     const { editData, form } = this.props;
-    const { getFieldDecorator } = form;
+    const { getFieldDecorator, getFieldValue } = form;
     return (
       <Form {...formItemLayout} layout="horizontal">
         <FormItem label="列宽">
@@ -39,9 +39,22 @@ class EditForm extends PureComponent {
               <Select.Option value="formatText">文本</Select.Option>
               <Select.Option value="formatDate">日期</Select.Option>
               <Select.Option value="formatBool">布尔</Select.Option>
+              <Select.Option value="formatEnum">枚举</Select.Option>
             </Select>,
           )}
         </FormItem>
+        {getFieldValue('formatter') === 'formatEnum' && (
+          <FormItem
+            label="枚举对象"
+            onClick={e => {
+              e.stopPropagation();
+            }}
+          >
+            {getFieldDecorator('formatObj', {
+              initialValue: editData && editData.formatObj,
+            })(<Input />)}
+          </FormItem>
+        )}
         <FormItem
           label="快速查询"
           onClick={e => {

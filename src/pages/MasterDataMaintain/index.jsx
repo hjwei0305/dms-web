@@ -25,6 +25,7 @@ class MasterDataMaintain extends Component {
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
     const formUiConfig = get(uiObj, 'formConfig', null);
     const tableUiConfig = get(uiObj, 'showConfig', null);
+    console.log('MasterDataMaintain -> getRightCmp -> tableUiConfig', tableUiConfig);
     const importUiConfig = JSON.parse(get(modelUiConfig, 'Import', null));
     const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const dataStructure = get(currPRowData, 'dataStructure', 'GENERAL');

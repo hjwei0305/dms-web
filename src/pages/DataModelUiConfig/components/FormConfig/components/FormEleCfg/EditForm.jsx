@@ -89,14 +89,28 @@ class EditForm extends React.Component {
               <Select.Option value="ExtTextArea">文本框</Select.Option>
               <Select.Option value="ExtSwitch">布尔框</Select.Option>
               <Select.Option value="ExtDate">日期</Select.Option>
+              <Select.Option value="ExtSelect">下拉框</Select.Option>
               {/* <Select.Option value="ExtRangeDate">日期区间</Select.Option> */}
               <Select.Option value="ExtComboGrid">下拉表格</Select.Option>
             </Select>,
           )}
         </FormItem>
+        {getFieldValue('ui:widget') === 'ExtSelect' && (
+          <FormItem label="下拉数据源">
+            {getFieldDecorator('ExtSelect.options', {
+              initialValue: get(editData[optKey], 'ExtSelect.options'),
+              rules: [
+                {
+                  required: true,
+                  message: '请输入下拉数据源',
+                },
+              ],
+            })(<Input.TextArea />)}
+          </FormItem>
+        )}
         {getFieldValue('ui:widget') === 'ExtComboGrid' ? (
           <>
-            <FormItem style={{ display: 'none' }}>
+            <FormItem hidden>
               {getFieldDecorator('ExtComboGrid.dataModelCode', {
                 initialValue: get(editData[optKey], 'ExtComboGrid.dataModelCode'),
               })(<Input />)}
