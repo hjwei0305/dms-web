@@ -61,6 +61,11 @@ export default [
         title: 'wbs项目',
         component: './PageWidget/WBSProject',
       },
+      {
+        path: '/corpPaymentBankAccount',
+        title: '公司付款帐号',
+        component: './PageWidget/CorpPaymentBankAccount',
+      },
     ],
   },
 ];

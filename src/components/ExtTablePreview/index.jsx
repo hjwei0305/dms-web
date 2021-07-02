@@ -38,7 +38,7 @@ class ExtTablePreview extends React.Component {
         }
         if (formatter) {
           Object.assign(it, {
-            render: value => formatters[formatter](value, JSON.parse(formatObj)),
+            render: value => formatters[formatter](value, formatObj && JSON.parse(formatObj)),
           });
         }
         if (sort) {
@@ -65,7 +65,7 @@ class ExtTablePreview extends React.Component {
       const { formatter, render, formatObj } = item;
       if (formatter && !render) {
         Object.assign(item, {
-          render: value => formatters[formatter](value, JSON.parse(formatObj)),
+          render: value => formatters[formatter](value, formatObj && JSON.parse(formatObj)),
         });
       }
     });
