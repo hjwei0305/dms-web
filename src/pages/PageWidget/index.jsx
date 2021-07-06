@@ -4,6 +4,7 @@ import Customer from './Customer';
 import Personnel from './Personnel';
 import WBSProject from './WBSProject';
 import CorpPaymentBankAccount from './CorpPaymentBankAccount';
+import PaymentInfo from './PaymentInfo';
 
 export default {
   ledgerAccount: LedgerAccount,
@@ -12,4 +13,5 @@ export default {
   personnel: Personnel,
   wbsProject: WBSProject,
   corpPaymentBankAccount: CorpPaymentBankAccount,
+  paymentInfo: PaymentInfo,
 };
