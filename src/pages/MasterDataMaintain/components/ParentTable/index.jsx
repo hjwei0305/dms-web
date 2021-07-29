@@ -25,6 +25,10 @@ class CascadeTableMaster extends Component {
     }
   };
 
+  handlerPressEnter = () => {
+    this.listCardRef.handlerPressEnter();
+  };
+
   handlerSearchChange = v => {
     this.listCardRef.handlerSearchChange(v);
   };
@@ -85,7 +89,7 @@ class CascadeTableMaster extends Component {
             placeholder="可输入名称关键字查询"
             onChange={e => this.handlerSearchChange(e.target.value)}
             onSearch={this.handlerSearch}
-            onPressEnter={this.handlerSearch}
+            onPressEnter={this.handlerPressEnter}
             style={{ width: '100%' }}
           />
         </div>
