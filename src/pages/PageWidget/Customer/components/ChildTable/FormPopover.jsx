@@ -115,8 +115,8 @@ class FormPopover extends PureComponent {
               initialValue: get(editData, 'accountCode', ''),
               rules: [
                 {
-                  max: 1,
-                  message: '统驭科目代码长度不能超过1',
+                  max: 10,
+                  message: '统驭科目代码长度不能超过10',
                 },
               ],
             })(<Input />)}
