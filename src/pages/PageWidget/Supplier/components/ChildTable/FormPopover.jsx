@@ -110,13 +110,13 @@ class FormPopover extends PureComponent {
               ],
             })(<Input disabled={!!editData} />)}
           </FormItem>
-          <FormItem label="统驭科目代码">
+          <FormItem label="统驭科目">
             {getFieldDecorator('accountCode', {
               initialValue: get(editData, 'accountCode', ''),
               rules: [
                 {
-                  max: 1,
-                  message: '统驭科目代码长度不能超过1',
+                  max: 10,
+                  message: '统驭科目代码长度不能超过10',
                 },
               ],
             })(<Input />)}

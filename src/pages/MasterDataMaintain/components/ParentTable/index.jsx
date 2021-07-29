@@ -29,8 +29,8 @@ class CascadeTableMaster extends Component {
     this.listCardRef.handlerSearchChange(v);
   };
 
-  handlerSearch = () => {
-    this.listCardRef.handlerSearch();
+  handlerSearch = v => {
+    this.listCardRef.handlerSearch(v);
   };
 
   getComboTreeProps = () => {
