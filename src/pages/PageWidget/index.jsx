@@ -7,6 +7,7 @@ import CorpPaymentBankAccount from './CorpPaymentBankAccount';
 import PaymentInfo from './PaymentInfo';
 import CorporationProject from './CorpProject';
 import InnerOrder from './InnerOrder';
+import ProfitCenter from './ProfitCenter';
 
 export default {
   ledgerAccount: LedgerAccount,
@@ -18,4 +19,5 @@ export default {
   paymentInfo: PaymentInfo,
   corporationProject: CorporationProject,
   innerOrder: InnerOrder,
+  profitCenter: ProfitCenter,
 };
