@@ -2,7 +2,7 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:38
  * @Last Modified by: zp
- * @Last Modified time: 2021-08-03 10:57:21
+ * @Last Modified time: 2021-08-03 14:33:14
  */
 import { message } from 'antd';
 import { utils } from 'suid';
@@ -14,14 +14,13 @@ const { modelExtend, model } = dvaModel;
 // semanteme
 
 export default modelExtend(model, {
-  namespace: 'wbsProject',
+  namespace: 'corpProject',
 
   state: {
     currPRowData: null,
     currCRowData: null,
     pVisible: false,
     cVisible: false,
-    isCreateChild: false,
     modelUiConfig: null,
     modalVisible: false,
   },

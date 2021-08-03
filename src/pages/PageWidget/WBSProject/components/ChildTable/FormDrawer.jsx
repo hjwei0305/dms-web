@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Input, Row, Select, DatePicker, Col } from 'antd';
-import { ComboGrid } from 'suid';
+import { Input, Row, Col } from 'antd';
+import { ComboList } from 'suid';
 import { get } from 'lodash';
-import moment from 'moment';
 import FormDrawer from '@/components/FormDrawer';
 import { constants } from '@/utils';
 
@@ -10,6 +9,33 @@ const { MDMSCONTEXT } = constants;
 const commonSpan = 24;
 
 class EditFormDrawer extends Component {
+  getLedgerAccountProps = form => {
+    const { parentData } = this.props;
+    const cascadeParams = {};
+    Object.assign(cascadeParams, {
+      erpCode: parentData.erpCode,
+    });
+    const url = `${MDMSCONTEXT}/ledgerAccount/search`;
+    return {
+      form,
+      cascadeParams,
+      name: 'ledgerAccountName',
+      remotePaging: true,
+      store: {
+        type: 'POST',
+        autoLoad: false,
+        url,
+      },
+      rowKey: 'id',
+      reader: {
+        name: 'name',
+        description: 'code',
+        field: ['code'],
+      },
+      field: ['ledgerAccountCode'],
+    };
+  };
+
   getGenderProps = form => {
     return {
       form,
@@ -41,42 +67,28 @@ class EditFormDrawer extends Component {
   };
 
   renderFormItems = (form, FormItem) => {
-    const { editData, parentData } = this.props;
+    const { editData, parentData, isCreateChild } = this.props;
     const { getFieldDecorator } = form;
+
+    const initData = isCreateChild ? null : editData;
 
     return (
       <>
         <Row>
-          <Col span={commonSpan}>
-            <FormItem label="项目代码">
-              {getFieldDecorator('code', {
-                initialValue: get(editData, 'code', ''),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入项目代码',
-                  },
-                  {
-                    max: 4,
-                    message: '项目代码长度不能超过4',
-                  },
-                ],
-              })(<Input disabled={!!editData} />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="项目姓名">
-              {getFieldDecorator('name', {
-                initialValue: get(editData, 'name', ''),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入项目姓名',
-                  },
-                ],
-              })(<Input disabled={!!editData} />)}
-            </FormItem>
-          </Col>
+          {isCreateChild && (
+            <Col span={0}>
+              <FormItem label="父节点id" hidden>
+                {getFieldDecorator('parentId', {
+                  initialValue: get(editData, 'id', ''),
+                })(<Input disabled={!!editData} />)}
+              </FormItem>
+              <FormItem label="父节点代码" hidden>
+                {getFieldDecorator('parentCode', {
+                  initialValue: get(editData, 'code', ''),
+                })(<Input disabled={!!editData} />)}
+              </FormItem>
+            </Col>
+          )}
           <Col span={commonSpan}>
             <FormItem label="ERP公司代码">
               {getFieldDecorator('erpCorporationCode', {
@@ -91,57 +103,74 @@ class EditFormDrawer extends Component {
             </FormItem>
           </Col>
           <Col span={commonSpan}>
+            <FormItem label="项目代码">
+              {getFieldDecorator('code', {
+                initialValue: get(initData, 'code', ''),
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入项目代码',
+                  },
+                  {
+                    max: 4,
+                    message: '项目代码长度不能超过4',
+                  },
+                ],
+              })(<Input disabled={!!initData} />)}
+            </FormItem>
+          </Col>
+          <Col span={commonSpan}>
+            <FormItem label="项目姓名">
+              {getFieldDecorator('name', {
+                initialValue: get(initData, 'name', ''),
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入项目姓名',
+                  },
+                ],
+              })(<Input disabled={!!initData} />)}
+            </FormItem>
+          </Col>
+          <Col span={commonSpan}>
             <FormItem label="项目类型">
               {getFieldDecorator('projectType', {
-                initialValue: get(editData, 'projectType', ''),
+                initialValue: get(initData, 'projectType', ''),
                 rules: [
                   {
                     required: true,
                     message: '请输入项目类型',
                   },
                 ],
-              })(<Input disabled={!!editData} />)}
-            </FormItem>
-          </Col>
-          <Col span={commonSpan}>
-            <FormItem label="创建日期">
-              {getFieldDecorator('erpCreateDate', {
-                initialValue: moment(get(editData, 'erpCreateDate')),
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择创建日期',
-                  },
-                ],
-              })(<DatePicker style={{ width: '100%' }} />)}
+              })(<Input disabled={!!initData} />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
             <FormItem label="成本中心代码">
               {getFieldDecorator('costCenterCode', {
-                initialValue: get(editData, 'costCenterCode'),
+                initialValue: get(initData, 'costCenterCode'),
               })(<Input />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
             <FormItem label="业务范围代码">
               {getFieldDecorator('rangeCode', {
-                initialValue: get(editData, 'rangeCode'),
+                initialValue: get(initData, 'rangeCode'),
               })(<Input />)}
             </FormItem>
           </Col>
-          <Col span={commonSpan}>
-            <FormItem label="总账科目代码">
+          <Col span={0}>
+            <FormItem label="总账科目代码" hidden>
               {getFieldDecorator('ledgerAccountCode', {
-                initialValue: get(editData, 'ledgerAccountCode'),
+                initialValue: get(initData, 'ledgerAccountCode'),
               })(<Input />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="总账科目名称">
+            <FormItem label="总账科目">
               {getFieldDecorator('ledgerAccountName', {
-                initialValue: get(editData, 'ledgerAccountName'),
-              })(<Input />)}
+                initialValue: get(initData, 'ledgerAccountName', ''),
+              })(<ComboList allowClear {...this.getLedgerAccountProps(form)} />)}
             </FormItem>
           </Col>
         </Row>
@@ -150,8 +179,11 @@ class EditFormDrawer extends Component {
   };
 
   render() {
-    const { editData, confirmLoading, onOk, visible, onClose } = this.props;
-    const title = editData ? '编辑' : '新增';
+    const { editData, confirmLoading, onOk, visible, onClose, isCreateChild } = this.props;
+    let title = editData ? '编辑' : '新增';
+    if (isCreateChild) {
+      title = '新建子节点';
+    }
     return (
       <FormDrawer
         title={title}

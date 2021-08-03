@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Tag } from 'antd';
 import { utils, ExtTable } from 'suid';
-import moment from 'moment';
 import { constants } from '@/utils';
 import PopoverIcon from '@/components/PopoverIcon';
 import Space from '@/components/Space';
@@ -11,29 +10,28 @@ import FormDrawer from './FormDrawer';
 const { authAction } = utils;
 const { MDMSCONTEXT } = constants;
 
-@connect(({ wbsProject, loading }) => ({ wbsProject, loading }))
+@connect(({ corpProject, loading }) => ({ corpProject, loading }))
 class ChildTable extends Component {
   state = {
     delRowId: null,
   };
 
   reloadData = () => {
-    const { wbsProject } = this.props;
-    const { currPRowData } = wbsProject;
+    const { corpProject } = this.props;
+    const { currPRowData } = corpProject;
     if (currPRowData && this.tableRef) {
       this.tableRef.remoteDataRefresh();
     }
   };
 
-  add = (isCreateChild, currCRowData) => {
+  add = () => {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'wbsProject/updatePageState',
+      type: 'corpProject/updatePageState',
       payload: {
         cVisible: true,
-        currCRowData,
-        isCreateChild,
+        currCRowData: null,
       },
     });
   };
@@ -41,26 +39,25 @@ class ChildTable extends Component {
   edit = (rowData, e) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'wbsProject/updatePageState',
+      type: 'corpProject/updatePageState',
       payload: {
         cVisible: true,
         currCRowData: rowData,
-        isCreateChild: false,
       },
     });
     e.stopPropagation();
   };
 
   del = record => {
-    const { dispatch, wbsProject } = this.props;
-    const { currCRowData } = wbsProject;
+    const { dispatch, corpProject } = this.props;
+    const { currCRowData } = corpProject;
     this.setState(
       {
         delRowId: record.id,
       },
       () => {
         dispatch({
-          type: 'wbsProject/delCRow',
+          type: 'corpProject/delCRow',
           payload: {
             id: record.id,
           },
@@ -68,7 +65,7 @@ class ChildTable extends Component {
           if (res.success) {
             if (currCRowData && currCRowData.id === record.id) {
               dispatch({
-                type: 'wbsProject/updatePageState',
+                type: 'corpProject/updatePageState',
                 payload: {
                   currCRowData: null,
                 },
@@ -89,22 +86,22 @@ class ChildTable extends Component {
     );
   };
 
-  save = data => {
-    const { dispatch, wbsProject } = this.props;
-    const { currCRowData, isCreateChild } = wbsProject;
+  save = (data, cb) => {
+    const { dispatch, corpProject } = this.props;
+    const { currCRowData } = corpProject;
     let params = {};
-    data.erpCreateDate = moment(data.erpCreateDate).format('YYYY-MM-DD HH:mm:ss');
-    if (currCRowData && !isCreateChild) {
+    if (currCRowData) {
       Object.assign(params, currCRowData, data);
     } else {
       params = data;
     }
     dispatch({
-      type: 'wbsProject/saveChild',
+      type: 'corpProject/saveChild',
       payload: params,
     }).then(res => {
       if (res.success) {
         this.reloadData();
+        // cb(false);
         this.closeFormModal();
       }
     });
@@ -113,7 +110,7 @@ class ChildTable extends Component {
   closeFormModal = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'wbsProject/updatePageState',
+      type: 'corpProject/updatePageState',
       payload: {
         cVisible: false,
       },
@@ -123,7 +120,7 @@ class ChildTable extends Component {
   renderDelBtn = row => {
     const { loading } = this.props;
     const { delRowId } = this.state;
-    if (loading.effects['wbsProject/delCRow'] && delRowId === row.id) {
+    if (loading.effects['corpProject/delCRow'] && delRowId === row.id) {
       return <PopoverIcon className="del-loading" type="loading" antd />;
     }
     return (
@@ -138,98 +135,78 @@ class ChildTable extends Component {
   };
 
   getExtableProps = () => {
-    const { wbsProject, loading } = this.props;
-    const { currPRowData, currCRowData } = wbsProject;
+    const { corpProject } = this.props;
+    const { currPRowData } = corpProject;
 
     const columns = [
       {
         title: '操作',
         key: 'operation',
-        width: 140,
+        width: 150,
+        align: 'center',
         dataIndex: 'id',
         className: 'action',
-        align: 'center',
         required: true,
         render: (_, record) => {
           return (
             <>
-              {authAction(
-                <PopoverIcon
-                  key="plus"
-                  className="plus"
-                  onClick={e => this.add(true, record)}
-                  type="plus"
-                  ignore="true"
-                  tooltip={{ title: '新建子节点' }}
-                  antd
-                />,
-              )}
-              {authAction(
-                <PopoverIcon
-                  key="edit"
-                  className="edit"
-                  onClick={e => this.edit(record, e)}
-                  type="edit"
-                  ignore="true"
-                  tooltip={{ title: '编辑' }}
-                  antd
-                />,
-              )}
-              <Popconfirm
-                key="delete"
-                placement="topLeft"
-                title="删除后不能恢复，确定要删除吗？"
-                onCancel={e => e.stopPropagation()}
-                onConfirm={e => {
-                  this.del(record);
-                  e.stopPropagation();
-                }}
-              >
-                {this.renderDelBtn(record)}
-              </Popconfirm>
+              <Space onClick={e => e.stopPropagation()}>
+                {authAction(
+                  <PopoverIcon
+                    key="edit"
+                    className="edit"
+                    onClick={e => this.edit(record, e)}
+                    type="edit"
+                    ignore="true"
+                    tooltip={{ title: '编辑' }}
+                    antd
+                  />,
+                )}
+                <Popconfirm
+                  key="delete"
+                  placement="topLeft"
+                  title="删除后不能恢复，确定要删除吗？"
+                  onCancel={e => e.stopPropagation()}
+                  onConfirm={e => {
+                    this.del(record);
+                    e.stopPropagation();
+                  }}
+                >
+                  {this.renderDelBtn(record)}
+                </Popconfirm>
+              </Space>
             </>
           );
         },
       },
       {
-        title: 'WBS名称',
+        title: '项目名称',
         dataIndex: 'name',
         width: 180,
       },
       {
-        title: 'WBS编号',
-        dataIndex: 'code',
+        title: 'wbs项目代码',
+        dataIndex: 'wbsProjectCode',
         width: 180,
+        render: wbsProjectCode => wbsProjectCode || '-',
       },
       {
-        title: 'ERP公司代码',
-        dataIndex: 'erpCorporationCode',
-        width: 180,
+        title: 'wbs项目名称',
+        dataIndex: 'wbsProjectName',
+        width: 220,
+        render: wbsProjectName => wbsProjectName || '-',
       },
       {
-        title: '成本中心代码',
-        dataIndex: 'costCenterCode',
+        title: '内部订单代码',
+        dataIndex: 'innerOrderCode',
         width: 180,
+        render: innerOrderCode => innerOrderCode || '-',
       },
       {
-        title: '项目类型',
-        dataIndex: 'projectType',
-        width: 180,
-      },
-      {
-        title: '业务范围代码',
-        dataIndex: 'rangeCode',
-        width: 180,
-      },
-      {
-        title: '总账科目代码',
-        dataIndex: 'ledgerAccountCode',
-        width: 180,
-      },
-      {
-        title: '总账科目名称',
-        dataIndex: 'ledgerAccountName',
-        width: 180,
+        title: '内部订单名称',
+        dataIndex: 'innerOrderName',
+        width: 220,
+        render: innerOrderName => innerOrderName || '-',
       },
     ];
     const toolBar = {
@@ -237,7 +214,7 @@ class ChildTable extends Component {
         <Space>
           {authAction(
             <Button key="add" type="primary" onClick={this.add} ignore="true">
-              新增根节点
+              新增
             </Button>,
           )}
           <Button onClick={this.reloadData}>刷新</Button>
@@ -248,46 +225,47 @@ class ChildTable extends Component {
     return {
       toolBar,
       columns,
-      searchProperties: ['code', 'name'],
-      searchPlaceHolder: '请输入代码或者名称查询',
-      lineNumber: false,
-      defaultExpandAllRows: true,
-      pagination: false,
-      indentSize: 12,
-      remotePaging: false,
-      allowCustomColumns: false,
-      showSearch: false,
+      cascadeParams: {
+        filters: [
+          {
+            fieldName: 'erpCorporationCode',
+            operator: 'EQ',
+            value: currPRowData.erpCode,
+          },
+        ],
+      },
+      searchProperties: ['name'],
+      searchPlaceHolder: '请输入项目名称',
       store: {
-        type: 'GET',
-        url: `${MDMSCONTEXT}/wbsProject/getAllTree?erpCorporationCode=${currPRowData.erpCode}`,
+        type: 'POST',
+        url: `${MDMSCONTEXT}/corporationProject/findByPage`,
       },
     };
   };
 
   getFormModalProps = () => {
-    const { loading, wbsProject } = this.props;
-    const { currPRowData, currCRowData, cVisible } = wbsProject;
+    const { loading, corpProject } = this.props;
+    const { currPRowData, currCRowData, cVisible } = corpProject;
     return {
       onSave: this.save,
       parentData: currPRowData,
       editData: currCRowData,
       visible: cVisible,
       onCancel: this.closeFormModal,
-      saving: loading.effects['wbsProject/saveChild'],
+      saving: loading.effects['corpProject/saveChild'],
     };
   };
 
   getFormDrawerProps = () => {
-    const { loading, wbsProject } = this.props;
-    const { currPRowData, currCRowData, cVisible, isCreateChild } = wbsProject;
+    const { loading, corpProject } = this.props;
+    const { currPRowData, currCRowData, cVisible } = corpProject;
     return {
       onOk: this.save,
       parentData: currPRowData,
       editData: currCRowData,
       visible: cVisible,
-      isCreateChild,
       onClose: this.closeFormModal,
-      confirmLoading: loading.effects['wbsProject/saveChild'],
+      confirmLoading: loading.effects['corpProject/saveChild'],
     };
   };
 

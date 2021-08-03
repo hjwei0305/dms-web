@@ -11,29 +11,28 @@ import FormDrawer from './FormDrawer';
 const { authAction } = utils;
 const { MDMSCONTEXT } = constants;
 
-@connect(({ wbsProject, loading }) => ({ wbsProject, loading }))
+@connect(({ innerOrder, loading }) => ({ innerOrder, loading }))
 class ChildTable extends Component {
   state = {
     delRowId: null,
   };
 
   reloadData = () => {
-    const { wbsProject } = this.props;
-    const { currPRowData } = wbsProject;
+    const { innerOrder } = this.props;
+    const { currPRowData } = innerOrder;
     if (currPRowData && this.tableRef) {
       this.tableRef.remoteDataRefresh();
     }
   };
 
-  add = (isCreateChild, currCRowData) => {
+  add = () => {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'wbsProject/updatePageState',
+      type: 'innerOrder/updatePageState',
       payload: {
         cVisible: true,
-        currCRowData,
-        isCreateChild,
+        currCRowData: null,
       },
     });
   };
@@ -41,7 +40,7 @@ class ChildTable extends Component {
   edit = (rowData, e) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'wbsProject/updatePageState',
+      type: 'innerOrder/updatePageState',
       payload: {
         cVisible: true,
         currCRowData: rowData,
@@ -52,15 +51,15 @@ class ChildTable extends Component {
   };
 
   del = record => {
-    const { dispatch, wbsProject } = this.props;
-    const { currCRowData } = wbsProject;
+    const { dispatch, innerOrder } = this.props;
+    const { currCRowData } = innerOrder;
     this.setState(
       {
         delRowId: record.id,
       },
       () => {
         dispatch({
-          type: 'wbsProject/delCRow',
+          type: 'innerOrder/delCRow',
           payload: {
             id: record.id,
           },
@@ -68,7 +67,7 @@ class ChildTable extends Component {
           if (res.success) {
             if (currCRowData && currCRowData.id === record.id) {
               dispatch({
-                type: 'wbsProject/updatePageState',
+                type: 'innerOrder/updatePageState',
                 payload: {
                   currCRowData: null,
                 },
@@ -90,8 +89,8 @@ class ChildTable extends Component {
   };
 
   save = data => {
-    const { dispatch, wbsProject } = this.props;
-    const { currCRowData, isCreateChild } = wbsProject;
+    const { dispatch, innerOrder } = this.props;
+    const { currCRowData, isCreateChild } = innerOrder;
     let params = {};
     data.erpCreateDate = moment(data.erpCreateDate).format('YYYY-MM-DD HH:mm:ss');
     if (currCRowData && !isCreateChild) {
@@ -100,7 +99,7 @@ class ChildTable extends Component {
       params = data;
     }
     dispatch({
-      type: 'wbsProject/saveChild',
+      type: 'innerOrder/saveChild',
       payload: params,
     }).then(res => {
       if (res.success) {
@@ -113,7 +112,7 @@ class ChildTable extends Component {
   closeFormModal = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'wbsProject/updatePageState',
+      type: 'innerOrder/updatePageState',
       payload: {
         cVisible: false,
       },
@@ -123,7 +122,7 @@ class ChildTable extends Component {
   renderDelBtn = row => {
     const { loading } = this.props;
     const { delRowId } = this.state;
-    if (loading.effects['wbsProject/delCRow'] && delRowId === row.id) {
+    if (loading.effects['innerOrder/delCRow'] && delRowId === row.id) {
       return <PopoverIcon className="del-loading" type="loading" antd />;
     }
     return (
@@ -138,8 +137,8 @@ class ChildTable extends Component {
   };
 
   getExtableProps = () => {
-    const { wbsProject, loading } = this.props;
-    const { currPRowData, currCRowData } = wbsProject;
+    const { innerOrder, loading } = this.props;
+    const { currPRowData, currCRowData } = innerOrder;
 
     const columns = [
       {
@@ -153,17 +152,6 @@ class ChildTable extends Component {
         render: (_, record) => {
           return (
             <>
-              {authAction(
-                <PopoverIcon
-                  key="plus"
-                  className="plus"
-                  onClick={e => this.add(true, record)}
-                  type="plus"
-                  ignore="true"
-                  tooltip={{ title: '新建子节点' }}
-                  antd
-                />,
-              )}
               {authAction(
                 <PopoverIcon
                   key="edit"
@@ -192,18 +180,13 @@ class ChildTable extends Component {
         },
       },
       {
-        title: 'WBS名称',
-        dataIndex: 'name',
-        width: 180,
-      },
-      {
-        title: 'WBS编号',
+        title: '内部订单代码',
         dataIndex: 'code',
         width: 180,
       },
       {
-        title: 'ERP公司代码',
-        dataIndex: 'erpCorporationCode',
+        title: '内部订单名称',
+        dataIndex: 'name',
         width: 180,
       },
       {
@@ -212,23 +195,23 @@ class ChildTable extends Component {
         width: 180,
       },
       {
-        title: '项目类型',
-        dataIndex: 'projectType',
+        title: '订单类型',
+        dataIndex: 'orderType',
         width: 180,
       },
       {
-        title: '业务范围代码',
-        dataIndex: 'rangeCode',
+        title: '业务范围',
+        dataIndex: 'costRange',
         width: 180,
       },
       {
-        title: '总账科目代码',
-        dataIndex: 'ledgerAccountCode',
+        title: '货币代码',
+        dataIndex: 'currencyCode',
         width: 180,
       },
       {
-        title: '总账科目名称',
-        dataIndex: 'ledgerAccountName',
+        title: '负责人',
+        dataIndex: 'keyPerson',
         width: 180,
       },
     ];
@@ -237,7 +220,7 @@ class ChildTable extends Component {
         <Space>
           {authAction(
             <Button key="add" type="primary" onClick={this.add} ignore="true">
-              新增根节点
+              新建
             </Button>,
           )}
           <Button onClick={this.reloadData}>刷新</Button>
@@ -248,38 +231,40 @@ class ChildTable extends Component {
     return {
       toolBar,
       columns,
+      cascadeParams: {
+        filters: [
+          {
+            fieldName: 'erpCorporationCode',
+            operator: 'EQ',
+            value: currPRowData.erpCode,
+          },
+        ],
+      },
       searchProperties: ['code', 'name'],
       searchPlaceHolder: '请输入代码或者名称查询',
-      lineNumber: false,
-      defaultExpandAllRows: true,
-      pagination: false,
-      indentSize: 12,
-      remotePaging: false,
-      allowCustomColumns: false,
-      showSearch: false,
       store: {
-        type: 'GET',
-        url: `${MDMSCONTEXT}/wbsProject/getAllTree?erpCorporationCode=${currPRowData.erpCode}`,
+        type: 'POST',
+        url: `${MDMSCONTEXT}/innerOrder/findByPage`,
       },
     };
   };
 
   getFormModalProps = () => {
-    const { loading, wbsProject } = this.props;
-    const { currPRowData, currCRowData, cVisible } = wbsProject;
+    const { loading, innerOrder } = this.props;
+    const { currPRowData, currCRowData, cVisible } = innerOrder;
     return {
       onSave: this.save,
       parentData: currPRowData,
       editData: currCRowData,
       visible: cVisible,
       onCancel: this.closeFormModal,
-      saving: loading.effects['wbsProject/saveChild'],
+      saving: loading.effects['innerOrder/saveChild'],
     };
   };
 
   getFormDrawerProps = () => {
-    const { loading, wbsProject } = this.props;
-    const { currPRowData, currCRowData, cVisible, isCreateChild } = wbsProject;
+    const { loading, innerOrder } = this.props;
+    const { currPRowData, currCRowData, cVisible, isCreateChild } = innerOrder;
     return {
       onOk: this.save,
       parentData: currPRowData,
@@ -287,7 +272,7 @@ class ChildTable extends Component {
       visible: cVisible,
       isCreateChild,
       onClose: this.closeFormModal,
-      confirmLoading: loading.effects['wbsProject/saveChild'],
+      confirmLoading: loading.effects['innerOrder/saveChild'],
     };
   };
 

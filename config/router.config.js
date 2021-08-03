@@ -66,6 +66,21 @@ export default [
         title: '公司付款帐号',
         component: './PageWidget/CorpPaymentBankAccount',
       },
+      {
+        path: '/corporationProject',
+        title: '公司项目',
+        component: './PageWidget/CorpProject',
+      },
+      {
+        path: '/innerOrder',
+        title: '内部订单',
+        component: './PageWidget/InnerOrder',
+      },
+      {
+        path: '/profitCenter',
+        title: '利润中心',
+        component: './PageWidget/ProfitCenter',
+      },
     ],
   },
 ];

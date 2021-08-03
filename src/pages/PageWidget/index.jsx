@@ -5,6 +5,8 @@ import Personnel from './Personnel';
 import WBSProject from './WBSProject';
 import CorpPaymentBankAccount from './CorpPaymentBankAccount';
 import PaymentInfo from './PaymentInfo';
+import CorporationProject from './CorpProject';
+import InnerOrder from './InnerOrder';
 
 export default {
   ledgerAccount: LedgerAccount,
@@ -14,4 +16,6 @@ export default {
   wbsProject: WBSProject,
   corpPaymentBankAccount: CorpPaymentBankAccount,
   paymentInfo: PaymentInfo,
+  corporationProject: CorporationProject,
+  innerOrder: InnerOrder,
 };

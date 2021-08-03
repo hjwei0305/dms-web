@@ -47,11 +47,11 @@ class FormDrawer extends Component {
     );
 
     return (
-      <Drawer {...drawerProps}>
+      <Drawer {...drawerProps} destroyOnClose>
         <ProLayout>
           <Content style={{ padding: 0 }}>
             <ScrollBar>
-              <Form {...finalFormProps} style={{ padding: '0 12px' }}>
+              <Form {...finalFormProps} style={{ padding: 12 }}>
                 {renderFormItems && renderFormItems(form, FormItem)}
               </Form>
             </ScrollBar>
