@@ -78,10 +78,10 @@ const PaymentInfo = () => {
   };
 
   const tableProps = {
-    searchPlaceHolder: '输入城市代码或者名称',
-    searchProperties: ['code', 'name'],
+    searchPlaceHolder: '输入户名',
+    searchProperties: ['bankAccountName'],
     modalWidth: 600,
-    formCfg: {
+    formProps: {
       labelCol: {
         span: 8,
       },

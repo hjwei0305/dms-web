@@ -1,0 +1,29 @@
+@page-background-color: #f8f8f8;
+
+.container-box {
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  background-color: @page-background-color;
+  :global {
+    .ant-select {
+      max-width: 150px;
+      .ant-select-selection {
+        color: rgba(0, 0, 0, 0.85);
+        background-color: rgba(0, 0, 0, 0.04);
+        border: none;
+        box-shadow: none;
+        &:focus,
+        &:active {
+          box-shadow: none;
+        }
+        .ant-select-arrow {
+          color: rgba(0, 0, 0, 0.85);
+        }
+      }
+    }
+    .suid-list-card-tool-box {
+      padding: 0 8px !important;
+    }
+  }
+}

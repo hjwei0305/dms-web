@@ -2,7 +2,7 @@
  * @Author: Eason
  * @Date: 2020-02-21 18:03:16
  * @Last Modified by: zp
- * @Last Modified time: 2020-07-29 09:19:58
+ * @Last Modified time: 2021-08-09 10:59:36
  */
 import { base } from '../../public/app.config.json';
 
@@ -56,6 +56,11 @@ const APP_MODULE_BTN_KEY = {
   DELETE: `${APP_BASE}_DELETE`,
 };
 
+const REQUEST_TYPE = {
+  POST: 'POST',
+  GET: 'GET',
+};
+
 export default {
   APP_BASE,
   LOCAL_PATH,
@@ -65,4 +70,5 @@ export default {
   MDMSCONTEXT,
   BASICCONTEXT,
   EdmContext,
+  REQUEST_TYPE,
 };

@@ -4,7 +4,7 @@ import { omit, merge } from 'lodash';
 import { ExtModal } from 'suid';
 
 const FormItem = Form.Item;
-const defaultFormCfg = {
+const defaultFormProps = {
   labelCol: {
     span: 6,
   },
@@ -26,14 +26,22 @@ class ModalForm extends PureComponent {
   };
 
   render() {
-    const { form, renderFormItems, formCfg } = this.props;
-    const extModalProps = omit(this.props, ['formCfg', 'renderFormItems', 'form', 'onOk']);
+    const { form, renderFormItems, formProps, formKey } = this.props;
+    const extModalProps = omit(this.props, [
+      'formProps',
+      'renderFormItems',
+      'form',
+      'onOk',
+      'formKey',
+    ]);
 
-    const fullFormCfg = merge(defaultFormCfg, formCfg || {});
+    const fullFormCfg = merge(defaultFormProps, formProps || {});
 
     return (
       <ExtModal {...extModalProps} onOk={this.handleSave} destroyOnClose>
-        <Form {...fullFormCfg}>{renderFormItems && renderFormItems(form, FormItem)}</Form>
+        <Form key={formKey} {...fullFormCfg}>
+          {renderFormItems && renderFormItems(form, FormItem)}
+        </Form>
       </ExtModal>
     );
   }

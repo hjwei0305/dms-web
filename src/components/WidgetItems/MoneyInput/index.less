@@ -1,0 +1,29 @@
+.demo-wrapper {
+  height: 100%;
+  :global {
+    .ant-carousel {
+      height: 100%;
+      .slick-slider {
+        height: 100%;
+        .slick-list {
+          height: 100%;
+          .slick-track {
+            height: 100%;
+          }
+        }
+      }
+      .slide-item-wraper {
+        height: 100%;
+      }
+      .slick-slide {
+        height: calc(100%);
+        > div {
+          height: calc(100%);
+          > div {
+            height: calc(100%);
+          }
+        }
+      }
+    }
+  }
+}

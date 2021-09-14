@@ -1,0 +1,76 @@
+.ext-combo-ui-config {
+  height: 300px !important;
+  padding: 1px;
+  :global {
+    .list-items {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      .list-item {
+        position: relative;
+        margin: 4px;
+        padding: 8px 60px 8px 8px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        background-color: #f5f5f5;
+        .list-item-extra {
+          position: absolute;
+          top: 6px;
+          right: 8px;
+          .icon-wrapper {
+            display: inline-block;
+            padding: 2px 6px;
+            text-align: center;
+            visibility: hidden;
+            &:hover {
+              background-color: #efeaea;
+              cursor: pointer;
+              > i {
+                color: #1890ff;
+              }
+              > .del {
+                color: red;
+              }
+            }
+          }
+          .ant-popover-open {
+            background-color: #efeaea;
+            visibility: visible !important;
+            cursor: pointer;
+            > i {
+              color: #1890ff;
+            }
+          }
+        }
+        .ant-popover-open {
+          background-color: #efeaea;
+          visibility: visible !important;
+          cursor: pointer;
+          > i {
+            color: #1890ff;
+          }
+          > .del {
+            color: red;
+          }
+        }
+        &:hover {
+          cursor: move;
+          user-select: none;
+          .list-item-extra {
+            display: inline-block;
+            .icon-wrapper {
+              visibility: visible;
+            }
+          }
+        }
+      }
+      .no-move {
+        &:hover {
+          cursor: default;
+        }
+      }
+    }
+  }
+}

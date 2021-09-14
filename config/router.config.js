@@ -81,6 +81,11 @@ export default [
         title: '利润中心',
         component: './PageWidget/ProfitCenter',
       },
+      {
+        path: '/tableDesigner',
+        title: '利润中心',
+        component: './Designer',
+      },
     ],
   },
 ];

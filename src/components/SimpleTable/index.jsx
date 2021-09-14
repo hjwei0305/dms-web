@@ -17,7 +17,7 @@ const SimpleTable = (
     remotePaging = true,
     toolBar,
     modalWidth,
-    formCfg,
+    formProps,
     searchProperties,
     rowKey,
     dataSource,
@@ -293,7 +293,7 @@ const SimpleTable = (
     title: currData ? '编辑' : '新建',
     visible,
     width: modalWidth,
-    formCfg,
+    formProps,
     onOk: handleSave,
     onCancel: () => {
       setVisible(false);
