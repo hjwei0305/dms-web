@@ -15,6 +15,7 @@ const { MDMSCONTEXT } = constants;
 class ChildTable extends Component {
   state = {
     delRowId: null,
+    drawerKey: null,
   };
 
   reloadData = () => {
@@ -28,24 +29,38 @@ class ChildTable extends Component {
   add = () => {
     const { dispatch } = this.props;
 
-    dispatch({
-      type: 'personnel/updatePageState',
-      payload: {
-        cVisible: true,
-        currCRowData: null,
+    this.setState(
+      {
+        drawerKey: Math.random(),
       },
-    });
+      () => {
+        dispatch({
+          type: 'personnel/updatePageState',
+          payload: {
+            cVisible: true,
+            currCRowData: null,
+          },
+        });
+      },
+    );
   };
 
   edit = (rowData, e) => {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'personnel/updatePageState',
-      payload: {
-        cVisible: true,
-        currCRowData: rowData,
+    this.setState(
+      {
+        drawerKey: Math.random(),
       },
-    });
+      () => {
+        dispatch({
+          type: 'personnel/updatePageState',
+          payload: {
+            cVisible: true,
+            currCRowData: rowData,
+          },
+        });
+      },
+    );
     e.stopPropagation();
   };
 
@@ -318,9 +333,11 @@ class ChildTable extends Component {
 
   getFormDrawerProps = () => {
     const { loading, personnel } = this.props;
+    const { drawerKey } = this.state;
     const { currPRowData, currCRowData, cVisible } = personnel;
     return {
       onOk: this.save,
+      key: drawerKey,
       parentData: currPRowData,
       editData: currCRowData,
       visible: cVisible,
