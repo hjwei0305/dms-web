@@ -112,21 +112,21 @@ class EditFormDrawer extends Component {
                     message: '请输入项目代码',
                   },
                   {
-                    max: 4,
-                    message: '项目代码长度不能超过4',
+                    max: 30,
+                    message: '项目代码长度不能超过30',
                   },
                 ],
               })(<Input disabled={!!initData} />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="项目姓名">
+            <FormItem label="项目名称">
               {getFieldDecorator('name', {
                 initialValue: get(initData, 'name', ''),
                 rules: [
                   {
                     required: true,
-                    message: '请输入项目姓名',
+                    message: '请输入项目名称',
                   },
                 ],
               })(<Input disabled={!!initData} />)}
