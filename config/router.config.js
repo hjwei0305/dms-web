@@ -82,6 +82,11 @@ export default [
         component: './PageWidget/ProfitCenter',
       },
       {
+        path: '/imprestEmployee',
+        title: '备用金员工',
+        component: './PageWidget/ImprestEmployee',
+      },
+      {
         path: '/tableDesigner',
         title: '利润中心',
         component: './Designer',

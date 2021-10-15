@@ -8,6 +8,7 @@ import PaymentInfo from './PaymentInfo';
 import CorporationProject from './CorpProject';
 import InnerOrder from './InnerOrder';
 import ProfitCenter from './ProfitCenter';
+import ImprestEmployee from './ImprestEmployee';
 
 export default {
   ledgerAccount: LedgerAccount,
@@ -20,4 +21,5 @@ export default {
   corporationProject: CorporationProject,
   innerOrder: InnerOrder,
   profitCenter: ProfitCenter,
+  imprestEmployee: ImprestEmployee,
 };
