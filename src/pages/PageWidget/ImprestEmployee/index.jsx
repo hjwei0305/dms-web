@@ -10,7 +10,7 @@ const { Header, Content, SiderBar } = ProLayout;
 
 @withRouter
 @connect(({ imprestEmployee, loading }) => ({ imprestEmployee, loading }))
-class Customer extends Component {
+class ImprestEmployee extends Component {
   getRightCmp = () => {
     const { imprestEmployee } = this.props;
     const { currPRowData } = imprestEmployee;
@@ -48,4 +48,4 @@ class Customer extends Component {
   }
 }
 
-export default Customer;
+export default ImprestEmployee;

@@ -149,8 +149,7 @@ class ParentTable extends Component {
           payload: {
             currPRowData: selectedItem,
           },
-        }).then(res => {
-          console.log('ParentTable -> getListCardProps -> res', res);
+        }).then(() => {
           dispatch({
             type: 'imprestEmployee/getConfigById',
             payload: {

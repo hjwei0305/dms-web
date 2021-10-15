@@ -2,7 +2,7 @@
  * @Author: zp
  * @Date:   2020-02-02 11:57:38
  * @Last Modified by: zp
- * @Last Modified time: 2021-10-15 11:05:30
+ * @Last Modified time: 2021-10-15 11:10:58
  */
 import { message } from 'antd';
 import { utils } from 'suid';
@@ -26,7 +26,6 @@ export default modelExtend(model, {
   },
   effects: {
     *updatePageState({ payload }, { put }) {
-      console.log('*updatePageState -> payload', payload);
       yield put({
         type: 'updateState',
         payload,
