@@ -90,8 +90,8 @@ class FormPopover extends PureComponent {
       >
         <PageHeader title="公司" subTitle={title} />
         <Form {...formItemLayout} layout="horizontal">
-          <FormItem label="客户Id" hidden>
-            {getFieldDecorator('customerId', {
+          <FormItem label="备用金员工Id" hidden>
+            {getFieldDecorator('imprestEmployeeId', {
               initialValue: get(parentData, 'id', ''),
             })(<Input />)}
           </FormItem>
