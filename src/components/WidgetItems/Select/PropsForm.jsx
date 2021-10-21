@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Input } from 'antd';
+import { Input } from 'antd';
 import { get } from 'lodash';
+import Form from '@/components/ExtForm';
 
 const FormItem = Form.Item;
 
@@ -13,14 +14,11 @@ class PropsForm extends Component {
   }
 
   render() {
-    const { form, defaultValues } = this.props;
-    const { getFieldDecorator } = form;
+    const { defaultValues } = this.props;
     return (
       <>
-        <FormItem label="数据源">
-          {getFieldDecorator('options', {
-            initialValue: get(defaultValues, 'options'),
-          })(<Input />)}
+        <FormItem label="数据源" name="options" initialValue={get(defaultValues, 'options')}>
+          <Input />
         </FormItem>
       </>
     );

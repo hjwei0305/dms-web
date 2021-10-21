@@ -1,15 +1,24 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { omit, get, isEmpty } from 'lodash';
-import { InputNumber } from 'antd';
+import { ComboGrid } from 'suid';
+import { omit, isEmpty, get } from 'lodash';
 
-const ExtInputNumber = (props, ref) => {
-  const { dependenciedFields = [], form, preFields = [], onChange, disabled } = props;
+const ListSelect = (props, ref) => {
+  const {
+    dependenciedFields = [],
+    form,
+    preFields = [],
+    submitFields = [],
+    originFields = [],
+    afterSelect,
+    disabled,
+  } = props;
 
-  const inputProps = omit(props, [
+  const comboGridProps = omit(props, [
     'dependenciedFields',
-    'form',
+    'originFields',
+    'submitFields',
     'preFields',
-    'onChange',
+    'afterSelect',
     'disabled',
   ]);
 
@@ -28,7 +37,7 @@ const ExtInputNumber = (props, ref) => {
     }, disabled);
   }
 
-  const handleChange = e => {
+  const handleSelect = e => {
     window.setTimeout(() => {
       // 当前组件变化时，清空被依赖的表单值
       const resetValues = dependenciedFields.reduce((pre, curr) => {
@@ -41,8 +50,8 @@ const ExtInputNumber = (props, ref) => {
         form.setFieldsValue(resetValues);
       }
     }, 0);
-    if (onChange) {
-      onChange(e);
+    if (afterSelect) {
+      afterSelect(e);
     }
   };
 
@@ -51,13 +60,17 @@ const ExtInputNumber = (props, ref) => {
   }));
 
   return (
-    <InputNumber
-      style={{ width: '100%' }}
-      {...inputProps}
+    <ComboGrid
+      {...comboGridProps}
       disabled={tempDisabled}
-      onChange={handleChange}
+      afterSelect={handleSelect}
+      reader={{
+        name: props.showField,
+        field: originFields,
+      }}
+      field={submitFields}
     />
   );
 };
 
-export default forwardRef(ExtInputNumber);
+export default forwardRef(ListSelect);

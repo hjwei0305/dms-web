@@ -34,8 +34,8 @@ const { SiderBar, Content, Header } = ProLayout;
 // 功能清单
 const featureList = {
   preview: ['预览', 'eye'],
-  tableCfg: ['表格配置', 'table'],
-  toolbar: ['工具栏', 'tool'], // ['add', 'quickSearch', 'prefix', 'postfix']
+  tableCfg: ['表格显示配置', 'table'],
+  toolbar: ['表格工具栏', 'tool'], // ['add', 'quickSearch', 'prefix', 'postfix']
   // add: ['新建', 'plus'],
   // quickSearch: ['快速查询', 'search'],
   // prefix: ['前缀', 'setting'],
@@ -220,7 +220,7 @@ const TableDesigner = () => {
       <SiderBar>{getFeatureMenu()}</SiderBar>
       <Content>
         <ProLayout>
-          <Header title={featureList[featureKey][0]} />
+          {/* <Header height={30} title={featureList[featureKey][0]} /> */}
           <Content
             empty={{
               description: '暂无配置',

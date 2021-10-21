@@ -7,6 +7,7 @@ import SelectPropsForm from './Select/PropsForm';
 import MoneyInputPropsForm from './MoneyInput/PropsForm';
 import TreeSelectPropsForm from './TreeSelect/PropsForm';
 import ListSelectPropsForm from './ListSelect/PropsForm';
+import TableSelectPropsForm from './TableSelect/PropsForm';
 
 export default {
   Input: {
@@ -50,5 +51,12 @@ export default {
     desc: '树选择',
     Cmp: withAsyncCmp(() => import(/* webpackChunkName: "WidgetItem_TreeSelect" */ './TreeSelect')),
     PropsForm: TreeSelectPropsForm,
+  },
+  TableSelect: {
+    desc: '表格选择',
+    Cmp: withAsyncCmp(() =>
+      import(/* webpackChunkName: "WidgetItem_TableSelect" */ './TableSelect'),
+    ),
+    PropsForm: TableSelectPropsForm,
   },
 };

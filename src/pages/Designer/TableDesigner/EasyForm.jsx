@@ -4,7 +4,6 @@ import { get, cloneDeep } from 'lodash';
 import formWidgetItems from '@/components/WidgetItems';
 
 const EasyForm = ({ form, FormItem, fields, initialValues, colSpan }) => {
-  const { getFieldDecorator } = form;
   const { Cmp: Input } = formWidgetItems.Input;
 
   const intactFields = useMemo(() => {
@@ -33,10 +32,8 @@ const EasyForm = ({ form, FormItem, fields, initialValues, colSpan }) => {
     return submitFields.map(name => {
       return (
         <Col key={name} span={0}>
-          <FormItem hidden>
-            {getFieldDecorator(name, {
-              initialValue: get(initialValues, name),
-            })(<Input />)}
+          <FormItem name={name} initialValue={get(initialValues, name)} hidden>
+            <Input />
           </FormItem>
         </Col>
       );
@@ -65,25 +62,26 @@ const EasyForm = ({ form, FormItem, fields, initialValues, colSpan }) => {
           <>
             {renderSubmitFields(submitFields)}
             <Col key={name} span={hidden ? 0 : colSpan}>
-              <FormItem label={label} hidden={hidden}>
-                {getFieldDecorator(name, {
-                  initialValue: get(initialValues, defaultField || name),
-                  rules: [
-                    {
-                      required,
-                      message: `${label}不能为空`,
-                    },
-                  ],
-                })(
-                  <FormComponent
-                    {...rest}
-                    name={name}
-                    submitFields={submitFields}
-                    form={form}
-                    dependenciedFields={dependenciedFields}
-                    preFields={preFields}
-                  />,
-                )}
+              <FormItem
+                label={label}
+                name={name}
+                initialValue={get(initialValues, defaultField || name)}
+                rules={[
+                  {
+                    required,
+                    message: `${label}不能为空`,
+                  },
+                ]}
+                hidden={hidden}
+              >
+                <FormComponent
+                  {...rest}
+                  name={name}
+                  submitFields={submitFields}
+                  form={form}
+                  dependenciedFields={dependenciedFields}
+                  preFields={preFields}
+                />
               </FormItem>
             </Col>
           </>

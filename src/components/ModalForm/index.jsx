@@ -1,9 +1,8 @@
-import React, { PureComponent } from 'react';
-import { Form } from 'antd';
+import React, { useRef } from 'react';
 import { omit, merge } from 'lodash';
 import { ExtModal } from 'suid';
+import Form from '@/components/ExtForm';
 
-const FormItem = Form.Item;
 const defaultFormProps = {
   labelCol: {
     span: 6,
@@ -14,37 +13,29 @@ const defaultFormProps = {
   layout: 'horizontal',
 };
 
-@Form.create()
-class ModalForm extends PureComponent {
-  handleSave = () => {
-    const { form, onOk } = this.props;
-    form.validateFields((err, formData) => {
+const ModalForm = props => {
+  const form = useRef(null);
+  const { onOk, renderFormItems, formProps, formKey } = props;
+
+  const handleSave = () => {
+    form.current.validateFields((err, formData) => {
       if (!err && onOk) {
         onOk(formData);
       }
     });
   };
 
-  render() {
-    const { form, renderFormItems, formProps, formKey } = this.props;
-    const extModalProps = omit(this.props, [
-      'formProps',
-      'renderFormItems',
-      'form',
-      'onOk',
-      'formKey',
-    ]);
+  const extModalProps = omit(props, ['formProps', 'renderFormItems', 'form', 'onOk', 'formKey']);
 
-    const fullFormCfg = merge(defaultFormProps, formProps || {});
+  const fullFormCfg = merge(defaultFormProps, formProps || {});
 
-    return (
-      <ExtModal {...extModalProps} onOk={this.handleSave} destroyOnClose>
-        <Form key={formKey} {...fullFormCfg}>
-          {renderFormItems && renderFormItems(form, FormItem)}
-        </Form>
-      </ExtModal>
-    );
-  }
-}
+  return (
+    <ExtModal {...extModalProps} onOk={handleSave} destroyOnClose>
+      <Form key={formKey} {...fullFormCfg} onRef={inst => (form.current = inst)}>
+        {renderFormItems}
+      </Form>
+    </ExtModal>
+  );
+};
 
 export default ModalForm;

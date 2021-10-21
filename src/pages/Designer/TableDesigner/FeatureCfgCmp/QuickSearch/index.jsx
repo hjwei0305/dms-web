@@ -24,40 +24,38 @@ const QuickSearch = ({ form }) => {
           />,
         )}
       </FormItem>
-      {showSearch && (
-        <>
-          <FormItem label="查询属性">
-            {getFieldDecorator('searchProperties', {
-              initialValue: searchProperties,
-            })(
-              <Select
-                open={false}
-                mode="tags"
-                tokenSeparators={[',']}
-                placeholder="快速查询属性，多个用逗号隔开"
-                onChange={value => {
-                  dispatch({
-                    searchProperties: value,
-                  });
-                }}
-              />,
-            )}
-          </FormItem>
-          <FormItem label="查询占位">
-            {getFieldDecorator('searchPlaceHolder', {
-              initialValue: searchPlaceHolder,
-            })(
-              <Input
-                onChange={e => {
-                  dispatch({
-                    searchPlaceHolder: e.target.value,
-                  });
-                }}
-              />,
-            )}
-          </FormItem>
-        </>
-      )}
+      <FormItem label="查询属性">
+        {getFieldDecorator('searchProperties', {
+          initialValue: searchProperties,
+        })(
+          <Select
+            open={false}
+            mode="tags"
+            disabled={!showSearch}
+            tokenSeparators={[',']}
+            placeholder="快速查询属性，多个用逗号隔开"
+            onChange={value => {
+              dispatch({
+                searchProperties: value,
+              });
+            }}
+          />,
+        )}
+      </FormItem>
+      <FormItem label="查询占位">
+        {getFieldDecorator('searchPlaceHolder', {
+          initialValue: searchPlaceHolder,
+        })(
+          <Input
+            disabled={!showSearch}
+            onChange={e => {
+              dispatch({
+                searchPlaceHolder: e.target.value,
+              });
+            }}
+          />,
+        )}
+      </FormItem>
     </Form>
   );
 };

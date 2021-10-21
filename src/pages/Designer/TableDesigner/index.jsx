@@ -1,40 +1,145 @@
 import React from 'react';
+import { constants } from '@/utils';
 import { Ctx } from './context';
 import { useSet } from './hooks';
 
 import TableDesigner from './TableDesigner';
 
+const { CURR_CONTEXT_PATH } = constants;
+
+const CmpMap = {
+  ExtInput: 'Input',
+  ExtComboGrid: 'TableSelect',
+  ExtInputNumber: 'InputNumber',
+  ExtSelect: 'Select',
+};
+
 const Designer = ({ parentData, uiConfig = {} }) => {
   const { code } = parentData;
+  const { UI = JSON.stringify({}) } = uiConfig;
+  const uiObj = JSON.parse(UI);
+  const { showConfig = {}, formConfig = {} } = uiObj;
+  const addFormItems = [];
+  const editFormItems = [];
+  showConfig &&
+    showConfig.columns.forEach(it => {
+      Object.assign(it, {
+        originalName: it.title,
+        emptyPlaceholder: '-',
+      });
+    });
+  if (formConfig) {
+    const { formItems = [] } = formConfig;
+    formItems.forEach(([orignField, addField, editField]) => {
+      let addShowField;
+      let editShowField;
+      if (addField['ui:widget'] === 'ExtComboGrid') {
+        addField['ExtComboGrid'].cfg.forEach(({ code, isShowField }) => {
+          if (isShowField) {
+            addShowField = code;
+          }
+        });
+      }
+      if (editField['ui:widget'] === 'ExtComboGrid') {
+        editField['ExtComboGrid'].cfg.forEach(({ code, isShowField }) => {
+          if (isShowField) {
+            editShowField = code;
+          }
+        });
+      }
+      addFormItems.push({
+        type: CmpMap[addField['ui:widget']] || 'Input',
+        label: addField.title,
+        name: orignField.code,
+        hidden: !!addField['ui:hidden'],
+        originalName: orignField.name,
+        showField: addShowField,
+        columns:
+          addField['ui:widget'] === 'ExtComboGrid' &&
+          addField['ExtComboGrid'].cfg
+            .map(({ code, name, hidden }) => ({ dataIndex: code, title: name, hidden }))
+            .filter(({ hidden }) => !hidden),
+        store: addField['ui:widget'] === 'ExtComboGrid' && {
+          type: 'POST',
+          url: `${CURR_CONTEXT_PATH}${addField['ExtComboGrid'].dataModelCode}/findByPage`,
+        },
+        submitFields:
+          addField['ui:widget'] === 'ExtComboGrid'
+            ? addField['ExtComboGrid'].cfg
+                .map(({ sumitField }) => sumitField)
+                .filter(sumitField => !!sumitField)
+            : [],
+        originFields:
+          addField['ui:widget'] === 'ExtComboGrid'
+            ? addField['ExtComboGrid'].cfg
+                .filter(({ sumitField }) => !sumitField)
+                .map(({ code }) => code)
+            : [],
+        options: addField['ui:widget'] === 'ExtSelect' ? addField['ExtSelect'].options : [],
+        ...addField,
+      });
+      editFormItems.push({
+        type: CmpMap[editField['ui:widget']] || 'Input',
+        label: editField.title,
+        name: orignField.code,
+        showField: editShowField,
+        hidden: !!editField['ui:hidden'],
+        originalName: orignField.name,
+        columns:
+          editField['ui:widget'] === 'ExtComboGrid' &&
+          editField['ExtComboGrid'].cfg
+            .map(({ code, name, hidden }) => ({ dataIndex: code, title: name, hidden }))
+            .filter(({ hidden }) => !hidden),
+        store: editField['ui:widget'] === 'ExtComboGrid' && {
+          type: 'POST',
+          url: `${CURR_CONTEXT_PATH}${addField['ExtComboGrid'].dataModelCode}/findByPage`,
+        },
+        submitFields:
+          editField['ui:widget'] === 'ExtComboGrid'
+            ? editField['ExtComboGrid'].cfg
+                .map(({ sumitField }) => sumitField)
+                .filter(sumitField => !!sumitField)
+            : [],
+        originFields:
+          editField['ui:widget'] === 'ExtComboGrid'
+            ? editField['ExtComboGrid'].cfg
+                .filter(({ sumitField }) => !sumitField)
+                .map(({ code }) => code)
+            : [],
+        options: editField['ui:widget'] === 'ExtSelect' ? editField['ExtSelect'].options : [],
+        ...editField,
+      });
+    });
+  }
+
   const globalState = useSet({
     _parentData: parentData,
-    ...uiConfig,
-    // columns: [],
+    searchPlaceHolder: '请输入关键字查询',
     columns: [
-      {
-        dataIndex: 'code',
-        originalName: '税码',
-        title: '税码',
-        width: 120,
-        align: 'left',
-        emptyPlaceholder: '-',
-      },
-      {
-        dataIndex: 'name',
-        originalName: '名称',
-        title: '名称',
-        width: 120,
-        align: 'left',
-        emptyPlaceholder: '-',
-      },
-      {
-        dataIndex: 'taxRate',
-        originalName: '税率',
-        title: '税率',
-        width: 120,
-        align: 'left',
-        emptyPlaceholder: '-',
-      },
+      // {
+      //   dataIndex: 'code',
+      //   originalName: '税码',
+      //   title: '税码',
+      //   width: 120,
+      //   align: 'left',
+      //   emptyPlaceholder: '-',
+      // },
+      // {
+      //   dataIndex: 'name',
+      //   originalName: '名称',
+      //   title: '名称',
+      //   width: 120,
+      //   align: 'left',
+      //   emptyPlaceholder: '-',
+      // },
+      // {
+      //   dataIndex: 'taxRate',
+      //   originalName: '税率',
+      //   title: '税率',
+      //   width: 120,
+      //   align: 'left',
+      //   emptyPlaceholder: '-',
+      // },
     ],
     remotePaging: true,
     showRefresh: true,
@@ -43,81 +148,75 @@ const Designer = ({ parentData, uiConfig = {} }) => {
       method: 'POST',
       layout: 'horizontal',
       colSpan: 24,
-      url: '/api-gateway/dms/taxType/save',
-      formItems: [
-        {
-          type: 'Select',
-          name: 'taxCategory',
-          originalName: '税分类',
-          label: '税分类',
-          preFields: [],
-          disabled: false,
-          hidden: false,
-          options: '[{"label":"销项税", "value": "OUTPUT"}, {"label": "进项税", "value":"INPUT"}]',
-        },
-        {
-          type: 'Input',
-          name: 'code',
-          originalName: '税码',
-          label: '税码',
-          preFields: [],
-          uiConfig: {},
-        },
-        {
-          type: 'Input',
-          name: 'name',
-          originalName: '名称',
-          label: '名称',
-          preFields: [],
-          uiConfig: {},
-        },
-        {
-          type: 'Input',
-          name: 'ledgerAccountCode',
-          originalName: '总账科目代码',
-          label: '总账科目代码',
-          preFields: [],
-          hidden: true,
-          uiConfig: {},
-        },
-        {
-          type: 'ListSelect',
-          name: 'ledgerAccountName',
-          originalName: '总账科目名称',
-          label: '总账科目',
-          preFields: [],
-          store: {
-            type: 'POST',
-            url: '/api-gateway/dms/ledgerAccount/findByPage',
-            autoLoad: false,
-          },
-          showField: 'name',
-          originFields: ['code'],
-          submitFields: ['ledgerAccountCode'],
-        },
-        {
-          type: 'InputNumber',
-          name: 'rank',
-          originalName: '排序',
-          label: '排序',
-          preFields: [],
-          uiConfig: {},
-        },
-      ],
+      url: `/api-gateway/dms/${code}/save`,
+      formItems: addFormItems || [],
+      // formItems: [
+      //   {
+      //     type: 'Select',
+      //     name: 'taxCategory',
+      //     originalName: '税分类',
+      //     label: '税分类',
+      //     preFields: [],
+      //     disabled: false,
+      //     hidden: false,
+      //     options: '[{"label":"销项税", "value": "OUTPUT"}, {"label": "进项税", "value":"INPUT"}]',
+      //   },
+      //   {
+      //     type: 'Input',
+      //     name: 'code',
+      //     originalName: '税码',
+      //     label: '税码',
+      //     preFields: [],
+      //     uiConfig: {},
+      //   },
+      //   {
+      //     type: 'Input',
+      //     name: 'name',
+      //     originalName: '名称',
+      //     label: '名称',
+      //     preFields: [],
+      //     uiConfig: {},
+      //   },
+      //   {
+      //     type: 'Input',
+      //     name: 'ledgerAccountCode',
+      //     originalName: '总账科目代码',
+      //     label: '总账科目代码',
+      //     preFields: [],
+      //     hidden: true,
+      //     uiConfig: {},
+      //   },
+      //   {
+      //     type: 'ListSelect',
+      //     name: 'ledgerAccountName',
+      //     originalName: '总账科目名称',
+      //     label: '总账科目',
+      //     preFields: [],
+      //     store: {
+      //       type: 'POST',
+      //       url: '/api-gateway/dms/ledgerAccount/findByPage',
+      //       autoLoad: false,
+      //     },
+      //     showField: 'name',
+      //     originFields: ['code'],
+      //     submitFields: ['ledgerAccountCode'],
+      //   },
+      //   {
+      //     type: 'InputNumber',
+      //     name: 'rank',
+      //     originalName: '排序',
+      //     label: '排序',
+      //     preFields: [],
+      //     uiConfig: {},
+      //   },
+      // ],
     },
-    // add: {
-    //   method: 'POST',
-    //   layout: 'horizontal',
-    //   colSpan: 24,
-    //   url: `/api-gateway/dms/${code}/save`,
-    //   formItems: [],
-    // },
     edit: {
       method: 'POST',
       layout: 'horizontal',
       colSpan: 24,
       url: `/api-gateway/dms/${code}/save`,
-      formItems: [],
+      formItems: editFormItems || [],
     },
     optCol: {
       title: '操作',
@@ -360,6 +459,8 @@ const Designer = ({ parentData, uiConfig = {} }) => {
     // },
     // "remotePaging": true,
     // "showRefresh": true
+    ...showConfig,
+    ...uiObj,
   });
 
   return (

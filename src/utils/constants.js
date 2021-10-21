@@ -2,7 +2,7 @@
  * @Author: Eason
  * @Date: 2020-02-21 18:03:16
  * @Last Modified by: zp
- * @Last Modified time: 2021-08-09 10:59:36
+ * @Last Modified time: 2021-10-20 14:15:40
  */
 import { base } from '../../public/app.config.json';
 
@@ -37,6 +37,7 @@ const LOCAL_PATH = process.env.NODE_ENV !== 'production' ? '..' : `../${APP_BASE
 const SERVER_PATH = getServerPath();
 
 const MDMSCONTEXT = `${SERVER_PATH}/dms`;
+const CURR_CONTEXT_PATH = `${SERVER_PATH}/dms/`;
 const BASICCONTEXT = `${SERVER_PATH}/sei-basic`;
 const EdmContext = `${SERVER_PATH}/edm-service`;
 
@@ -71,4 +72,5 @@ export default {
   BASICCONTEXT,
   EdmContext,
   REQUEST_TYPE,
+  CURR_CONTEXT_PATH,
 };

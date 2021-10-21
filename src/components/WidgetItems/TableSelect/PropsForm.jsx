@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Input, Select, Switch } from 'antd';
+import { Select, Switch } from 'antd';
 import { get } from 'lodash';
 import { constants } from '@/utils';
 import Form from '@/components/ExtForm';
+import AddTableColumns from '@/components/AddTableColumns';
+import InputSelect from '@/components/InputSelect';
 
-const { REQUEST_TYPE } = constants;
+const { REQUEST_TYPE, CURR_CONTEXT_PATH } = constants;
 
 const FormItem = Form.Item;
 
@@ -17,8 +19,7 @@ class PropsForm extends Component {
   }
 
   render() {
-    const { form, defaultValues } = this.props;
-    const { getFieldDecorator } = form;
+    const { defaultValues } = this.props;
 
     return (
       <>
@@ -52,14 +53,29 @@ class PropsForm extends Component {
             },
           ]}
         >
-          <Input />
+          <InputSelect
+            fillValue={({ code }) => `${CURR_CONTEXT_PATH}${code}/findByPage`}
+            listProps={{
+              remotePaging: true,
+              store: {
+                type: 'POST',
+                autoLoad: false,
+                url: `${CURR_CONTEXT_PATH}dataDefinition/getRegisterDataByPage`,
+              },
+              rowKey: 'id',
+              reader: {
+                name: 'name',
+                description: ({ code }) => `${CURR_CONTEXT_PATH}${code}/findByPage`,
+              },
+            }}
+          />
         </FormItem>
         <FormItem
           label="自定请求"
           name="store.autoLoad"
+          hidden
           valuePropName="checked"
           initialValue={get(defaultValues, 'store.autoLoad', false)}
-          hidden
         >
           <Switch />
         </FormItem>
@@ -75,6 +91,19 @@ class PropsForm extends Component {
           ]}
         >
           <Input />
+        </FormItem>
+        <FormItem
+          label="表格列"
+          name="columns"
+          initialValue={get(defaultValues, 'columns')}
+          rules={[
+            {
+              required: true,
+              message: '请输入表格列',
+            },
+          ]}
+        >
+          <AddTableColumns />
         </FormItem>
         <FormItem
           label="来源字段"

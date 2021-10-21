@@ -122,62 +122,65 @@ const Columns = () => {
     dataSource,
     modalForm: {
       render: (form, FormItem, currData) => {
-        const { getFieldDecorator } = form;
         return (
           <>
-            <FormItem label="显示列代码" hidden>
-              {getFieldDecorator('dataIndex', {
-                initialValue: get(currData, 'dataIndex'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入显示列代码',
-                  },
-                ],
-              })(<Input disabled={!!currData} />)}
+            <FormItem
+              label="显示列代码"
+              name="dataIndex"
+              initialValue={get(currData, 'dataIndex')}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入显示列代码',
+                },
+              ]}
+              hidden
+            >
+              <Input disabled={!!currData} />
             </FormItem>
-            <FormItem label="显示列">
-              {getFieldDecorator('originalName', {
-                initialValue: get(currData, 'originalName'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择显示列',
-                  },
-                ],
-              })(<ComboList {...getComboListProps(form)} />)}
+            <FormItem
+              label="显示列"
+              name="originalName"
+              initialValue={get(currData, 'originalName')}
+              rules={[
+                {
+                  required: true,
+                  message: '请选择显示列',
+                },
+              ]}
+            >
+              <ComboList {...getComboListProps(form)} />
             </FormItem>
-            <FormItem label="列别名">
-              {getFieldDecorator('title', {
-                initialValue: get(currData, 'title'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入列别名',
-                  },
-                ],
-              })(<Input />)}
+            <FormItem
+              label="列别名"
+              name="title"
+              initialValue={get(currData, 'title')}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入列别名',
+                },
+              ]}
+            >
+              <Input />
             </FormItem>
-            <FormItem label="列宽">
-              {getFieldDecorator('width', {
-                initialValue: get(currData, 'width', 120),
-              })(<Slider max={300} min={60} />)}
+            <FormItem label="列宽" name="width" initialValue={get(currData, 'width', 120)}>
+              <Slider max={300} min={60} />
             </FormItem>
-            <FormItem label="对齐方式">
-              {getFieldDecorator('align', {
-                initialValue: get(currData, 'align', 'left'),
-              })(
-                <Select>
-                  <Select.Option value="left">居左</Select.Option>
-                  <Select.Option value="center">居中</Select.Option>
-                  <Select.Option value="right">居右</Select.Option>
-                </Select>,
-              )}
+            <FormItem label="对齐方式" name="align" initialValue={get(currData, 'align', 'left')}>
+              <Select>
+                <Select.Option value="left">居左</Select.Option>
+                <Select.Option value="center">居中</Select.Option>
+                <Select.Option value="right">居右</Select.Option>
+              </Select>
             </FormItem>
-            <FormItem label="空值占位" hidden>
-              {getFieldDecorator('emptyPlaceholder', {
-                initialValue: get(currData, 'emptyPlaceholder', '-'),
-              })(<Input disabled />)}
+            <FormItem
+              label="空值占位"
+              name="emptyPlaceholder"
+              initialValue={get(currData, 'emptyPlaceholder', '-')}
+              hidden
+            >
+              <Input disabled />
             </FormItem>
           </>
         );
