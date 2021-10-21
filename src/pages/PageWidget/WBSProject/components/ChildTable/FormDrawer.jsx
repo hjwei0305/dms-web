@@ -128,6 +128,10 @@ class EditFormDrawer extends Component {
                     required: true,
                     message: '请输入项目名称',
                   },
+                  {
+                    max: 2,
+                    message: '项目名称长度不能超过50',
+                  },
                 ],
               })(<Input disabled={!!initData} />)}
             </FormItem>
@@ -140,6 +144,10 @@ class EditFormDrawer extends Component {
                   {
                     required: true,
                     message: '请输入项目类型',
+                  },
+                  {
+                    max: 2,
+                    message: '项目类型长度不能超过2',
                   },
                 ],
               })(<Input disabled={!!initData} />)}
