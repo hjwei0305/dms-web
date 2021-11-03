@@ -44,6 +44,7 @@ class EditFormDrawer extends Component {
   getLedgerAccount = form => ({
     form,
     name: 'ledgerAccountName',
+    remotePaging: true,
     store: {
       type: 'POST',
       autoLoad: false,
