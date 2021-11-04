@@ -129,7 +129,7 @@ class EditFormDrawer extends Component {
                     message: '请输入项目名称',
                   },
                   {
-                    max: 2,
+                    max: 50,
                     message: '项目名称长度不能超过50',
                   },
                 ],
