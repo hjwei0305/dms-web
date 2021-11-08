@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ProLayout, ExtIcon, utils } from 'suid';
+import { ProLayout, ExtIcon, utils, message } from 'suid';
 import { Menu, Button } from 'antd';
+import { get } from 'lodash';
 import ProTable from '@/components/ProTable';
 import Add from './FeatureCfgCmp/Add';
 import Edit from './FeatureCfgCmp/Edit';
@@ -47,20 +48,22 @@ const featureList = {
   // refresh: ['刷新', 'sync'],
 };
 
-const TableDesigner = () => {
-  const [
-    {
-      columns,
-      add: addCfg,
-      edit: editCfg,
-      del: delCfg,
-      // searchProperties,
-      ...rest
-    },
-  ] = useGlobal();
-  console.log({ add: addCfg, columns, ...rest });
+const TableDesigner = ({ onSave }) => {
+  const [uiConfig] = useGlobal();
+  const {
+    columns,
+    add: addCfg,
+    edit: editCfg,
+    del: delCfg,
+    filter,
+    _parentData,
+    ...rest
+  } = uiConfig;
+  console.log({ add: addCfg, columns, edit: editCfg, ...rest });
   const [featureKey, setFeatureKey] = useState('preview');
+  const [loading, setLoading] = useState(false);
   const { formItems: addFormItems, method: addMethod, url: addUrl, colSpan: addColSpan } = addCfg;
+  const { formItems: filterFormItems, colSpan: fliterColSpan } = filter || {};
   const {
     formItems: editFormItems,
     method: editMethod,
@@ -121,6 +124,18 @@ const TableDesigner = () => {
           form={form}
           FormItem={FormItem}
           fields={data ? editFormItems : addFormItems}
+          initialValues={data}
+        />
+      ),
+    },
+    filterForm: filter && {
+      filterCfg: filterFormItems.map(({ name, operator }) => ({ name, operator })),
+      render: (form, FormItem, data) => (
+        <EasyForm
+          colSpan={fliterColSpan}
+          form={form}
+          FormItem={FormItem}
+          fields={filterFormItems}
           initialValues={data}
         />
       ),
@@ -217,20 +232,46 @@ const TableDesigner = () => {
 
   return (
     <ProLayout>
-      <SiderBar>{getFeatureMenu()}</SiderBar>
-      <Content>
-        <ProLayout>
-          {/* <Header height={30} title={featureList[featureKey][0]} /> */}
-          <Content
-            empty={{
-              description: '暂无配置',
-              children: <Button type="primary">配置</Button>,
+      <Header
+        title="主数据配置"
+        subTible={get(_parentData, 'name')}
+        extra={
+          <Button
+            type="primary"
+            loading={loading}
+            onClick={() => {
+              if (onSave) {
+                setLoading(true);
+                onSave(uiConfig)
+                  .then(result => {
+                    const { success, message: msg } = result;
+                    if (success) {
+                      message.success(msg);
+                    } else {
+                      message.error(msg);
+                    }
+                  })
+                  .finally(() => {
+                    setLoading(false);
+                  });
+              }
             }}
           >
-            {getCmpFun[featureKey] ? getCmpFun[featureKey]() : null}
-          </Content>
-        </ProLayout>
-      </Content>
+            保存
+          </Button>
+        }
+      />
+      <ProLayout>
+        <SiderBar>{getFeatureMenu()}</SiderBar>
+        <Content
+          empty={{
+            description: '暂无配置',
+            children: <Button type="primary">配置</Button>,
+          }}
+        >
+          {getCmpFun[featureKey] ? getCmpFun[featureKey]() : null}
+        </Content>
+      </ProLayout>
     </ProLayout>
   );
 };

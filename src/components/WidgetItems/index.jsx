@@ -8,6 +8,7 @@ import MoneyInputPropsForm from './MoneyInput/PropsForm';
 import TreeSelectPropsForm from './TreeSelect/PropsForm';
 import ListSelectPropsForm from './ListSelect/PropsForm';
 import TableSelectPropsForm from './TableSelect/PropsForm';
+import SwitchPropsForm from './Switch/PropsForm';
 
 export default {
   Input: {
@@ -21,6 +22,11 @@ export default {
       import(/* webpackChunkName: "WidgetItem_InputNumber" */ './InputNumber'),
     ),
     PropsForm: InputNumberPropsForm,
+  },
+  InputNumber: {
+    desc: '布尔框',
+    Cmp: withAsyncCmp(() => import(/* webpackChunkName: "WidgetItem_Switch" */ './Switch')),
+    PropsForm: SwitchPropsForm,
   },
   MoneyInput: {
     desc: '金额输入框',

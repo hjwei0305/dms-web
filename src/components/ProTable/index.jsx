@@ -1,11 +1,13 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { ExtTable, message } from 'suid';
-import { Button, Popconfirm } from 'antd';
-import { get, isPlainObject } from 'lodash';
-import ModalForm from '@/components/ModalForm';
-import DrawerForm from '@/components/DrawerForm';
+import { Button } from 'antd';
+import { isPlainObject } from 'lodash';
 import Space from '@/components/Space';
-import PopoverIcon from '@/components/PopoverIcon';
+import EditModal from './EditModal';
+import EditDrawer from './EditDrawer';
+import FilterIcon from './FilterIcon';
+import DeleteIcon from './DeleteIcon';
+import formatters from './formatter';
 
 const ProTable = (props, ref) => {
   const {
@@ -27,17 +29,16 @@ const ProTable = (props, ref) => {
     edit,
     add,
     del,
+    filterForm,
   } = props;
-  const [currData, setCurrData] = useState(null);
-  const [visible, setVisible] = useState(false);
+  const [dynamicParams, setDynamicParams] = useState(cascadeParams || {});
   const [saving, setSaving] = useState(false);
   const [delId, setDelId] = useState(null);
   const tableRef = useRef(null);
+  const sortField = {};
 
   const { prefix, suffix, left, right, layout } = toolBar || {};
   const { render } = optCol || {};
-  const { width, formProps, render: renderFormItems } = modalForm || {};
-  const { width: drawerWidth, drawerProps = {}, render: renderDrawerFormItems } = drawerForm || {};
 
   const refresh = () => {
     if (tableRef && tableRef.current) {
@@ -51,49 +52,60 @@ const ProTable = (props, ref) => {
 
   const handleAdd = data => {
     setSaving(true);
-    add
-      .api({ ...(currData || {}), ...data })
-      .then(result => {
-        const { success, message: msg } = result || {};
-        if (success) {
-          message.success(msg);
-          refresh();
-          setVisible(false);
-          setCurrData(null);
-        } else {
-          message.error(msg);
-        }
-      })
-      .finally(() => {
-        setSaving(false);
-      });
+    return new Promise((resolve, reject) => {
+      add
+        .api({ ...data })
+        .then(result => {
+          const { success, message: msg } = result || {};
+          if (success) {
+            message.success(msg);
+            refresh();
+            resolve();
+          } else {
+            message.error(msg);
+            reject();
+          }
+        })
+        .finally(() => {
+          setSaving(false);
+        });
+    });
   };
 
-  const handleEdit = data => {
+  const handleFilter = data => {
+    setDynamicParams({
+      ...dynamicParams,
+      filters: data,
+    });
+  };
+
+  const handleEdit = (data, orginData) => {
     setSaving(true);
-    edit
-      .api({ ...(currData || {}), ...data })
-      .then(result => {
-        const { success, message: msg } = result || {};
-        if (success) {
-          message.success(msg);
-          refresh();
-          setVisible(false);
-          setCurrData(null);
-        } else {
-          message.error(msg);
-        }
-      })
-      .finally(() => {
-        setSaving(false);
-      });
+    return new Promise((resolve, reject) => {
+      edit
+        .api({ ...(orginData || {}), ...data })
+        .then(result => {
+          const { success, message: msg } = result || {};
+          if (success) {
+            message.success(msg);
+            refresh();
+            resolve();
+          } else {
+            message.error(msg);
+            reject();
+          }
+        })
+        .finally(() => {
+          setSaving(false);
+        });
+    });
   };
 
-  const handleSave = data => {
-    if (currData) {
-      handleEdit(data);
+  const handleSave = async (data, orginData) => {
+    if (orginData) {
+      return handleEdit(data, orginData);
     } else {
-      handleAdd(data);
+      return handleAdd(data);
     }
   };
 
@@ -117,22 +129,23 @@ const ProTable = (props, ref) => {
     }
   };
 
-  const renderDelBtn = ({ id }) => {
-    if (delId === id) {
-      return <PopoverIcon className="del-loading" type="loading" antd />;
+  let proColumns = columns.map(it => {
+    const { formatter, sort, dataIndex } = it;
+    // formatObj
+    // if (canSearch) {
+    //   tempPlaceHolder.push(title);
+    //   searchProperties.push(dataIndex);
+    // }
+    if (formatter) {
+      Object.assign(it, {
+        // render: value => formatters[formatter](value, formatObj && JSON.parse(formatObj)),
+        render: value => formatters[formatter](value),
+      });
     }
-    return (
-      <PopoverIcon
-        onClick={e => e.stopPropagation()}
-        tooltip={{ title: '删除' }}
-        className="del"
-        type="delete"
-        antd
-      />
-    );
-  };
-
-  let proColumns = columns;
+    if (sort) {
+      sortField[dataIndex] = sort;
+    }
+  });
 
   if (isPlainObject(optCol) || edit || del) {
     proColumns = [
@@ -143,30 +156,24 @@ const ProTable = (props, ref) => {
         ...(optCol || {}),
         render: (_, record) => (
           <>
-            {isPlainObject(edit) && (
-              <PopoverIcon
-                type="edit"
-                onClick={() => {
-                  setVisible(true);
-                  setCurrData(record);
-                }}
-                antd
+            {isPlainObject(edit) && isPlainObject(modalForm) && (
+              <EditModal
+                currData={record}
+                modalForm={modalForm}
+                confirmLoading={saving}
+                onOk={handleSave}
               />
             )}
-            {isPlainObject(del) && (
-              <Popconfirm
-                key="delete"
-                placement="topLeft"
-                title="删除后不可恢复，确定要删除吗？"
-                onCancel={e => e.stopPropagation()}
-                onConfirm={e => {
-                  delRow(record);
-                  e.stopPropagation();
-                }}
-              >
-                {renderDelBtn(record)}
-              </Popconfirm>
+            {isPlainObject(edit) && isPlainObject(drawerForm) && (
+              <EditDrawer
+                add={add}
+                currData={record}
+                drawerForm={drawerForm}
+                confirmLoading={saving}
+                onOk={handleSave}
+              />
             )}
+            <DeleteIcon del={del} delId={delId} delData={record} onDelete={delRow} />
             {render && render(record)}
           </>
         ),
@@ -179,15 +186,11 @@ const ProTable = (props, ref) => {
     left: (
       <Space>
         {prefix}
-        {isPlainObject(add) && (
-          <Button
-            type="primary"
-            onClick={() => {
-              setVisible(true);
-            }}
-          >
-            {get(add, 'title', '新建')}
-          </Button>
+        {isPlainObject(add) && isPlainObject(modalForm) && (
+          <EditModal add={add} modalForm={modalForm} confirmLoading={saving} onOk={handleSave} />
+        )}
+        {isPlainObject(add) && isPlainObject(drawerForm) && (
+          <EditDrawer add={add} drawerForm={drawerForm} confirmLoading={saving} onOk={handleSave} />
         )}
         {showRefresh && <Button onClick={refresh}>刷新</Button>}
         {left}
@@ -199,37 +202,7 @@ const ProTable = (props, ref) => {
         {right}
       </>
     ),
-  };
-  const modalProps = {
-    formKey: currData,
-    title: currData ? '编辑' : '新建',
-    visible,
-    width,
-    formProps,
-    onOk: handleSave,
-    onCancel: () => {
-      setVisible(false);
-      setCurrData(null);
-    },
-    confirmLoading: saving,
-    renderFormItems: (form, FormItem) =>
-      renderFormItems && renderFormItems(form, FormItem, currData),
-  };
-
-  const drawerFormProps = {
-    drawerKey: currData,
-    title: currData ? '编辑' : '新建',
-    visible,
-    width: drawerWidth,
-    ...drawerProps,
-    onOk: handleSave,
-    onClose: () => {
-      setVisible(false);
-      setCurrData(null);
-    },
-    confirmLoading: saving,
-    renderFormItems: (form, FormItem) =>
-      renderDrawerFormItems && renderDrawerFormItems(form, FormItem, currData),
+    extra: <FilterIcon filterForm={filterForm} onOk={handleFilter} />,
   };
 
   const tableProps = {
@@ -238,10 +211,14 @@ const ProTable = (props, ref) => {
     store,
     dataSource,
     rowClassName,
-    cascadeParams,
+    cascadeParams: dynamicParams,
     remotePaging,
     showSearch,
     rowKey,
+    sort: {
+      multiple: true,
+      field: sortField,
+    },
     ref: tableRef,
     searchProperties,
     searchPlaceHolder,
@@ -250,8 +227,6 @@ const ProTable = (props, ref) => {
   return (
     <>
       <ExtTable {...tableProps} />
-      {isPlainObject(modalForm) && <ModalForm {...modalProps} />}
-      {isPlainObject(drawerForm) && <DrawerForm {...drawerFormProps} />}
     </>
   );
 };

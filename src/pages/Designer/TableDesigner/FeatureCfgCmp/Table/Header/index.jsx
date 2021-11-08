@@ -72,8 +72,14 @@ const Header = ({ onValuesChange }) => {
             <Input />
           </FormItem>
         </Col>
-        <Col span={colSpan}>
+        <Col span={4}>
           <FormItem
+            labelCol={{
+              span: 12,
+            }}
+            wrapperCol={{
+              span: 12,
+            }}
             label="刷新"
             name="showRefresh"
             valuePropName="checked"
@@ -82,8 +88,14 @@ const Header = ({ onValuesChange }) => {
             <Switch />
           </FormItem>
         </Col>
-        <Col span={colSpan}>
+        <Col span={4}>
           <FormItem
+            labelCol={{
+              span: 12,
+            }}
+            wrapperCol={{
+              span: 12,
+            }}
             label="远程分页"
             name="remotePaging"
             valuePropName="checked"

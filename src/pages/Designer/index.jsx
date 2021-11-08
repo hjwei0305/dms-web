@@ -6,18 +6,31 @@ import { ProLayout } from 'suid';
 import PageWrapper from '@/components/PageWrapper';
 import ParentTable from './components/ParentTable';
 import TableDesigner from './TableDesigner';
-// import UiConfigPreview from './components/UiConfigPreview';
-// import TableUiConfig from './components/TableUiConfig';
-// import FormConfig from './components/FormConfig/new';
-// import FilterFormConfig from './components/FilterFormConfig';
-// import ExportUiConfig from './components/ExportUiConfig';
-// import ImportUiConfig from './components/ImportUiConfig';
 
 const { Header, Content, SiderBar } = ProLayout;
 
 @withRouter
 @connect(({ designer, loading }) => ({ designer, loading }))
-class DataModelUiConfig extends Component {
+class Designer extends Component {
+  handleSave = async values => {
+    const { designer } = this.props;
+    const { currPRowData, modelUiConfig } = designer;
+
+    // return {};
+    const data = {
+      configData: JSON.stringify(values),
+      configType: 'UI',
+      dataDefinitionId: currPRowData.id,
+    };
+    return dispatch({
+      type: 'dataModelUiConfig/saveModelUiConfig',
+      payload: {
+        modelUiConfig,
+        data,
+      },
+    });
+  };
+
   render() {
     const { designer, loading } = this.props;
     const {
@@ -45,48 +58,36 @@ class DataModelUiConfig extends Component {
         >
           <ProLayout>
             <SiderBar width={350} allowCollapse gutter={[0, 4]}>
-              <ProLayout layout="column">
+              <ProLayout>
                 <Header title="主数据" />
                 <Content>
                   <ParentTable />
                 </Content>
               </ProLayout>
             </SiderBar>
-            <ProLayout layout="column">
-              <Header
-                title="主数据UI配置预览"
-                subTitle={`${currPRowData ? currPRowData.name : ''}`}
-              />
+            <ProLayout>
               <Content
                 empty={{
                   description:
                     currPRowData && currPRowData.customize
-                      ? '定制页面，不用进行ui配置'
+                      ? '定制页面，不用进行配置'
                       : '请选择左边的数据',
                 }}
               >
                 {currPRowData && !currPRowData.customize && modelUiConfig && (
-                  <TableDesigner parentData={currPRowData} uiConfig={modelUiConfig} />
+                  <TableDesigner
+                    parentData={currPRowData}
+                    uiConfig={modelUiConfig}
+                    onSave={this.handleSave}
+                  />
                 )}
               </Content>
             </ProLayout>
           </ProLayout>
         </PageWrapper>
-        {/* {vTableUiConfig ? <TableUiConfig modelUiConfig={modelUiConfig} /> : null}
-        {vFilterFormConfig && currPRowData.dataStructure === 'GENERAL' ? (
-          <FilterFormConfig modelUiConfig={modelUiConfig} />
-        ) : null} */}
-        {/* {vTableUiConfig && currPRowData.dataStructure === 'TREE' ? (
-          <TableUiConfig modelUiConfig={modelUiConfig} />
-        ) : null} */}
-        {/* {vFormUiConfig ? <FormConfig modelUiConfig={modelUiConfig} /> : null} */}
-
-        {/* {vExportUiConfig ? <ExportUiConfig modelUiConfig={modelUiConfig} /> : null}
-
-        {vImportUiConfig ? <ImportUiConfig modelUiConfig={modelUiConfig} /> : null} */}
       </>
     );
   }
 }
 
-export default DataModelUiConfig;
+export default Designer;

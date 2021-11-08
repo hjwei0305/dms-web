@@ -7,16 +7,18 @@ import { useGlobal } from '../../hooks';
 
 const { Header, Content } = ProLayout;
 
-const Table = () => {
-  const [config, dispatch] = useGlobal();
+const Filter = () => {
+  const [{ filter }, dispatch] = useGlobal();
   return (
     <ProLayout>
       <Header height={90}>
         <Head
           onValuesChange={values => {
             dispatch({
-              ...config,
-              ...values,
+              filter: {
+                ...filter,
+                ...values,
+              },
             });
           }}
         />
@@ -28,4 +30,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default Filter;

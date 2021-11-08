@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Select, Switch } from 'antd';
+import { Select, Switch, Input } from 'antd';
 import { get } from 'lodash';
 import { constants } from '@/utils';
 import Form from '@/components/ExtForm';

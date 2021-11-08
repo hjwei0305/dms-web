@@ -14,13 +14,15 @@ const CmpMap = {
   ExtSelect: 'Select',
 };
 
-const Designer = ({ parentData, uiConfig = {} }) => {
+const Designer = ({ parentData, uiConfig = {}, onSave }) => {
   const { code } = parentData;
   const { UI = JSON.stringify({}) } = uiConfig;
   const uiObj = JSON.parse(UI);
-  const { showConfig = {}, formConfig = {} } = uiObj;
+  console.log('Designer -> uiObj', uiObj);
+  const { showConfig = {}, formConfig = {}, filterFormConfig } = uiObj;
   const addFormItems = [];
   const editFormItems = [];
+  const filterFormItems = [];
   showConfig &&
     showConfig.columns.forEach(it => {
       Object.assign(it, {
@@ -72,7 +74,7 @@ const Designer = ({ parentData, uiConfig = {} }) => {
         originFields:
           addField['ui:widget'] === 'ExtComboGrid'
             ? addField['ExtComboGrid'].cfg
-                .filter(({ sumitField }) => !sumitField)
+                .filter(({ sumitField }) => !!sumitField)
                 .map(({ code }) => code)
             : [],
         options: addField['ui:widget'] === 'ExtSelect' ? addField['ExtSelect'].options : [],
@@ -103,11 +105,56 @@ const Designer = ({ parentData, uiConfig = {} }) => {
         originFields:
           editField['ui:widget'] === 'ExtComboGrid'
             ? editField['ExtComboGrid'].cfg
-                .filter(({ sumitField }) => !sumitField)
+                .filter(({ sumitField }) => !!sumitField)
                 .map(({ code }) => code)
             : [],
         options: editField['ui:widget'] === 'ExtSelect' ? editField['ExtSelect'].options : [],
         ...editField,
+      });
+    });
+  }
+
+  if (filterFormConfig) {
+    const { formItems = [] } = filterFormConfig;
+    formItems.forEach(([orignField, filterField]) => {
+      let showField;
+      if (filterField['ui:widget'] === 'ExtComboGrid') {
+        filterField['ExtComboGrid'].cfg.forEach(({ code, isShowField }) => {
+          if (isShowField) {
+            showField = code;
+          }
+        });
+      }
+      filterFormItems.push({
+        type: CmpMap[filterField['ui:widget']] || 'Input',
+        label: filterField.title,
+        name: orignField.code,
+        hidden: !!filterField['ui:hidden'],
+        originalName: orignField.name,
+        showField,
+        columns:
+          filterField['ui:widget'] === 'ExtComboGrid' &&
+          filterField['ExtComboGrid'].cfg
+            .map(({ code, name, hidden }) => ({ dataIndex: code, title: name, hidden }))
+            .filter(({ hidden }) => !hidden),
+        store: filterField['ui:widget'] === 'ExtComboGrid' && {
+          type: 'POST',
+          url: `${CURR_CONTEXT_PATH}${filterField['ExtComboGrid'].dataModelCode}/findByPage`,
+        },
+        submitFields:
+          filterField['ui:widget'] === 'ExtComboGrid'
+            ? filterField['ExtComboGrid'].cfg
+                .map(({ sumitField }) => sumitField)
+                .filter(sumitField => !!sumitField)
+            : [],
+        originFields:
+          filterField['ui:widget'] === 'ExtComboGrid'
+            ? filterField['ExtComboGrid'].cfg
+                .filter(({ sumitField }) => !sumitField)
+                .map(({ code }) => code)
+            : [],
+        options: filterField['ui:widget'] === 'ExtSelect' ? filterField['ExtSelect'].options : [],
+        ...filterField,
       });
     });
   }
@@ -143,7 +190,9 @@ const Designer = ({ parentData, uiConfig = {} }) => {
     ],
     remotePaging: true,
     showRefresh: true,
-    showSearch: false,
+    showSearch: true,
+    searchProperties: ['code', 'name'],
+
     add: {
       method: 'POST',
       layout: 'horizontal',
@@ -227,6 +276,11 @@ const Designer = ({ parentData, uiConfig = {} }) => {
     del: {
       method: 'DELETE',
       url: `/api-gateway/dms/${code}/delete`,
+    },
+    filter: filterFormConfig && {
+      layout: 'horizontal',
+      colSpan: 24,
+      formItems: filterFormItems || [],
     },
     store: {
       type: 'POST',
@@ -457,15 +511,13 @@ const Designer = ({ parentData, uiConfig = {} }) => {
     //     "type": "POST",
     //     "url": "/api-gateway/bts-v6/travelCity/findByPage"
     // },
-    // "remotePaging": true,
-    // "showRefresh": true
     ...showConfig,
     ...uiObj,
   });
 
   return (
     <Ctx.Provider value={globalState}>
-      <TableDesigner />
+      <TableDesigner onSave={onSave} />
     </Ctx.Provider>
   );
 };

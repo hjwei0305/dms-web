@@ -16,7 +16,7 @@ const AddTableColumns = props => {
         title="添加"
         onOk={val => {
           if (onChange) {
-            onChange([val]);
+            onChange([...value, val]);
           }
         }}
         renderFormItems={(_, FormItem) => {

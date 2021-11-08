@@ -15,6 +15,17 @@ const ALIGN = {
   right: '居右',
 };
 
+const FORMATTER = {
+  formatText: '文本',
+  formatDate: '日期',
+  formatBool: '布尔',
+};
+
+const SORT = {
+  asc: '升序',
+  desc: '降序',
+};
+
 const Columns = () => {
   const [{ columns: dataSource, _parentData }, dispatch] = useGlobal();
 
@@ -62,6 +73,18 @@ const Columns = () => {
         width: 200,
       },
       {
+        title: '格式化',
+        dataIndex: 'formatter',
+        width: 120,
+        render: formatter => FORMATTER[formatter] || '-',
+      },
+      {
+        title: '排序',
+        dataIndex: 'sort',
+        width: 80,
+        render: sort => SORT[sort] || '-',
+      },
+      {
         title: '列宽',
         dataIndex: 'width',
         width: 80,
@@ -71,7 +94,7 @@ const Columns = () => {
         title: '对齐方式',
         dataIndex: 'align',
         width: 80,
-        render: text => ALIGN[text],
+        render: text => ALIGN[text] || '-',
       },
     ],
     toolBar: {
@@ -169,9 +192,29 @@ const Columns = () => {
             </FormItem>
             <FormItem label="对齐方式" name="align" initialValue={get(currData, 'align', 'left')}>
               <Select>
-                <Select.Option value="left">居左</Select.Option>
-                <Select.Option value="center">居中</Select.Option>
-                <Select.Option value="right">居右</Select.Option>
+                {Object.entries(ALIGN).map(([key, value]) => (
+                  <Select.Option key={key} value={key}>
+                    {value}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+            <FormItem label="格式化" name="formatter" initialValue={get(currData, 'formatter')}>
+              <Select>
+                {Object.entries(FORMATTER).map(([key, value]) => (
+                  <Select.Option key={key} value={key}>
+                    {value}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+            <FormItem label="排序" initialValue={get(currData, 'sort')} name="sort">
+              <Select>
+                {Object.entries(SORT).map(([key, value]) => (
+                  <Select.Option key={key} value={key}>
+                    {value}
+                  </Select.Option>
+                ))}
               </Select>
             </FormItem>
             <FormItem

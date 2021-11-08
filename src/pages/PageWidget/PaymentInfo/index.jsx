@@ -99,154 +99,184 @@ const PaymentInfo = () => {
       url: `${MDMSCONTEXT}/paymentInfo/findByPage`,
     },
     renderFormItems: (form, FormItem, editData) => {
-      const { getFieldDecorator, setFieldsValue } = form;
+      const { setFieldsValue } = form;
       return (
         <Row>
           <Col span={colSpan}>
-            <FormItem label="收款对象类型">
-              {getFieldDecorator('receiverType', {
-                initialValue: get(editData, 'receiverType', 'H'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择收款对象类型',
-                  },
-                ],
-              })(
-                <Select
-                  onChange={() => {
-                    setFieldsValue({ receiverName: '' });
-                  }}
-                >
-                  {Object.keys(RECEIVER_TYPE).map(key => (
-                    <Select.Option key={key} value={key}>
-                      {RECEIVER_TYPE[key]}
-                    </Select.Option>
-                  ))}
-                </Select>,
-              )}
+            <FormItem
+              label="收款对象类型"
+              name="receiverType"
+              initialValue={get(editData, 'receiverType', 'H')}
+              rules={[
+                {
+                  required: true,
+                  message: '请选择收款对象类型',
+                },
+              ]}
+            >
+              <Select
+                onChange={() => {
+                  setFieldsValue({ receiverName: '' });
+                }}
+              >
+                {Object.keys(RECEIVER_TYPE).map(key => (
+                  <Select.Option key={key} value={key}>
+                    {RECEIVER_TYPE[key]}
+                  </Select.Option>
+                ))}
+              </Select>
             </FormItem>
           </Col>
           <Col span={colSpan}>
-            <FormItem label="收款对象Id" hidden>
-              {getFieldDecorator('receiverId', {
-                initialValue: get(editData, 'receiverId'),
-              })(<Input />)}
+            <FormItem
+              label="收款对象Id"
+              name="receiverId"
+              hidden
+              initialValue={get(editData, 'receiverId')}
+            >
+              <Input />
             </FormItem>
-            <FormItem label="收款对象Code" hidden>
-              {getFieldDecorator('receiverCode', {
-                initialValue: get(editData, 'receiverCode'),
-              })(<Input />)}
+            <FormItem
+              label="收款对象Code"
+              name="receiverCode"
+              initialValue={get(editData, 'receiverCode')}
+              hidden
+            >
+              <Input />
             </FormItem>
-            <FormItem label="收款对象">
-              {getFieldDecorator('receiverName', {
-                initialValue: get(editData, 'receiverName'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择收款对象',
-                  },
-                ],
-              })(<ComboList {...getComboListProps(form)} />)}
-            </FormItem>
-          </Col>
-          <Col span={colSpan}>
-            <FormItem label="银行省区代码" hidden>
-              {getFieldDecorator('bankProvinceCode', {
-                initialValue: get(editData, 'bankProvinceCode'),
-              })(<Input />)}
-            </FormItem>
-            <FormItem label="银行省区" hidden>
-              {getFieldDecorator('bankProvinceName', {
-                initialValue: get(editData, 'bankProvinceName'),
-              })(<Input />)}
+            <FormItem
+              label="收款对象"
+              name="receiverName"
+              initialValue={get(editData, 'receiverName')}
+              rules={[
+                {
+                  required: true,
+                  message: '请选择收款对象',
+                },
+              ]}
+            >
+              <ComboList {...getComboListProps(form)} />
             </FormItem>
           </Col>
           <Col span={colSpan}>
-            <FormItem label="银行地区代码" hidden>
-              {getFieldDecorator('bankAreaCode', {
-                initialValue: get(editData, 'bankAreaCode'),
-              })(<Input />)}
+            <FormItem
+              label="银行省区代码"
+              name="bankProvinceCode"
+              initialValue={get(editData, 'bankProvinceCode')}
+              hidden
+            >
+              <Input />
             </FormItem>
-            <FormItem label="银行地区" hidden>
-              {getFieldDecorator('bankAreaName', {
-                initialValue: get(editData, 'bankAreaName'),
-              })(<Input />)}
-            </FormItem>
-          </Col>
-          <Col span={colSpan}>
-            <FormItem label="银行id" hidden>
-              {getFieldDecorator('bankId', {
-                initialValue: get(editData, 'bankId'),
-              })(<Input />)}
-            </FormItem>
-            <FormItem label="银行代码" hidden>
-              {getFieldDecorator('bankCode', {
-                initialValue: get(editData, 'bankCode'),
-              })(<Input />)}
-            </FormItem>
-            <FormItem label="erp银行代码" hidden>
-              {getFieldDecorator('erpBankCode', {
-                initialValue: get(editData, 'erpBankCode'),
-              })(<Input />)}
-            </FormItem>
-            <FormItem label="银行">
-              {getFieldDecorator('bankName', {
-                initialValue: get(editData, 'bankName'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择银行',
-                  },
-                ],
-              })(<ComboList {...getBankComboListProps(form)} />)}
+            <FormItem
+              label="银行省区"
+              name="bankProvinceName"
+              initialValue={get(editData, 'bankProvinceName')}
+              hidden
+            >
+              <Input />
             </FormItem>
           </Col>
           <Col span={colSpan}>
-            <FormItem label="银行户名">
-              {getFieldDecorator('bankAccountName', {
-                initialValue: get(editData, 'bankAccountName'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入银行户名',
-                  },
-                ],
-              })(<Input />)}
+            <FormItem
+              label="银行地区代码"
+              name="bankAreaCode"
+              initialValue={get(editData, 'bankAreaCode')}
+              hidden
+            >
+              <Input />
+            </FormItem>
+            <FormItem
+              label="银行地区"
+              name="bankAreaName"
+              initialValue={get(editData, 'bankAreaName')}
+              hidden
+            >
+              <Input />
             </FormItem>
           </Col>
           <Col span={colSpan}>
-            <FormItem label="银行帐号">
-              {getFieldDecorator('bankAccountNumber', {
-                initialValue: get(editData, 'bankAccountNumber'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入银行帐号',
-                  },
-                ],
-              })(<Input />)}
+            <FormItem label="银行id" name="bankId" initialValue={get(editData, 'bankId')} hidden>
+              <Input />
+            </FormItem>
+            <FormItem
+              label="银行代码"
+              name="bankCode"
+              initialValue={get(editData, 'bankCode')}
+              hidden
+            >
+              <Input />
+            </FormItem>
+            <FormItem
+              name="erpBankCode"
+              label="erp银行代码"
+              initialValue={get(editData, 'erpBankCode')}
+              hidden
+            >
+              <Input />
+            </FormItem>
+            <FormItem
+              label="银行"
+              name="bankName"
+              initialValue={get(editData, 'bankName')}
+              rules={[
+                {
+                  required: true,
+                  message: '请选择银行',
+                },
+              ]}
+            >
+              <ComboList {...getBankComboListProps(form)} />
             </FormItem>
           </Col>
           <Col span={colSpan}>
-            <FormItem label="账号用途">
-              {getFieldDecorator('useScope', {
-                initialValue: get(editData, 'useScope'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择帐号用途',
-                  },
-                ],
-              })(
-                <Select>
-                  {Object.keys(USE_SCOPE).map(key => (
-                    <Select.Option key={key} value={key}>
-                      {USE_SCOPE[key]}
-                    </Select.Option>
-                  ))}
-                </Select>,
-              )}
+            <FormItem
+              label="银行户名"
+              name="bankAccountName"
+              initialValue={get(editData, 'bankAccountName')}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入银行户名',
+                },
+              ]}
+            >
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={colSpan}>
+            <FormItem
+              label="银行帐号"
+              name="bankAccountNumber"
+              initialValue={get(editData, 'bankAccountNumber')}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入银行帐号',
+                },
+              ]}
+            >
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={colSpan}>
+            <FormItem
+              name="useScope"
+              label="账号用途"
+              initialValue={get(editData, 'useScope')}
+              rules={[
+                {
+                  required: true,
+                  message: '请选择帐号用途',
+                },
+              ]}
+            >
+              <Select>
+                {Object.keys(USE_SCOPE).map(key => (
+                  <Select.Option key={key} value={key}>
+                    {USE_SCOPE[key]}
+                  </Select.Option>
+                ))}
+              </Select>
             </FormItem>
           </Col>
         </Row>

@@ -2,7 +2,7 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { ComboGrid } from 'suid';
 import { omit, isEmpty, get } from 'lodash';
 
-const ListSelect = (props, ref) => {
+const TableSelect = (props, ref) => {
   const {
     dependenciedFields = [],
     form,
@@ -73,4 +73,4 @@ const ListSelect = (props, ref) => {
   );
 };
 
-export default forwardRef(ListSelect);
+export default forwardRef(TableSelect);

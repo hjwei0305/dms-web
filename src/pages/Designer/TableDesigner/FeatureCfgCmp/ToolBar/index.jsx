@@ -4,6 +4,7 @@ import { Tabs } from 'antd';
 import cls from 'classnames';
 // import Head from './Header';
 import Add from '../Add';
+import Filter from '../Filter';
 import QuickSearch from '../QuickSearch';
 
 import styles from './index.less';
@@ -34,6 +35,9 @@ const ToolBar = () => {
           </TabPane>
           <TabPane tab="快速查询" key="quickSearch">
             <QuickSearch />
+          </TabPane>
+          <TabPane tab="过滤" key="filter">
+            <Filter />
           </TabPane>
           <TabPane tab="前缀" key="prefix">
             前缀
