@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input, Select, Row, Col } from 'antd';
 import { ComboList } from 'suid';
 import { get } from 'lodash';
+import DropMenu from '@/components/DropMenu';
 import { constants } from '@/utils';
 import SimpleTable from '@/components/SimpleTable';
 import { save, remove } from './service';
@@ -21,6 +22,8 @@ const USE_SCOPE = {
 const colSpan = 24;
 
 const PaymentInfo = () => {
+  const [viewType, setViewType] = useState('H');
+
   const getComboListProps = form => {
     const { getFieldValue } = form;
 
@@ -81,6 +84,31 @@ const PaymentInfo = () => {
     searchPlaceHolder: '输入户名',
     searchProperties: ['bankAccountName'],
     modalWidth: 600,
+    cascadeParams: {
+      filters: [
+        {
+          fieldName: 'receiverType',
+          operator: 'EQ',
+          value: viewType,
+        },
+      ],
+    },
+    toolBar: {
+      prefix: (
+        <DropMenu
+          icon="eye"
+          label="收款类型"
+          menuItems={Object.entries(RECEIVER_TYPE).map(([type, label]) => ({
+            key: type,
+            value: label,
+          }))}
+          onSelect={key => {
+            setViewType(key);
+          }}
+          defalutSelectedKey={viewType}
+        />
+      ),
+    },
     formProps: {
       labelCol: {
         span: 8,
@@ -284,11 +312,22 @@ const PaymentInfo = () => {
     },
     columns: [
       {
+        title: '收款对象',
+        width: 180,
+        dataIndex: 'receiverName',
+      },
+      {
+        title: '收款对象代码',
+        dataIndex: 'receiverCode',
+      },
+      {
         title: '银行帐号',
+        width: 220,
         dataIndex: 'bankAccountNumber',
       },
       {
         title: '银行户名',
+        width: 180,
         dataIndex: 'bankAccountName',
       },
       {

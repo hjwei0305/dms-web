@@ -35,6 +35,7 @@ const SimpleTable = (
   const [delId, setDelId] = useState(undefined);
   const [saving, setSaving] = useState(false);
   const tableRef = useRef(null);
+  const { prefix } = toolBar || {};
   const { add, edit, del, extra = [], extraToolbarBtns = [] } = actions || {};
   const [extraIds] = useState({});
 
@@ -256,6 +257,7 @@ const SimpleTable = (
     },
     left: (
       <Space>
+        {prefix}
         {add && (
           <Button
             type="primary"
