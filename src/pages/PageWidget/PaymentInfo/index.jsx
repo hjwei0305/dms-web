@@ -43,6 +43,7 @@ const PaymentInfo = () => {
       form,
       allowClear: true,
       name: 'receiverName',
+      remotePaging: true,
       searchPlaceHolder: '请输入代码或名称关键字搜索',
       store: {
         type: 'POST',
