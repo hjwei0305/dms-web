@@ -81,8 +81,8 @@ const PaymentInfo = () => {
   };
 
   const tableProps = {
-    searchPlaceHolder: '输入户名',
-    searchProperties: ['bankAccountName'],
+    searchPlaceHolder: '请输入收款方代码，名称',
+    searchProperties: ['receiverCode', 'receiverName'],
     modalWidth: 600,
     cascadeParams: {
       filters: [
