@@ -12,6 +12,7 @@ class EditFormDrawer extends Component {
   getCategory = form => ({
     form,
     name: 'bankCategoryName',
+    remotePaging: true,
     store: {
       type: 'POST',
       autoLoad: false,
@@ -77,6 +78,7 @@ class EditFormDrawer extends Component {
       form,
       name: 'bankName',
       cascadeParams,
+      remotePaging: true,
       store: {
         type: 'POST',
         autoLoad: false,
