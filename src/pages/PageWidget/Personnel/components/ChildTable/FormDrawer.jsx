@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Input, Row, Select, DatePicker, Col } from 'antd';
-import { ComboGrid } from 'suid';
+import { Input, Row, Select, DatePicker, Col, Select } from 'antd';
 import { get } from 'lodash';
 import moment from 'moment';
 import FormDrawer from '@/components/FormDrawer';
 import { constants } from '@/utils';
 
-const { MDMSCONTEXT } = constants;
+const { MDMSCONTEXT, GENDER } = constants;
 const commonSpan = 24;
 
 class EditFormDrawer extends Component {
@@ -182,21 +181,18 @@ class EditFormDrawer extends Component {
             </FormItem>
           </Col>
           <Col span={commonSpan}>
-            <FormItem label="性别" hidden>
+            <FormItem label="性别">
               {getFieldDecorator('gender', {
                 initialValue: get(editData, 'gender'),
-              })(<Input />)}
-            </FormItem>
-            <FormItem label="性别">
-              {getFieldDecorator('genderName', {
-                initialValue: get(editData, 'genderName'),
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择性别',
-                  },
-                ],
-              })(<ComboGrid {...this.getGenderProps(form)} />)}
+              })(
+                <Select>
+                  {Object.entries(GENDER).map(([value, label]) => (
+                    <Select.Option key={value} value={value}>
+                      {label}
+                    </Select.Option>
+                  ))}
+                </Select>,
+              )}
             </FormItem>
           </Col>
           <Col span={commonSpan}>

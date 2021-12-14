@@ -2,7 +2,7 @@
  * @Author: Eason
  * @Date: 2020-02-21 18:03:16
  * @Last Modified by: zp
- * @Last Modified time: 2021-10-20 14:15:40
+ * @Last Modified time: 2021-12-14 20:27:18
  */
 import { base } from '../../public/app.config.json';
 
@@ -62,6 +62,11 @@ const REQUEST_TYPE = {
   GET: 'GET',
 };
 
+const GENDER = {
+  M: '男',
+  F: '女',
+};
+
 export default {
   APP_BASE,
   LOCAL_PATH,
@@ -73,4 +78,5 @@ export default {
   EdmContext,
   REQUEST_TYPE,
   CURR_CONTEXT_PATH,
+  GENDER,
 };

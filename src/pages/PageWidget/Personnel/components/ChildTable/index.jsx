@@ -9,7 +9,7 @@ import Space from '@/components/Space';
 import FormDrawer from './FormDrawer';
 
 const { authAction } = utils;
-const { MDMSCONTEXT } = constants;
+const { MDMSCONTEXT, GENDER } = constants;
 
 @connect(({ personnel, loading }) => ({ personnel, loading }))
 class ChildTable extends Component {
@@ -224,6 +224,7 @@ class ChildTable extends Component {
       {
         title: '性别',
         dataIndex: 'gender',
+        render: gender => (gender ? GENDER[gender] : '-'),
       },
       {
         title: '通信地址',
