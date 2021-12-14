@@ -168,13 +168,6 @@ class ChildTable extends Component {
             <>
               <Space onClick={e => e.stopPropagation()}>
                 {authAction(
-                  // <FormPopover
-                  //   key="edit"
-                  //   onSave={this.save}
-                  //   editData={currCRowData}
-                  //   isSaving={loading.effects['personnel/saveChild']}
-                  //   parentData={currPRowData}
-                  // >
                   <PopoverIcon
                     key="edit"
                     className="edit"
@@ -184,7 +177,6 @@ class ChildTable extends Component {
                     tooltip={{ title: '编辑' }}
                     antd
                   />,
-                  // </FormPopover>,
                 )}
                 <Popconfirm
                   key="delete"
@@ -276,16 +268,9 @@ class ChildTable extends Component {
       left: (
         <Space>
           {authAction(
-            // <FormPopover
-            //   key="add"
-            //   onSave={this.save}
-            //   isSaving={loading.effects['personnel/saveChild']}
-            //   parentData={currPRowData}
-            // >
             <Button key="add" type="primary" onClick={this.add} ignore="true">
               新增
             </Button>,
-            // </FormPopover>,
           )}
           <Button onClick={this.reloadData}>刷新</Button>
         </Space>

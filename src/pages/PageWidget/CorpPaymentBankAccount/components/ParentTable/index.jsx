@@ -10,7 +10,6 @@ import { constants } from '@/utils';
 import FormPopover from './FormPopover';
 import styles from './index.less';
 
-// const { authAction } = utils;
 const { Search } = Input;
 const { MDMSCONTEXT, BASICCONTEXT } = constants;
 

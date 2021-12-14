@@ -151,13 +151,13 @@ class ChildTable extends Component {
                     editData={currCRowData}
                     isSaving={loading.effects['ledgerAccount/saveChild']}
                     parentData={currPRowData}
+                    ignore="true"
                   >
                     <PopoverIcon
                       key="edit"
                       className="edit"
                       onClick={e => this.edit(record, e)}
                       type="edit"
-                      ignore="true"
                       tooltip={{ title: '编辑' }}
                       antd
                     />
@@ -222,10 +222,11 @@ class ChildTable extends Component {
             <FormPopover
               key="add"
               onSave={this.save}
+              ignore="true"
               isSaving={loading.effects['ledgerAccount/saveChild']}
               parentData={currPRowData}
             >
-              <Button key="add" type="primary" onClick={this.add} ignore="true">
+              <Button key="add" type="primary" onClick={this.add}>
                 新增
               </Button>
             </FormPopover>,

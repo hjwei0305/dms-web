@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm, Input } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
-import { utils, ExtIcon, ListCard } from 'suid';
+import { ExtIcon, ListCard } from 'suid';
 import { constants, userUtils } from '@/utils';
 import FormModal from './FormModal';
 import styles from './index.less';
@@ -11,7 +11,6 @@ import styles from './index.less';
 const { Search } = Input;
 const { getCurrentUser } = userUtils;
 const { MDMSCONTEXT } = constants;
-const { authAction } = utils;
 
 @connect(({ dataDict, loading }) => ({ dataDict, loading }))
 class DataDictTypeTable extends Component {
@@ -191,16 +190,14 @@ class DataDictTypeTable extends Component {
       return (
         <>
           <div className="tool-action" onClick={e => e.stopPropagation()}>
-            {authAction(
-              <ExtIcon
-                key="edit"
-                className="action-item"
-                onClick={e => this.edit(record, e)}
-                type="edit"
-                ignore="true"
-                antd
-              />,
-            )}
+            <ExtIcon
+              key="edit"
+              className="action-item"
+              onClick={e => this.edit(record, e)}
+              type="edit"
+              ignore="true"
+              antd
+            />
             {record.frozen ? null : (
               <Popconfirm
                 key="del"

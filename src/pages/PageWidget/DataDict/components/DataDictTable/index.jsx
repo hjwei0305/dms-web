@@ -3,14 +3,13 @@ import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Popconfirm, message, Tag } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import { ExtTable, utils, ExtIcon } from 'suid';
-import { constants, userUtils } from '@/utils';
+import { ExtTable, ExtIcon } from 'suid';
+import { userUtils } from '@/utils';
 import PopoverIcon from '@/components/PopoverIcon';
 import FormModal from './FormModal';
 import styles from '../../index.less';
 
 const { getCurrentUser } = userUtils;
-const { authAction } = utils;
 
 @connect(({ dataDict, loading }) => ({ dataDict, loading }))
 class DataDictTypeTable extends Component {
@@ -156,17 +155,15 @@ class DataDictTypeTable extends Component {
       required: true,
       render: (_, record) => (
         <span className={cls('action-box')}>
-          {authAction(
-            <PopoverIcon
-              key="edit"
-              className="edit"
-              onClick={_ => this.edit(record)}
-              type="edit"
-              tooltip={{ title: '编辑' }}
-              ignore="true"
-              antd
-            />,
-          )}
+          <PopoverIcon
+            key="edit"
+            className="edit"
+            onClick={_ => this.edit(record)}
+            type="edit"
+            tooltip={{ title: '编辑' }}
+            ignore="true"
+            antd
+          />
           <Popconfirm
             key="del"
             placement="topLeft"
@@ -216,29 +213,27 @@ class DataDictTypeTable extends Component {
     let addBtn = null;
     if (isGlobalAdmin || (isTenantAdmin && isPrivateDictItems)) {
       columns.unshift(optColumn);
-      addBtn = authAction(
+      addBtn = (
         <Button key="add" type="primary" onClick={this.add} ignore="true">
           <FormattedMessage id="global.add" defaultMessage="新建" />
-        </Button>,
+        </Button>
       );
     }
 
     if (isTenantAdmin && !isPrivateDictItems) {
       extraBtns.push(
-        authAction(
-          <Popconfirm
-            key="private"
-            placement="topLeft"
-            title="是否私有？"
-            onConfirm={_ => {
-              this.handlePrivate('true');
-            }}
-          >
-            <Button key="private" ignore="true">
-              转为私有
-            </Button>
-          </Popconfirm>,
-        ),
+        <Popconfirm
+          key="private"
+          placement="topLeft"
+          title="是否私有？"
+          onConfirm={_ => {
+            this.handlePrivate('true');
+          }}
+        >
+          <Button key="private" ignore="true">
+            转为私有
+          </Button>
+        </Popconfirm>,
       );
     }
 

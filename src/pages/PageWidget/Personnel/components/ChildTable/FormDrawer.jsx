@@ -190,6 +190,12 @@ class EditFormDrawer extends Component {
             <FormItem label="性别">
               {getFieldDecorator('genderName', {
                 initialValue: get(editData, 'genderName'),
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择性别',
+                  },
+                ],
               })(<ComboGrid {...this.getGenderProps(form)} />)}
             </FormItem>
           </Col>

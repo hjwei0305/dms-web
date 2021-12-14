@@ -8,7 +8,6 @@ import PopoverIcon from '@/components/PopoverIcon';
 import { constants } from '@/utils';
 import styles from './index.less';
 
-// const { authAction } = utils;
 const { Search } = Input;
 const { BASICCONTEXT } = constants;
 

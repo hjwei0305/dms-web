@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Button, Popconfirm, Tag } from 'antd';
-import { utils, ExtTable } from 'suid';
+import { ExtTable } from 'suid';
 import { constants } from '@/utils';
 import PopoverIcon from '@/components/PopoverIcon';
 import Space from '@/components/Space';
 import FormDrawer from './FormDrawer';
 
-const { authAction } = utils;
 const { MDMSCONTEXT } = constants;
 
 @connect(({ corpPaymentBankAccount, loading }) => ({ corpPaymentBankAccount, loading }))
@@ -163,17 +162,15 @@ class ChildTable extends Component {
           return (
             <>
               <Space onClick={e => e.stopPropagation()}>
-                {authAction(
-                  <PopoverIcon
-                    key="edit"
-                    className="edit"
-                    onClick={e => this.edit(record, e)}
-                    type="edit"
-                    ignore="true"
-                    tooltip={{ title: '编辑' }}
-                    antd
-                  />,
-                )}
+                <PopoverIcon
+                  key="edit"
+                  className="edit"
+                  onClick={e => this.edit(record, e)}
+                  type="edit"
+                  ignore="true"
+                  tooltip={{ title: '编辑' }}
+                  antd
+                />
                 <Popconfirm
                   key="setting"
                   placement="topLeft"
@@ -263,11 +260,9 @@ class ChildTable extends Component {
     const toolBar = {
       left: (
         <Space>
-          {authAction(
-            <Button key="add" type="primary" onClick={this.add} ignore="true">
-              新增
-            </Button>,
-          )}
+          <Button key="add" type="primary" onClick={this.add} ignore="true">
+            新增
+          </Button>
           <Button onClick={this.reloadData}>刷新</Button>
         </Space>
       ),
