@@ -184,6 +184,12 @@ class EditFormDrawer extends Component {
             <FormItem label="性别">
               {getFieldDecorator('gender', {
                 initialValue: get(editData, 'gender'),
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择性别',
+                  },
+                ],
               })(
                 <Select>
                   {Object.entries(GENDER).map(([value, label]) => (
