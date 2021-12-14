@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Row, Select, DatePicker, Col, Select } from 'antd';
+import { Input, Row, Select, DatePicker, Col } from 'antd';
 import { get } from 'lodash';
 import moment from 'moment';
 import FormDrawer from '@/components/FormDrawer';
