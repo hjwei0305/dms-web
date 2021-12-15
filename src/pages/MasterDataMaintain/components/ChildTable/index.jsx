@@ -39,9 +39,14 @@ class ChildTable extends Component {
   };
 
   componentDidMount() {
-    this.imExStatus();
-    this.handleImportTplData();
-    this.checkInterval = window.setInterval(this.imExStatus, 8000);
+    this.imExStatus().then(result => {
+      const { success, data } = result || {};
+      const { enable } = data || {};
+      if (success && enable) {
+        this.handleImportTplData();
+        this.checkInterval = window.setInterval(this.imExStatus, 8000);
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -63,6 +68,7 @@ class ChildTable extends Component {
           checkStatus,
         });
       }
+      return result;
     });
   };
 
@@ -502,7 +508,7 @@ class ChildTable extends Component {
 
   render() {
     const { importVisible, exportVisible, checkStatus } = this.state;
-    const { import: importStatus, export: exportStatus } = checkStatus || [];
+    const { importResult: importStatus, exportResult: exportStatus } = checkStatus || [];
     return (
       <div className={cls(styles['container-box'])}>
         <div className={cls('header')}>
