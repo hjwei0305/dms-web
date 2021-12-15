@@ -95,6 +95,20 @@ class EditForm extends React.Component {
             </Select>,
           )}
         </FormItem>
+        {getFieldValue('ui:widget') === 'ExtInputNumber' ? (
+          <>
+            <FormItem label="最小值">
+              {getFieldDecorator('min', {
+                initialValue: get(editData[optKey], 'min'),
+              })(<InputNumber style={{ width: '100%' }} />)}
+            </FormItem>
+            <FormItem label="精度">
+              {getFieldDecorator('precision', {
+                initialValue: get(editData[optKey], 'precision'),
+              })(<InputNumber min={0} style={{ width: '100%' }} />)}
+            </FormItem>
+          </>
+        ) : null}
         {getFieldValue('ui:widget') === 'ExtSelect' && (
           <FormItem label="下拉数据源">
             {getFieldDecorator('ExtSelect.options', {

@@ -13,11 +13,19 @@ class ExtInputNumber extends Component {
   };
 
   render() {
-    const { value } = this.props;
+    const { value, schema } = this.props;
+    const { precision, min } = schema;
+    console.log('ExtInputNumber -> render -> schema', schema);
 
     return (
       <div className={cls(styles['ext-cmp-width'])}>
-        <InputNumber style={{ width: '100%' }} value={value} onChange={this.handleChange} />
+        <InputNumber
+          min={min || 0}
+          precision={precision || 0}
+          style={{ width: '100%' }}
+          value={value}
+          onChange={this.handleChange}
+        />
       </div>
     );
   }

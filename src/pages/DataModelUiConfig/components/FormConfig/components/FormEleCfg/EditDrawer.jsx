@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Switch, Select, Input, Button, Drawer } from 'antd';
+import { Form, Switch, Select, Input, Button, Drawer, InputNumber } from 'antd';
 import { get } from 'lodash';
 import { ComboList, ScrollBar } from 'suid';
 import { constants, validateRules } from '@/utils';
@@ -86,6 +86,20 @@ class EditDrawer extends React.Component {
             </Select>,
           )}
         </FormItem>
+        {getFieldValue('ui:widget') === 'ExtInputNumber' ? (
+          <>
+            <FormItem label="最小值">
+              {getFieldDecorator('min', {
+                initialValue: get(editData[optKey], 'min'),
+              })(<InputNumber style={{ width: '100%' }} />)}
+            </FormItem>
+            <FormItem label="精度">
+              {getFieldDecorator('precision', {
+                initialValue: get(editData[optKey], 'precision'),
+              })(<InputNumber min={0} style={{ width: '100%' }} />)}
+            </FormItem>
+          </>
+        ) : null}
         {getFieldValue('ui:widget') === 'ExtComboGrid' ? (
           <>
             <FormItem style={{ display: 'none' }}>
