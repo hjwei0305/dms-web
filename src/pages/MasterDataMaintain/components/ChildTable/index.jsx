@@ -314,23 +314,19 @@ class ChildTable extends Component {
             </Button>,
           )}
           {enable && (
-            <>
-              {authAction(
-                <Button key="import" onClick={this.handleImport} ignore="true">
-                  导入
-                </Button>,
-              )}
-              {authAction(
-                <Button
-                  key="export"
-                  loading={loading.effects['masterDataMaintain/exportData']}
-                  onClick={this.handleExport}
-                  ignore="true"
-                >
-                  导出
-                </Button>,
-              )}
-            </>
+            <Button key="import" onClick={this.handleImport} ignore="true">
+              导入
+            </Button>
+          )}
+          {enable && (
+            <Button
+              key="export"
+              loading={loading.effects['masterDataMaintain/exportData']}
+              onClick={this.handleExport}
+              ignore="true"
+            >
+              导出
+            </Button>
           )}
           <Button onClick={this.reloadData}>刷新</Button>
         </Space>
