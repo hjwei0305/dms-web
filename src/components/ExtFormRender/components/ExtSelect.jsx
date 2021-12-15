@@ -25,8 +25,8 @@ class ExtSelect extends Component {
     return (
       <div className={cls(styles['ext-cmp-width'])}>
         <Select style={{ width: '100%' }} value={value} onChange={this.handleChange}>
-          {options.map(({ value: key, label }) => (
-            <Select.Option key={key} value={key}>
+          {options.map(({ value, label }) => (
+            <Select.Option key={value} value={value}>
               {label}
             </Select.Option>
           ))}

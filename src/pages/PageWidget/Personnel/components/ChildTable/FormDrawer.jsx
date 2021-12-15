@@ -94,6 +94,10 @@ class EditFormDrawer extends Component {
                     required: true,
                     message: '请输入身份证',
                   },
+                  {
+                    reg: /^(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$)|(^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])((\\d{4})|\\d{3}[Xx])$)$/,
+                    message: '请输入有效的身份证',
+                  },
                 ],
               })(<Input disabled={!!editData} />)}
             </FormItem>

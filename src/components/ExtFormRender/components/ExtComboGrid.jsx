@@ -17,10 +17,10 @@ class ExtComboGrid extends Component {
         url: `${MDMSCONTEXT}/${contextPath}/findByPage`,
       };
     }
-    const FieldItems = get(schema, 'ExtComboGrid.cfg', '[]');
+    const FieldItems = get(schema, 'ExtComboGrid.cfg', []);
     const columns = [];
     let showField = '';
-    FieldItems.forEach(it => {
+    (FieldItems || []).forEach(it => {
       const { hidden, isShowField, name, code } = it;
       if (!hidden) {
         columns.push({
@@ -48,10 +48,10 @@ class ExtComboGrid extends Component {
 
   handleAfterSelected = item => {
     const { name, onChange, schema } = this.props;
-    const FieldItems = get(schema, 'ExtComboGrid.cfg', '[]');
+    const FieldItems = get(schema, 'ExtComboGrid.cfg', []);
     const submitFields = [];
     let showField = '';
-    FieldItems.forEach(it => {
+    (FieldItems || []).forEach(it => {
       const { sumitField, isSubmit, code, isShowField } = it;
       if (isSubmit) {
         submitFields.push({
