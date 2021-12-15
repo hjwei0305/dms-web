@@ -248,7 +248,8 @@ class ChildTable extends Component {
   };
 
   getExtableProps = () => {
-    const { filterParams } = this.state;
+    const { filterParams, checkStatus } = this.state;
+    const { enable } = checkStatus || {};
     const { masterDataMaintain, loading } = this.props;
     const { modelUiConfig, currPRowData } = masterDataMaintain;
     const uiObj = JSON.parse(get(modelUiConfig, 'UI', JSON.stringify({})));
@@ -312,20 +313,24 @@ class ChildTable extends Component {
               新建
             </Button>,
           )}
-          {authAction(
-            <Button key="import" onClick={this.handleImport} ignore="true">
-              导入
-            </Button>,
-          )}
-          {authAction(
-            <Button
-              key="export"
-              loading={loading.effects['masterDataMaintain/exportData']}
-              onClick={this.handleExport}
-              ignore="true"
-            >
-              导出
-            </Button>,
+          {enable && (
+            <>
+              {authAction(
+                <Button key="import" onClick={this.handleImport} ignore="true">
+                  导入
+                </Button>,
+              )}
+              {authAction(
+                <Button
+                  key="export"
+                  loading={loading.effects['masterDataMaintain/exportData']}
+                  onClick={this.handleExport}
+                  ignore="true"
+                >
+                  导出
+                </Button>,
+              )}
+            </>
           )}
           <Button onClick={this.reloadData}>刷新</Button>
         </Space>
