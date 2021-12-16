@@ -257,6 +257,7 @@ class ChildTable extends Component {
     // const exportUiConfig = JSON.parse(get(modelUiConfig, 'Export', null));
     const tableUiConfig = get(uiObj, 'showConfig', null);
     const filterFormConfig = get(uiObj, 'filterFormConfig', null);
+    const { formItems: filterFormItems } = filterFormConfig || {};
     const tableProps = tableUiConfig || {
       columns: [],
     };
@@ -331,9 +332,10 @@ class ChildTable extends Component {
           <Button onClick={this.reloadData}>刷新</Button>
         </Space>
       ),
-      extra: filterFormConfig ? (
-        <PopoverIcon type="filter" theme="twoTone" antd onClick={this.toggoleDrawerVisible} />
-      ) : null,
+      extra:
+        filterFormItems && !!filterFormItems.length ? (
+          <PopoverIcon type="filter" theme="twoTone" antd onClick={this.toggoleDrawerVisible} />
+        ) : null,
     };
     tableProps.columns = columns.concat(tableProps.columns);
     tableProps.toolBar = toolBarProps;

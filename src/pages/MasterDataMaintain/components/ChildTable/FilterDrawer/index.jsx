@@ -43,6 +43,10 @@ class FilterDrawer extends Component {
   render() {
     const { formKey } = this.state;
     const { visible, onCancel, uiConfig } = this.props;
+    const { formItems = [] } = uiConfig || {};
+    if (!formItems || formItems.length === 0) {
+      return null;
+    }
     return (
       <Drawer
         visible={visible}
