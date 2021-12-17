@@ -69,7 +69,7 @@ class EditFormDrawer extends Component {
                     message: '请输入员工姓名',
                   },
                 ],
-              })(<Input disabled={!!editData} />)}
+              })(<Input />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
@@ -82,7 +82,7 @@ class EditFormDrawer extends Component {
                     message: '请输入姓名缩写',
                   },
                 ],
-              })(<Input disabled={!!editData} />)}
+              })(<Input />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
@@ -99,7 +99,7 @@ class EditFormDrawer extends Component {
                     message: '请输入有效的身份证',
                   },
                 ],
-              })(<Input disabled={!!editData} />)}
+              })(<Input />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
@@ -112,7 +112,7 @@ class EditFormDrawer extends Component {
                     message: '请输入ERP公司代码',
                   },
                 ],
-              })(<Input disabled />)}
+              })(<Input />)}
             </FormItem>
           </Col>
           <Col span={commonSpan}>
