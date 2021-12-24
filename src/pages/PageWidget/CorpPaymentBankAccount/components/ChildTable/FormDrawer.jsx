@@ -46,10 +46,13 @@ class EditFormDrawer extends Component {
     form,
     name: 'ledgerAccountName',
     remotePaging: true,
+    cascadeParams: {
+      erpCode: get(parentData, 'erpCode', ''),
+    },
     store: {
       type: 'POST',
       autoLoad: false,
-      url: `${MDMSCONTEXT}/ledgerAccount/findByPage`,
+      url: `${MDMSCONTEXT}/ledgerAccount/search`,
     },
     reader: {
       name: 'name',
