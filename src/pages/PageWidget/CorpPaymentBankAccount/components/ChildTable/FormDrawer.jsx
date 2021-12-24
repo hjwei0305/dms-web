@@ -42,25 +42,28 @@ class EditFormDrawer extends Component {
     field: ['currencyId', 'currencyCode'],
   });
 
-  getLedgerAccount = form => ({
-    form,
-    name: 'ledgerAccountName',
-    remotePaging: true,
-    cascadeParams: {
-      erpCode: get(parentData, 'erpCode', ''),
-    },
-    store: {
-      type: 'POST',
-      autoLoad: false,
-      url: `${MDMSCONTEXT}/ledgerAccount/search`,
-    },
-    reader: {
-      name: 'name',
-      description: 'code',
-      field: ['code'],
-    },
-    field: ['ledgerAccountCode'],
-  });
+  getLedgerAccount = form => {
+    const { parentData } = this.props;
+    return {
+      form,
+      name: 'ledgerAccountName',
+      remotePaging: true,
+      cascadeParams: {
+        erpCode: get(parentData, 'erpCode', ''),
+      },
+      store: {
+        type: 'POST',
+        autoLoad: false,
+        url: `${MDMSCONTEXT}/ledgerAccount/search`,
+      },
+      reader: {
+        name: 'name',
+        description: 'code',
+        field: ['code'],
+      },
+      field: ['ledgerAccountCode'],
+    };
+  };
 
   getBank = form => {
     // const { getFieldValue } = form;
