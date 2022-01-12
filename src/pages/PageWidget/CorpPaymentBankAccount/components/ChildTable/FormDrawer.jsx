@@ -21,9 +21,9 @@ class EditFormDrawer extends Component {
     reader: {
       name: 'name',
       description: 'code',
-      field: ['code'],
+      field: ['id'],
     },
-    field: ['bankCategoryCode'],
+    field: ['bankCategoryId'],
   });
 
   getCurrency = form => ({
@@ -66,19 +66,19 @@ class EditFormDrawer extends Component {
   };
 
   getBank = form => {
-    // const { getFieldValue } = form;
-    // const bankCategoryCode = getFieldValue('bankCategoryCode');
+    const { getFieldValue } = form;
+    const bankCategoryId = getFieldValue('bankCategoryId');
     const cascadeParams = {
       filters: [],
     };
 
-    // if (bankCategoryCode) {
-    //   cascadeParams.filters.push({
-    //     fieldName: 'bankCategoryCode',
-    //     operator: 'EQ',
-    //     value: bankCategoryCode,
-    //   });
-    // }
+    if (bankCategoryId) {
+      cascadeParams.filters.push({
+        fieldName: 'bankCategoryId',
+        operator: 'EQ',
+        value: bankCategoryId,
+      });
+    }
 
     return {
       form,
@@ -143,8 +143,8 @@ class EditFormDrawer extends Component {
               })(<Input />)}
             </FormItem>
             <FormItem label="银行类别代码" hidden>
-              {getFieldDecorator('bankCategoryCode', {
-                initialValue: get(editData, 'bankCategoryCode', ''),
+              {getFieldDecorator('bankCategoryId', {
+                initialValue: get(editData, 'bankCategoryId', ''),
               })(<Input />)}
             </FormItem>
             <FormItem label="银行类别">
