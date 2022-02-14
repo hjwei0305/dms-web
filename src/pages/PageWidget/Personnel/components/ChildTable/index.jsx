@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Popconfirm, Tag } from 'antd';
-import { utils, ExtTable } from 'suid';
+import { Button, Popconfirm } from 'antd';
+import { utils, ExtTable, Space } from 'suid';
 import { constants } from '@/utils';
 import PopoverIcon from '@/components/PopoverIcon';
-import Space from '@/components/Space';
+// import Space from '@/components/Space';
 // import FormPopover from './FormPopover';
 import FormDrawer from './FormDrawer';
 
@@ -158,7 +158,7 @@ class ChildTable extends Component {
       {
         title: '操作',
         key: 'operation',
-        width: 90,
+        width: 95,
         align: 'center',
         dataIndex: 'id',
         className: 'action',
