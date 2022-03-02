@@ -143,6 +143,12 @@ class EditFormDrawer extends Component {
             <FormItem label="货币代码">
               {getFieldDecorator('currencyCode', {
                 initialValue: get(editData, 'currencyCode'),
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入货币代码',
+                  },
+                ],
               })(<Input />)}
             </FormItem>
           </Col>
