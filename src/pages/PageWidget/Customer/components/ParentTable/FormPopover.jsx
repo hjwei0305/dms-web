@@ -83,7 +83,7 @@ class FormModal extends PureComponent {
     const subTitle = editData ? '编辑' : '新增';
     return (
       <FormPopover
-        title="供应商"
+        title="客户"
         subTitle={subTitle}
         confirmLoading={isSaving}
         renderFormItems={this.handleRenderFormItems}
