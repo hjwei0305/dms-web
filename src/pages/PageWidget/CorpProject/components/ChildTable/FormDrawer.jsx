@@ -130,12 +130,12 @@ class EditFormDrawer extends Component {
           <Col span={commonSpan}>
             <FormItem label="wbs项目id" hidden>
               {getFieldDecorator('wbsProjectId', {
-                initialValue: get(editData, 'wbsProjectId', ''),
+                initialValue: get(editData, 'wbsProjectId'),
               })(<Input />)}
             </FormItem>
             <FormItem label="wbs项目代码" hidden>
               {getFieldDecorator('wbsProjectCode', {
-                initialValue: get(editData, 'wbsProjectCode', ''),
+                initialValue: get(editData, 'wbsProjectCode'),
               })(<Input />)}
             </FormItem>
             <FormItem label="Wbs项目">
